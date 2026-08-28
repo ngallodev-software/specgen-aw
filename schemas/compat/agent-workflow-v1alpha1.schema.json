@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "specgen/agent-workflow-compatibility/v1alpha1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "specgen_version",
+    "target",
+    "contracts",
+    "integration_policy"
+  ],
+  "properties": {
+    "schema": {
+      "const": "specgen/agent-workflow-compatibility/v1alpha1"
+    },
+    "specgen_version": {
+      "type": "string"
+    },
+    "target": {
+      "type": "object",
+      "required": [
+        "name",
+        "product_version",
+        "source_snapshot"
+      ],
+      "properties": {
+        "name": {
+          "const": "agent-workflow"
+        },
+        "product_version": {
+          "type": "string"
+        },
+        "source_snapshot": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "contracts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "schema_id",
+          "file",
+          "sha256",
+          "status"
+        ],
+        "properties": {
+          "schema_id": {
+            "type": "string"
+          },
+          "file": {
+            "type": "string"
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "status": {
+            "enum": [
+              "observed",
+              "declared",
+              "verified",
+              "deprecated"
+            ]
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "integration_policy": {
+      "type": "object"
+    }
+  }
+}

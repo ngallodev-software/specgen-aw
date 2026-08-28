@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>spec-gen</title>
+            <style>
+/* From extension vscode.github */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.vscode-dark img[src$=\#gh-light-mode-only],
+.vscode-light img[src$=\#gh-dark-mode-only],
+.vscode-high-contrast:not(.vscode-high-contrast-light) img[src$=\#gh-light-mode-only],
+.vscode-high-contrast-light img[src$=\#gh-dark-mode-only] {
+	display: none;
+}
+
+</style>
+            
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+<style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        <style>
+.task-list-item {
+    list-style-type: none;
+}
+
+.task-list-item-checkbox {
+    margin-left: -20px;
+    vertical-align: middle;
+    pointer-events: none;
+}
+</style>
+<style>
+:root {
+  --color-note: #0969da;
+  --color-tip: #1a7f37;
+  --color-warning: #9a6700;
+  --color-severe: #bc4c00;
+  --color-caution: #d1242f;
+  --color-important: #8250df;
+}
+
+</style>
+<style>
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-note: #2f81f7;
+    --color-tip: #3fb950;
+    --color-warning: #d29922;
+    --color-severe: #db6d28;
+    --color-caution: #f85149;
+    --color-important: #a371f7;
+  }
+}
+
+</style>
+<style>
+.markdown-alert {
+  padding: 0.5rem 1rem;
+  margin-bottom: 16px;
+  color: inherit;
+  border-left: .25em solid #888;
+}
+
+.markdown-alert>:first-child {
+  margin-top: 0
+}
+
+.markdown-alert>:last-child {
+  margin-bottom: 0
+}
+
+.markdown-alert .markdown-alert-title {
+  display: flex;
+  font-weight: 500;
+  align-items: center;
+  line-height: 1
+}
+
+.markdown-alert .markdown-alert-title .octicon {
+  margin-right: 0.5rem;
+  display: inline-block;
+  overflow: visible !important;
+  vertical-align: text-bottom;
+  fill: currentColor;
+}
+
+.markdown-alert.markdown-alert-note {
+  border-left-color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-note .markdown-alert-title {
+  color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-important {
+  border-left-color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-important .markdown-alert-title {
+  color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-warning {
+  border-left-color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-warning .markdown-alert-title {
+  color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-tip {
+  border-left-color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-tip .markdown-alert-title {
+  color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-caution {
+  border-left-color: var(--color-caution);
+}
+
+.markdown-alert.markdown-alert-caution .markdown-alert-title {
+  color: var(--color-caution);
+}
+
+</style>
+        
+        </head>
+        <body class="vscode-body vscode-dark">
+            <span id="markdown-mermaid" aria-hidden="true" data-config="{&quot;darkModeTheme&quot;:&quot;vscode&quot;,&quot;lightModeTheme&quot;:&quot;vscode&quot;,&quot;maxTextSize&quot;:50000,&quot;clickDrag&quot;:&quot;alt&quot;,&quot;showControls&quot;:&quot;onHoverOrFocus&quot;,&quot;resizable&quot;:true,&quot;maxHeight&quot;:&quot;&quot;}"></span>
+				<div align="center">
+<h1 id="spec-gen">spec-gen</h1>
+<h3 id="an-agent-workflow-joint"><em>an agent-workflow joint</em></h3>
+<p><strong>Turn ambiguous product and engineering intent into versioned, machine-readable specifications that humans can review and agents can execute — without making everyone read a 47-page manifesto first.</strong></p>
+<p><img src="https://img.shields.io/badge/version-0.1.0-blue" alt="Version">
+<img src="https://img.shields.io/badge/spec%20schema-v1alpha1-purple" alt="Spec Schema">
+<img src="https://img.shields.io/badge/Agent--Workflow-0.9.0%20aware-2ea44f" alt="Agent--Workflow">
+<img src="https://img.shields.io/badge/status-architecture%20%2F%20alpha-orange" alt="Status">
+<img src="https://img.shields.io/badge/license-see%20LICENSE-lightgrey" alt="License"></p>
+<p><strong>Canonical JSON · deterministic Markdown · traceability · eval intent · repository evidence · target compilation</strong></p>
+</div>
+<hr>
+<blockquote>
+<p><strong>About the name:</strong> “<em>an agent-workflow joint</em>” is a deliberate nod to Spike Lee’s signature “A Spike Lee Joint” credit. The ambition is similar in spirit: a recognizable point of view, a clear authorial method, and absolutely no interest in pretending the work assembled itself.</p>
+</blockquote>
+<h2 id="what-is-spec-gen">What is spec-gen?</h2>
+<p><strong>spec-gen</strong> is a specification authoring and compilation system for agentic software development.</p>
+<p>It is designed to take incomplete, conversational, or repository-grounded intent and progressively turn it into a <strong>versioned canonical specification</strong> with explicit requirements, interfaces, data contracts, decisions, acceptance criteria, evaluation intent, implementation structure, provenance, and unresolved questions.</p>
+<p>The canonical specification is machine-readable first. Human-readable documents, evaluation assets, and execution-target artifacts are projections of that same authority. One source of truth is enough; distributed screenplay notes are not a data model.</p>
+<pre><code class="language-text"> idea / request / repository / research
+                  │
+                  ▼
+          ┌───────────────────┐
+          │   elicitation     │
+          │ evidence + intent │
+          └─────────┬─────────┘
+                    │
+                    ▼
+        ┌────────────────────────┐
+        │  Canonical Spec IR     │
+        │ specgen/spec/v1alpha1  │
+        └──────────┬─────────────┘
+                   │
+       ┌───────────┼───────────────┬────────────────┐
+       ▼           ▼               ▼                ▼
+    SPEC.md     eval assets    trace / diffs    target adapters
+                                                    │
+                                      ┌─────────────┴─────────────┐
+                                      ▼                           ▼
+                              Agent-Workflow                 future targets
+</code></pre>
+<blockquote>
+<p><strong>Spec-gen owns specification meaning. Execution targets own execution meaning.</strong></p>
+</blockquote>
+<p>That boundary is foundational: spec-gen can understand and compile for Agent-Workflow without becoming dependent on Agent-Workflow's runtime or duplicating its execution authority.</p>
+<hr>
+<h2 id="do-the-right-spec">Do the right spec</h2>
+<p>AI coding systems are increasingly capable of implementation, but implementation quality is still constrained by the quality of the problem definition they receive.</p>
+<p>A useful specification for agentic work needs more than a polished Markdown document. It needs to answer questions such as:</p>
+<ul>
+<li>What is actually required?</li>
+<li>What is explicitly <em>not</em> required?</li>
+<li>Which statements are user decisions, assumptions, repository facts, or inferred conclusions?</li>
+<li>Which interfaces and data contracts must remain compatible?</li>
+<li>How does each task trace back to a requirement?</li>
+<li>How will each important requirement be verified?</li>
+<li>Which uncertainties are unresolved rather than silently invented?</li>
+<li>What source revision was the specification based on?</li>
+<li>Can the same spec be rendered for humans and compiled for an execution system without drift?</li>
+</ul>
+<p><strong>spec-gen is being built around those questions.</strong> The goal is not more ceremony. The goal is fewer expensive misunderstandings wearing a confident tone.</p>
+<hr>
+<blockquote>
+<p><strong>The basic rule:</strong> if a decision matters later, it should survive the chat window.</p>
+</blockquote>
+<h2 id="core-model">Core model</h2>
+<p>The canonical contract begins at:</p>
+<pre><code class="language-text">specgen/spec/v1alpha1
+</code></pre>
+<p>The current model includes first-class structures for:</p>
+<table>
+<thead>
+<tr>
+<th>Area</th>
+<th>Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Intent</strong></td>
+<td>problem, objectives, desired outcomes, non-goals</td>
+</tr>
+<tr>
+<td><strong>Scope</strong></td>
+<td>included, excluded, protected, constraints</td>
+</tr>
+<tr>
+<td><strong>Requirements</strong></td>
+<td>functional, non-functional, priority, rationale</td>
+</tr>
+<tr>
+<td><strong>Interfaces</strong></td>
+<td>APIs, CLIs, events, files, protocols, compatibility boundaries</td>
+</tr>
+<tr>
+<td><strong>Data contracts</strong></td>
+<td>schemas, formats, ownership, compatibility</td>
+</tr>
+<tr>
+<td><strong>Decisions</strong></td>
+<td>decision, rationale, alternatives, status</td>
+</tr>
+<tr>
+<td><strong>Acceptance</strong></td>
+<td>measurable criteria linked to requirements</td>
+</tr>
+<tr>
+<td><strong>Evaluations</strong></td>
+<td>verification intent, datasets, oracles, expected behavior</td>
+</tr>
+<tr>
+<td><strong>Implementation</strong></td>
+<td>phases, tasks, dependencies, expected outputs</td>
+</tr>
+<tr>
+<td><strong>Risks</strong></td>
+<td>failure modes, mitigations, unknowns</td>
+</tr>
+<tr>
+<td><strong>Questions</strong></td>
+<td>unresolved decisions kept explicit</td>
+</tr>
+<tr>
+<td><strong>Traceability</strong></td>
+<td>requirement → acceptance → task → evaluation</td>
+</tr>
+<tr>
+<td><strong>Provenance</strong></td>
+<td>source evidence, repository baseline, digests</td>
+</tr>
+<tr>
+<td><strong>Extensions</strong></td>
+<td>target-specific metadata without polluting the core model</td>
+</tr>
+</tbody>
+</table>
+<p>The schema is intentionally <strong>pre-stable</strong>. Breaking changes are expected during the <code>v1alpha*</code> period and will be versioned explicitly.</p>
+<hr>
+<h2 id="designed-for-agentic-engineering">Designed for agentic engineering</h2>
+<p>Spec-gen is not a document generator with JSON bolted on afterward and called “structured.”</p>
+<p>It is designed around durable, machine-checkable specification behavior.</p>
+<h3 id="canonical-machine-authority">Canonical machine authority</h3>
+<pre><code class="language-text">Canonical JSON
+    ├──► deterministic Markdown
+    ├──► evaluation artifacts
+    ├──► execution-target artifacts
+    └──► semantic diff / trace views
+</code></pre>
+<p>Markdown is a projection. It is never allowed to become a second competing source of truth.</p>
+<h3 id="structural-traceability">Structural traceability</h3>
+<p>Important relationships should survive compilation:</p>
+<pre><code class="language-text">REQ-014
+  ├── AC-021
+  ├── TASK-008
+  └── EVAL-006
+</code></pre>
+<p>The goal is not merely to <em>mention</em> traceability, but to make missing or broken relationships mechanically detectable. “It was somewhere in the chat” is not a traceability strategy.</p>
+<h3 id="explicit-uncertainty">Explicit uncertainty</h3>
+<p>Unknowns belong in the model.</p>
+<p>Spec-gen should prefer:</p>
+<pre><code class="language-text">UNRESOLVED-004: Authentication provider selection has not been decided.
+</code></pre>
+<p>over inventing an implementation detail that was never authorized. Confidence is not a substitute for a decision record.</p>
+<h3 id="repository-grounded-brownfield-specs">Repository-grounded brownfield specs</h3>
+<p>A specification for an existing system should be able to distinguish:</p>
+<pre><code class="language-text">requested behavior
+      │
+      ├── repository evidence
+      ├── existing contracts
+      ├── compatibility constraints
+      └── contradictions / migration requirements
+</code></pre>
+<p>and bind that analysis to the source revision it actually examined.</p>
+<h3 id="evaluation-aware-from-the-beginning">Evaluation-aware from the beginning</h3>
+<p>Verification is part of specification authoring, not something added after implementation.</p>
+<pre><code class="language-text">requirement
+    ↓
+acceptance criterion
+    ↓
+verification method
+    ↓
+evaluation / test / oracle
+</code></pre>
+<h3 id="failure-can-improve-the-specification">Failure can improve the specification</h3>
+<p>One design direction under active assessment is <strong>failure backpropagation</strong>: when implementation or evaluation reveals a missing invariant, ambiguity, or false assumption, that information should flow back into durable specification knowledge instead of disappearing in an agent transcript.</p>
+<hr>
+<h2 id="agent-workflow-aware-not-joined-at-the-hip">Agent-Workflow aware, not joined at the hip</h2>
+<p>The initial compatibility target is <strong>Agent-Workflow <code>0.9.0</code></strong>.</p>
+<p>Spec-gen tracks compatibility against exact public Agent-Workflow contracts rather than importing Agent-Workflow internals.</p>
+<p>Currently recognized targets include:</p>
+<pre><code class="language-text">agent-workflow/prompt-pack/v1
+agent-workflow/evaluation-plan/v1
+agent-workflow/source-baseline/v1
+agent-workflow/agent-role/v1
+agent-workflow/task-result/v1
+</code></pre>
+<p>Compatibility fixtures are pinned under:</p>
+<pre><code class="language-text">compat/agent-workflow/0.9.0/
+</code></pre>
+<p>and are SHA-256-bound so compatibility can be tested against the contract version we actually designed for.</p>
+<p>The intended lowering model is:</p>
+<pre><code class="language-text">specgen/spec/v1alpha1
+          │
+          ▼
+ Agent-Workflow adapter
+          │
+          ├──► prompt-pack/v1
+          ├──► evaluation-plan/v1
+          ├──► task result schemas
+          └──► source-baseline semantics
+</code></pre>
+<p>Spec-gen does <strong>not</strong> own Agent Runs, workers, review state, acceptance state, process supervision, or workflow execution.</p>
+<p>Agent-Workflow does.</p>
+<hr>
+<h2 id="versioning-is-part-of-the-architecture">Versioning is part of the architecture</h2>
+<p>Versioning starts on day one. Future us should not need forensic archaeology to discover what <code>spec.json</code> meant six months earlier.</p>
+<p>Current identities:</p>
+<pre><code class="language-text">Project release:       0.1.0
+Canonical spec schema: specgen/spec/v1alpha1
+Agent-Workflow target: 0.9.0
+</code></pre>
+<p>Three version axes are intentionally separate:</p>
+<ol>
+<li><strong>Project version</strong> — the spec-gen software release.</li>
+<li><strong>Contract version</strong> — the canonical machine schema and related public contracts.</li>
+<li><strong>Target compatibility</strong> — the external contract versions a given release knows how to compile to.</li>
+</ol>
+<p>A new spec-gen release does not automatically imply a new spec schema.</p>
+<p>Likewise, support for a newer Agent-Workflow release does not require spec-gen's canonical model to become Agent-Workflow-shaped.</p>
+<p>See <a href="docs/VERSIONING.html"><code>docs/VERSIONING.md</code></a>.</p>
+<hr>
+<h2 id="architecture-decisions-are-durable">Architecture decisions are durable</h2>
+<p>Significant architectural decisions are recorded as ADRs.</p>
+<p>Current accepted decisions include:</p>
+<ul>
+<li>canonical IR with derived projections;</li>
+<li>Agent-Workflow as a versioned compilation target, not a runtime dependency;</li>
+<li>machine contracts versioned from inception;</li>
+<li>significant design changes recorded through ADRs.</li>
+</ul>
+<pre><code class="language-text">docs/adr/
+├── ADR-0001-canonical-ir-and-projections.md
+├── ADR-0002-agent-workflow-is-a-versioned-target-not-a-dependency.md
+├── ADR-0003-version-machine-contracts-from-inception.md
+└── ADR-0004-significant-decisions-use-adrs.md
+</code></pre>
+<p>The design is expected to evolve. The decision history should not disappear when it does. Architecture amnesia is still amnesia, even when Git has all the commits.</p>
+<hr>
+<h2 id="prior-art-driven-not-prior-art-copied">Prior-art driven, not prior-art copied</h2>
+<p>Spec-gen is being developed after source-level assessment of existing specification and agent-planning systems.</p>
+<p>Current research candidates include:</p>
+<ul>
+<li><strong>specBuilder</strong> — structured elicitation, typed requirements, traceability, immutable answers/snapshots;</li>
+<li><strong>GitHub Spec Kit</strong> — staged specification → planning → task workflows and broad agent ergonomics;</li>
+<li><strong>OpenSpec</strong> — explicit requirement deltas and brownfield change semantics;</li>
+<li><strong>BMAD / bmad-spec</strong> — append-only decision memory and derived specifications;</li>
+<li><strong>Cavekit</strong> — small durable spec surface and failure-to-invariant feedback;</li>
+<li>additional SDD, planning, eval, and agent-development systems as useful mechanisms emerge.</li>
+</ul>
+<p>The research question is not <em>which framework wins?</em> This is not fantasy football for agent frameworks.</p>
+<p>It is:</p>
+<blockquote>
+<p><strong>Which mechanisms actually improve correctness, traceability, portability, and agent execution enough to justify their complexity?</strong></p>
+</blockquote>
+<p>Each mechanism is intended to be classified as:</p>
+<pre><code class="language-text">retain  ·  adapt  ·  reject  ·  defer
+</code></pre>
+<p>with rationale and licensing implications recorded.</p>
+<hr>
+<h2 id="planned-authoring-loop">Planned authoring loop</h2>
+<p>The working direction is an iterative compiler rather than a one-shot prompt followed by a ceremonial <code>looks good</code>:</p>
+<pre><code class="language-text">                ┌──────────────────┐
+                │ user intent      │
+                │ repository facts │
+                │ external sources │
+                └────────┬─────────┘
+                         ▼
+                 detect uncertainty
+                         │
+                         ▼
+                 ask / infer / record
+                         │
+                         ▼
+                  validate structure
+                         │
+             ┌───────────┴───────────┐
+             │                       │
+         unresolved              sufficient
+             │                       │
+             └─────── loop ◄─────────┘
+                                     │
+                                     ▼
+                              compile artifacts
+</code></pre>
+<p>The eventual system should distinguish user-authorized decisions from evidence-derived facts and model-generated proposals.</p>
+<hr>
+<h2 id="repository-layout">Repository layout</h2>
+<pre><code class="language-text">spec-gen/
+├── VERSION
+├── CHANGELOG.md
+├── README.md
+├── pyproject.toml
+├── schemas/
+│   └── spec/
+│       └── v1alpha1.schema.json
+├── compat/
+│   └── agent-workflow/
+│       ├── COMPATIBILITY.md
+│       ├── compatibility.schema.json
+│       ├── compatibility.json
+│       └── 0.9.0/
+├── docs/
+│   ├── ARCHITECTURE.md
+│   ├── DESIGN_PRINCIPLES.md
+│   ├── VERSIONING.md
+│   ├── AGENT_WORKFLOW_INTEGRATION.md
+│   ├── ROADMAP.md
+│   ├── adr/
+│   └── research/
+├── examples/
+└── src/
+    └── specgen/
+</code></pre>
+<hr>
+<h2 id="current-status">Current status</h2>
+<p><strong>0.1.0 is an architecture-first foundation release.</strong> In movie terms, we have the script, storyboards, production rules, and continuity bible. We are not claiming the helicopter shot exists yet.</p>
+<p>Already present:</p>
+<ul>
+<li>versioned <code>specgen/spec/v1alpha1</code> JSON Schema;</li>
+<li>explicit project/schema/target version separation;</li>
+<li>Agent-Workflow <code>0.9.0</code> compatibility manifest;</li>
+<li>pinned Agent-Workflow public schema fixtures;</li>
+<li>architecture and design-principle documentation;</li>
+<li>ADR process and initial accepted ADRs;</li>
+<li>prior-art assessment framework;</li>
+<li>valid example canonical specification;</li>
+<li>minimal Python package and compatibility inspection CLI.</li>
+</ul>
+<p>Current CLI surface:</p>
+<pre><code class="language-bash">python -m specgen version
+python -m specgen compatibility
+</code></pre>
+<p>Not yet claimed as implemented:</p>
+<ul>
+<li>interactive elicitation;</li>
+<li>repository analysis;</li>
+<li>deterministic Markdown rendering;</li>
+<li>semantic diff/history;</li>
+<li>evaluation generation;</li>
+<li>Agent-Workflow compilation;</li>
+<li>interactive UI/API.</li>
+</ul>
+<p>Those are roadmap work and will move into this README only as they become real.</p>
+<hr>
+<h2 id="roadmap--no-montage-required">Roadmap — no montage required</h2>
+<pre><code class="language-text">0  Foundation + prior art
+1  Canonical IR + deterministic validation
+2  Markdown projection + authoring history
+3  Elicitation / compiler loop
+4  Repository-aware brownfield analysis
+5  Evaluation model
+6  Agent-Workflow compiler
+7  Agent skill + optional AW plugin
+8  Interactive app / API
+</code></pre>
+<p>See <a href="docs/ROADMAP.html"><code>docs/ROADMAP.md</code></a> for current exit criteria and deferred work.</p>
+<hr>
+<h2 id="design-principles">Design principles</h2>
+<ol>
+<li><strong>Machine-readable authority first.</strong></li>
+<li><strong>One canonical specification model.</strong></li>
+<li><strong>Human documents are deterministic projections.</strong></li>
+<li><strong>Uncertainty must remain visible.</strong></li>
+<li><strong>Evidence and inference are different things.</strong></li>
+<li><strong>Traceability should be mechanically checkable.</strong></li>
+<li><strong>Evaluation belongs in the specification lifecycle.</strong></li>
+<li><strong>External execution systems are targets, not hidden dependencies.</strong></li>
+<li><strong>Compatibility is explicit and versioned.</strong></li>
+<li><strong>Significant architecture decisions leave an ADR trail.</strong></li>
+<li><strong>Prefer deterministic validation over model judgment where possible.</strong></li>
+<li><strong>Complexity must earn its context and maintenance cost.</strong></li>
+</ol>
+<p>See <a href="docs/DESIGN_PRINCIPLES.html"><code>docs/DESIGN_PRINCIPLES.md</code></a>.</p>
+<hr>
+<h2 id="the-long-term-shot">The long-term shot</h2>
+<p>A useful end state looks something like this:</p>
+<pre><code class="language-bash">spec-gen init
+spec-gen analyze --repo .
+
+spec-gen author \
+  --request feature-request.md \
+  --repo .
+
+spec-gen validate spec.json
+spec-gen render spec.json --format markdown
+spec-gen <span class="hljs-built_in">eval</span> compile spec.json
+
+spec-gen compile spec.json \
+  --target agent-workflow@0.9.0
+</code></pre>
+<p>producing a portable artifact set such as:</p>
+<pre><code class="language-text">my-feature.spec/
+├── spec.json
+├── SPEC.md
+├── decisions/
+├── schemas/
+├── evals/
+├── evidence/
+├── targets/
+│   └── agent-workflow/
+│       ├── pack.yaml
+│       └── evaluation-plan.json
+└── MANIFEST.json
+</code></pre>
+<p>Eventually, the question should not be:</p>
+<blockquote>
+<p>“Which version of the requirements did the agent mean?”</p>
+</blockquote>
+<p>That is a sequel nobody asked for.</p>
+<p>The better question is:</p>
+<blockquote>
+<p><strong>“Does the validated specification accurately encode what we decided, what the evidence supports, what remains unknown, and how we will know the implementation is correct?”</strong></p>
+</blockquote>
+<hr>
+<h2 id="documentation">Documentation</h2>
+<ul>
+<li><a href="docs/ARCHITECTURE.html">Architecture</a></li>
+<li><a href="docs/DESIGN_PRINCIPLES.html">Design principles</a></li>
+<li><a href="docs/VERSIONING.html">Versioning</a></li>
+<li><a href="docs/AGENT_WORKFLOW_INTEGRATION.html">Agent-Workflow integration</a></li>
+<li><a href="docs/ROADMAP.html">Roadmap</a></li>
+<li><a href="docs/adr/README.html">Architecture decisions</a></li>
+<li><a href="docs/research/PRIOR_ART.html">Prior-art research</a></li>
+<li><a href="docs/research/ASSESSMENT_MATRIX.html">Assessment matrix</a></li>
+</ul>
+<hr>
+<h2 id="project-name">Project name</h2>
+<p>The current working public name is:</p>
+<h1 id="spec-gen-1"><strong>spec-gen</strong></h1>
+<h3 id="an-agent-workflow-joint-1"><em>an agent-workflow joint</em></h3>
+<p>The product remains independently architected and may be used without Agent-Workflow. The subtitle reflects the shared design lineage and first-class compatibility target—not a runtime dependency. It is a credit, not a coupling mechanism.</p>
+<hr>
+<div align="center">
+<p><strong>Do the right spec. Trace the decisions. Compile with confidence.</strong></p>
+</div>
+
+            
+            
+        </body>
+        </html>

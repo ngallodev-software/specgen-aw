@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "specgen/authoring-event/v1alpha1",
+  "title": "SpecGen Authoring Event v1alpha1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "id",
+    "spec_id",
+    "sequence",
+    "recorded_at",
+    "kind",
+    "actor",
+    "payload"
+  ],
+  "properties": {
+    "schema": {
+      "const": "specgen/authoring-event/v1alpha1"
+    },
+    "id": {
+      "$ref": "#/$defs/id"
+    },
+    "spec_id": {
+      "$ref": "#/$defs/id"
+    },
+    "sequence": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "recorded_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "kind": {
+      "enum": [
+        "decision",
+        "assumption",
+        "evidence",
+        "question",
+        "correction",
+        "supersession",
+        "note"
+      ]
+    },
+    "actor": {
+      "enum": [
+        "user",
+        "agent",
+        "system",
+        "tool"
+      ]
+    },
+    "affected_refs": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/id"
+      },
+      "uniqueItems": true
+    },
+    "supersedes_event_ids": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/id"
+      },
+      "uniqueItems": true
+    },
+    "payload": {
+      "type": "object"
+    }
+  },
+  "$defs": {
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z][A-Za-z0-9._:-]*$"
+    }
+  }
+}

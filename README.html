@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>SpecGen</title>
+            <style>
+/* From extension vscode.github */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.vscode-dark img[src$=\#gh-light-mode-only],
+.vscode-light img[src$=\#gh-dark-mode-only],
+.vscode-high-contrast:not(.vscode-high-contrast-light) img[src$=\#gh-light-mode-only],
+.vscode-high-contrast-light img[src$=\#gh-dark-mode-only] {
+	display: none;
+}
+
+</style>
+            
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+<style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        <style>
+.task-list-item {
+    list-style-type: none;
+}
+
+.task-list-item-checkbox {
+    margin-left: -20px;
+    vertical-align: middle;
+    pointer-events: none;
+}
+</style>
+<style>
+:root {
+  --color-note: #0969da;
+  --color-tip: #1a7f37;
+  --color-warning: #9a6700;
+  --color-severe: #bc4c00;
+  --color-caution: #d1242f;
+  --color-important: #8250df;
+}
+
+</style>
+<style>
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-note: #2f81f7;
+    --color-tip: #3fb950;
+    --color-warning: #d29922;
+    --color-severe: #db6d28;
+    --color-caution: #f85149;
+    --color-important: #a371f7;
+  }
+}
+
+</style>
+<style>
+.markdown-alert {
+  padding: 0.5rem 1rem;
+  margin-bottom: 16px;
+  color: inherit;
+  border-left: .25em solid #888;
+}
+
+.markdown-alert>:first-child {
+  margin-top: 0
+}
+
+.markdown-alert>:last-child {
+  margin-bottom: 0
+}
+
+.markdown-alert .markdown-alert-title {
+  display: flex;
+  font-weight: 500;
+  align-items: center;
+  line-height: 1
+}
+
+.markdown-alert .markdown-alert-title .octicon {
+  margin-right: 0.5rem;
+  display: inline-block;
+  overflow: visible !important;
+  vertical-align: text-bottom;
+  fill: currentColor;
+}
+
+.markdown-alert.markdown-alert-note {
+  border-left-color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-note .markdown-alert-title {
+  color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-important {
+  border-left-color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-important .markdown-alert-title {
+  color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-warning {
+  border-left-color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-warning .markdown-alert-title {
+  color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-tip {
+  border-left-color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-tip .markdown-alert-title {
+  color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-caution {
+  border-left-color: var(--color-caution);
+}
+
+.markdown-alert.markdown-alert-caution .markdown-alert-title {
+  color: var(--color-caution);
+}
+
+</style>
+        
+        </head>
+        <body class="vscode-body vscode-dark">
+            <span id="markdown-mermaid" aria-hidden="true" data-config="{&quot;darkModeTheme&quot;:&quot;vscode&quot;,&quot;lightModeTheme&quot;:&quot;vscode&quot;,&quot;maxTextSize&quot;:50000,&quot;clickDrag&quot;:&quot;alt&quot;,&quot;showControls&quot;:&quot;onHoverOrFocus&quot;,&quot;resizable&quot;:true,&quot;maxHeight&quot;:&quot;&quot;}"></span>
+				<h1 id="specgen">SpecGen</h1>
+<blockquote>
+<p>Working project name. Final product/repository naming is intentionally undecided.</p>
+</blockquote>
+<p>SpecGen is an independent specification authoring and compilation system intended to turn ambiguous product or engineering intent into a versioned, machine-readable specification with traceable human-readable projections, evaluation intent, and optional execution-target artifacts.</p>
+<p>The project is <strong>Agent-Workflow-aware but not Agent-Workflow-dependent</strong>. Its canonical specification model belongs to SpecGen. Agent-Workflow is one compilation target whose supported contract versions are declared and tested explicitly.</p>
+<h2 id="current-version">Current version</h2>
+<ul>
+<li>Project: <code>0.1.0</code></li>
+<li>Canonical spec schema: <code>specgen/spec/v1alpha1</code></li>
+<li>Initial Agent-Workflow compatibility target: <code>0.9.0</code></li>
+</ul>
+<p>See <a href="compat/agent-workflow/COMPATIBILITY.html"><code>compat/agent-workflow/COMPATIBILITY.md</code></a> for the exact schema IDs currently recognized.</p>
+<h2 id="architecture-in-one-sentence">Architecture in one sentence</h2>
+<p><strong>SpecGen owns specification meaning; target adapters lower a validated canonical specification into external formats without giving those targets authority over the canonical model.</strong></p>
+<pre><code class="language-text">Intent / repository / research
+            |
+            v
+     Canonical Spec IR
+    specgen/spec/v1alpha1
+       /      |       \
+      /       |        \
+ SPEC.md   eval assets   target adapters
+                         |
+                         +--&gt; Agent-Workflow prompt pack
+                         +--&gt; Agent-Workflow evaluation plan
+                         +--&gt; future targets
+</code></pre>
+<h2 id="repository-map">Repository map</h2>
+<ul>
+<li><code>schemas/</code> — SpecGen-owned versioned machine-readable contracts.</li>
+<li><code>compat/</code> — snapshots/manifests used to verify compatibility with external targets; never runtime authority.</li>
+<li><code>docs/ARCHITECTURE.md</code> — current system architecture.</li>
+<li><code>docs/DESIGN_PRINCIPLES.md</code> — design laws and boundaries.</li>
+<li><code>docs/ROADMAP.md</code> — mutable implementation roadmap.</li>
+<li><code>docs/adr/</code> — architecture decision records; accepted decisions are append-only except for status/supersession metadata.</li>
+<li><code>docs/research/</code> — prior-art assessments and source review notes.</li>
+<li><code>src/specgen/</code> — minimal package scaffold.</li>
+</ul>
+<h2 id="minimal-cli">Minimal CLI</h2>
+<p>The initial package deliberately does almost nothing beyond exposing its own version and declared compatibility data:</p>
+<pre><code class="language-bash">python -m specgen version
+python -m specgen compatibility
+</code></pre>
+<p>The CLI is a seam for future validators, renderers, elicitation workflows, and target compilers; those are roadmap work, not silently implied by the scaffold.</p>
+
+            
+            
+        </body>
+        </html>

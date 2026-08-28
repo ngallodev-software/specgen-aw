@@ -1,0 +1,15 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "specgen"
+version = "0.1.1"
+description = "Versioned specification authoring and compilation core"
+requires-python = ">=3.11"
+
+[project.scripts]
+specgen = "specgen.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

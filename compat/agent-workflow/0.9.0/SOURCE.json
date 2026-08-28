@@ -1,0 +1,8 @@
+{
+  "product": "agent-workflow",
+  "version": "0.9.0",
+  "snapshot": "agent-workflow-0.9.0-phases8-9-dev-source-20260827",
+  "archive_sha256": "e9f2c603e8e1abf259510930ceca83bd462c2801faafcb6a2fef6a14bd12befd",
+  "captured_on": "2026-08-27",
+  "purpose": "compatibility baseline; not a runtime dependency"
+}

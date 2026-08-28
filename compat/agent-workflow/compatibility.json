@@ -1,0 +1,47 @@
+{
+  "schema": "specgen/agent-workflow-compatibility/v1alpha1",
+  "specgen_version": "0.1.1",
+  "target": {
+    "name": "agent-workflow",
+    "product_version": "0.9.0",
+    "source_snapshot": "agent-workflow-0.9.0-phases8-9-dev-source-20260827"
+  },
+  "contracts": [
+    {
+      "schema_id": "agent-workflow/prompt-pack/v1",
+      "file": "0.9.0/schemas/pack.schema.json",
+      "sha256": "cc8efd2446165392ee4a4268a16b63d850fe0efba650e9067d493deb8d2ad51e",
+      "status": "declared"
+    },
+    {
+      "schema_id": "agent-workflow/evaluation-plan/v1",
+      "file": "0.9.0/schemas/evaluation-plan.schema.json",
+      "sha256": "571edfaadfb078bbeb11fae00422d89366887036bec23460884fc23e84a0ddee",
+      "status": "declared"
+    },
+    {
+      "schema_id": "agent-workflow/source-baseline/v1",
+      "file": "0.9.0/schemas/source-baseline.schema.json",
+      "sha256": "da835fd07fae196f8d9dac396413e1c435725d0e1db0cb378ebab195b6609134",
+      "status": "declared"
+    },
+    {
+      "schema_id": "agent-workflow/agent-role/v1",
+      "file": "0.9.0/schemas/agent-role-v1.schema.json",
+      "sha256": "93aa44ceb71597e1a99a89e66135449a436673248749799d7ef25b6659c22de4",
+      "status": "declared"
+    },
+    {
+      "schema_id": "agent-workflow/task-result/v1",
+      "file": "0.9.0/schemas/task-result.schema.json",
+      "sha256": "f7ae2d01e8638c1d057e772befebc465e1501d1ddc49f0c03a54bf1b09b59810",
+      "status": "declared"
+    }
+  ],
+  "integration_policy": {
+    "runtime_dependency_required": false,
+    "private_python_imports_allowed": false,
+    "public_json_cli_preferred": true,
+    "unknown_breaking_schema": "fail-closed"
+  }
+}
