@@ -1,6 +1,6 @@
 # Roadmap
 
-> Document version: 0.1.5 · Applies to SpecGen 0.1.5
+> Document version: 0.1.8 · Applies to SpecGen 0.1.8
 
 Mutable plan; completed architecture decisions remain in ADRs. Tests are run only on explicit request or at the end of a phase that could have broken behavior; see [ENGINEERING_POLICY.md](ENGINEERING_POLICY.md).
 
@@ -31,7 +31,7 @@ Do not split these further without demonstrated need.
 - Stable-ID and critical referential-integrity checks. **Implemented in 0.1.2.**
 - Trace-reference, preservation, snapshot ancestry, and digest checks. **Implemented in 0.1.2.**
 - Canonical JSON serialization/digest. **Implemented in 0.1.2.**
-- Small black-box known-good/known-bad corpus protecting the public validator/digest seam. **Done in 0.1.3.**
+- Small public CLI known-good/known-bad critical-seam corpus protecting the public validator/digest seam. **Done in 0.1.3.**
 
 Exit signal: canonical specs can be validated deterministically without an LLM. **Phase 1 complete in 0.1.3; critical seam verification passed at phase close.**
 
@@ -73,27 +73,41 @@ Exit signal: ambiguous intent can be deterministically assessed for readiness an
 
 ## Phase 4 — Repository-aware brownfield analysis
 
-- Evidence model for code/docs/config.
-- Source revision/baseline binding.
-- Existing interface/data-contract extraction.
-- Requested-vs-current contradiction detection.
-- Read-only evidence drift checks.
+Planned/implemented source:
+
+```text
+src/specgen/repository.py  baseline + durable evidence/interface/contract discovery
+src/specgen/drift.py       read-only comparison against a prior repository analysis
+```
+
+- Versioned `specgen/repository-analysis/v1alpha1` evidence report. **Implemented in 0.1.6.**
+- Git commit or deterministic directory baseline binding. **Implemented in 0.1.6.**
+- Durable interface/data-contract discovery: OpenAPI, protobuf, GraphQL, JSON Schema, Python console scripts, Node bins. **Implemented in 0.1.6.**
+- Explicit spec-referenced repository evidence and missing-path contradictions. **Implemented in 0.1.6.**
+- Versioned `specgen/repository-drift/v1alpha1` read-only drift report. **Implemented in 0.1.6.**
+- Agent-Workflow mode target context from the declared/live dev source without runtime imports. **Implemented in 0.1.6.**
+- Arbitrary source-code semantic inference is explicitly deferred; see ADR-0007.
+- Extend the public CLI critical-seam integration at phase close. **Done in 0.1.6.**
+
+Exit signal: repository evidence can be reproduced against a revision, durable public contracts can be surfaced without heuristic code parsing, and stale evidence is mechanically detectable. **Phase 4 complete in 0.1.6 after phase-end seam verification.**
 
 ## Phase 5 — Evaluation model
 
-- Portable evaluation-intent contract.
-- Deterministic behavior evals for the authoring skill where they protect critical behavior.
-- Public/hidden/external oracle separation.
-- Requirement ↔ acceptance ↔ evaluation traceability.
+- Portable `specgen/evaluation-intent/v1alpha1` contract. **Implemented in 0.1.7; integrity-corrected in 0.1.8.**
+- Public/hidden/external oracle separation. **Implemented in 0.1.7; integrity-corrected in 0.1.8.**
+- Requirement ↔ acceptance ↔ evaluation traceability projection. **Implemented in 0.1.7; integrity-corrected in 0.1.8.**
+- Additional behavior evals remain limited to critical skill seams; no new test surface was added in this release slice.
+
+**Phase 5 implementation complete in 0.1.7; midpoint integrity corrected in 0.1.8. Testing intentionally not run by release instruction.**
 
 ## Phase 6 — Agent-Workflow adapter
 
-- Lower representable implementation state to `agent-workflow/prompt-pack/v1`.
-- Lower evaluation intent to `agent-workflow/evaluation-plan/v1`.
-- Emit structured task result contracts where needed.
-- Bind repository-aware work to source-baseline semantics.
-- Validate against pinned fixtures.
-- Add only critical black-box public-CLI integration coverage.
+- Lower representable implementation state to `agent-workflow/prompt-pack/v1`. **Implemented in 0.1.7; integrity-corrected in 0.1.8.**
+- Lower evaluation intent to `agent-workflow/evaluation-plan/v1`. **Implemented in 0.1.7; integrity-corrected in 0.1.8.**
+- Preserve structured task result contracts and deterministic prompt resources. **Implemented in 0.1.7; integrity-corrected in 0.1.8.**
+- Validate generated target artifacts against pinned Agent-Workflow 0.9.0 schemas during compilation. **Implemented in 0.1.7; integrity-corrected in 0.1.8.**
+- Repository source-baseline artifact emission remains a final-release follow-up where a concrete repository analysis is supplied.
+- No new tests added or run in this slice by release instruction.
 
 ## Phase 7 — Skill + optional Agent-Workflow plugin
 

@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "specgen/repository-drift/v1alpha1",
+  "title": "SpecGen Repository Drift v1alpha1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "drifted", "baseline", "current", "changes"],
+  "properties": {
+    "schema": {"const": "specgen/repository-drift/v1alpha1"},
+    "drifted": {"type": "boolean"},
+    "baseline": {"type": "object"},
+    "current": {"type": "object"},
+    "changes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["kind", "path"],
+        "properties": {
+          "kind": {"enum": ["baseline_revision", "missing", "modified", "untracked_evidence"]},
+          "path": {"type": "string"},
+          "expected": {"type": "string"},
+          "observed": {"type": "string"}
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,97 @@
+# SpecGen development linkage to an Agent-Workflow source checkout.
+# The committed config declares expected identity; local checkout path can be
+# overridden with SPECGEN_AGENT_WORKFLOW_ROOT.
+
+schema = "specgen/dev-source-link/v1alpha1"
+name = "agent-workflow"
+enabled = true
+
+[source]
+default_root = "../agent-workflow"
+env_override = "SPECGEN_AGENT_WORKFLOW_ROOT"
+version_file = "VERSION"
+expected_product_version = "0.9.0"
+expected_snapshot = "agent-workflow-0.9.0-phases8-9-dev-source-20260827"
+
+[link]
+root = ".dev/agent-workflow/current"
+replace_managed_links = true
+
+[[link.paths]]
+source = "VERSION"
+target = "VERSION"
+kind = "identity"
+
+[[link.paths]]
+source = "schemas"
+target = "schemas"
+kind = "public-contracts"
+
+[[link.paths]]
+source = "docs"
+target = "docs"
+kind = "public-docs"
+
+[[link.paths]]
+source = "skills"
+target = "skills"
+kind = "skill-surface"
+
+[[link.paths]]
+source = "src/agent_workflow"
+target = "src/agent_workflow"
+kind = "implementation-reference-only"
+
+[[link.paths]]
+source = "examples"
+target = "examples"
+kind = "examples"
+
+[[link.paths]]
+source = "prompt-packs"
+target = "prompt-packs"
+kind = "prompt-pack-examples"
+
+[[contracts]]
+schema_id = "agent-workflow/prompt-pack/v1"
+path = "schemas/pack.schema.json"
+
+[[contracts]]
+schema_id = "agent-workflow/evaluation-plan/v1"
+path = "schemas/evaluation-plan.schema.json"
+
+[[contracts]]
+schema_id = "agent-workflow/source-baseline/v1"
+path = "schemas/source-baseline.schema.json"
+
+[[contracts]]
+schema_id = "agent-workflow/agent-role/v1"
+path = "schemas/agent-role-v1.schema.json"
+
+[[contracts]]
+schema_id = "agent-workflow/task-result/v1"
+path = "schemas/task-result.schema.json"
+
+[[references]]
+path = "docs/PUBLIC_JSON_API.md"
+role = "public-api"
+
+[[references]]
+path = "docs/PLUGIN_API.md"
+role = "plugin-api"
+
+[[references]]
+path = "docs/PROMPT_PACKS.md"
+role = "prompt-packs"
+
+[[references]]
+path = "docs/ARCHITECTURE.md"
+role = "architecture"
+
+[[references]]
+path = "skills/agent-workflow/SKILL.md"
+role = "primary-skill"
+
+[[references]]
+path = "skills/prompt-pack-builder/SKILL.md"
+role = "pack-builder-skill"

@@ -1,4 +1,4 @@
-<!-- document-version: 0.1.5; applies-to: SpecGen 0.1.5 -->
+<!-- document-version: 0.1.8; applies-to: SpecGen 0.1.8 -->
 <div align="center">
 
 # spec-gen
@@ -6,7 +6,7 @@
 
 **Turn ambiguous engineering intent into versioned specifications humans can review and agents can execute — without a 47-page manifesto.**
 
-![Version](https://img.shields.io/badge/version-0.1.5-blue)
+![Version](https://img.shields.io/badge/version-0.1.8-blue)
 ![Spec Schema](https://img.shields.io/badge/spec%20schema-v1alpha2-purple)
 ![Agent--Workflow](https://img.shields.io/badge/Agent--Workflow-0.9.0%20aware-2ea44f)
 ![Status](https://img.shields.io/badge/status-alpha-orange)
@@ -23,15 +23,19 @@ Spec-gen is a machine-first specification authoring/compiler project. It keeps u
 
 **Current contracts:**
 
-- project `0.1.5`;
+- project `0.1.8`;
 - canonical snapshot `specgen/spec/v1alpha2`;
 - retained compatibility snapshot `specgen/spec/v1alpha1`;
 - authoring event `specgen/authoring-event/v1alpha1`;
 - semantic delta `specgen/semantic-delta/v1alpha1`;
 - elicitation plan `specgen/elicitation-plan/v1alpha1`;
+- repository analysis `specgen/repository-analysis/v1alpha1`;
+- repository drift `specgen/repository-drift/v1alpha1`;
 - Agent-Workflow compatibility target `0.9.0`.
 
 The basic rule: **if a decision matters later, it should survive the chat window.**
+
+Canonical repository: [ngallodev-software/specgen-aw](https://github.com/ngallodev-software/specgen-aw) (`master`).
 
 ## Architecture at a glance
 
@@ -57,7 +61,7 @@ scripts/              development/packaging helpers
 src/specgen/          lean implementation core
 ```
 
-Phases 1–3 now provide the deterministic contract core plus human projection/history/diff seams: `contracts.py`, `canonical.py`, `validate.py`, `render.py`, `history.py`, `diff.py`, `modes.py`, `elicitation.py`, and `compiler.py`. See the [roadmap](docs/ROADMAP.md).
+Phases 1–4 now provide the deterministic contract core, human projection/history/diff, authoring policy, and repository evidence seams: `contracts.py`, `canonical.py`, `validate.py`, `render.py`, `history.py`, `diff.py`, `modes.py`, `elicitation.py`, `compiler.py`, `repository.py`, and `drift.py`. See the [roadmap](docs/ROADMAP.md).
 
 Current CLI seams:
 
@@ -72,6 +76,8 @@ specgen events append events.ndjson event.json
 specgen modes
 specgen author assess spec.json --mode agent-workflow
 specgen author finalize spec.json --mode agent-workflow --output finalized.json
+specgen repo analyze /path/to/repo [--spec spec.json] [--mode agent-workflow]
+specgen repo drift analysis.json /path/to/repo
 ```
 
 ## Engineering policy
@@ -85,6 +91,10 @@ See [ENGINEERING_POLICY.md](docs/ENGINEERING_POLICY.md).
 ## Opinionated Agent-Workflow authoring
 
 `agent-workflow` mode is stricter than generic authoring: it requires phased tasks, requirement coverage, result contracts, evaluation intent, and resolved blockers so the result is shaped for later prompt-pack compilation. It remains a portable SpecGen snapshot; see [ADR-0006](docs/adr/ADR-0006-authoring-modes-and-agent-workflow-profile.md).
+
+## Brownfield repository evidence
+
+Phase 4 binds repository findings to a revision, recognizes durable declared interfaces/contracts, checks explicit spec-referenced paths, and emits read-only drift reports. It intentionally does not regex its way into imaginary semantic certainty. See the [repository evidence flow](docs/ARCHITECTURE.md#phase-4-repository-evidence-flow) and [ADR-0007](docs/adr/ADR-0007-brownfield-analysis-is-evidence-first-and-read-only.md).
 
 ## Development against Agent-Workflow
 

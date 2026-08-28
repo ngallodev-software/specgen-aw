@@ -4,13 +4,16 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "specgen"
-version = "0.1.5"
+version = "0.1.8"
 description = "Versioned specification authoring and compilation core"
 requires-python = ">=3.11"
 dependencies = ["jsonschema>=4.23,<5"]
 
 [project.scripts]
 specgen = "specgen.cli:main"
+
+[project.urls]
+Repository = "https://github.com/ngallodev-software/specgen-aw"
 
 [tool.setuptools.packages.find]
 where = ["src"]

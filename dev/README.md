@@ -1,15 +1,18 @@
 # Development source links
 
-> Document version: 0.1.1 · Applies to SpecGen 0.1.1
+> Document version: 0.1.8 · Applies to SpecGen 0.1.8
 
-`dev/agent-workflow.toml` declares the Agent-Workflow source identity and the
-public surfaces SpecGen watches during development. The machine-specific root
-can be overridden with `SPECGEN_AGENT_WORKFLOW_ROOT`.
+Copy `dev/agent-workflow.example.toml` to the ignored
+`dev/agent-workflow.toml`, then set the local Agent-Workflow source root. The
+machine-specific config declares the Agent-Workflow source identity and the
+public surfaces SpecGen watches during development. The root can also be
+overridden with `SPECGEN_AGENT_WORKFLOW_ROOT`.
 
 The checked-in release compatibility authority remains under
 `compat/agent-workflow/`. Development links never rewrite it automatically.
 
 ```bash
+cp dev/agent-workflow.example.toml dev/agent-workflow.toml
 python scripts/sync-agent-workflow-dev.py
 SPECGEN_AGENT_WORKFLOW_ROOT=/path/to/agent-workflow python scripts/sync-agent-workflow-dev.py
 python scripts/sync-agent-workflow-dev.py --check

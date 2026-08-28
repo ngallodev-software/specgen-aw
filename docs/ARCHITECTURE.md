@@ -1,6 +1,6 @@
 # Architecture
 
-> Document version: 0.1.5 · Applies to SpecGen 0.1.5 · Canonical spec: `specgen/spec/v1alpha2`
+> Document version: 0.1.8 · Applies to SpecGen 0.1.8
 
 Working architecture. Significant changes require an ADR. Engineering constraints are in [ENGINEERING_POLICY.md](ENGINEERING_POLICY.md).
 
@@ -59,7 +59,7 @@ Proposed state must identify both `base_snapshot_id` and `change_id`. Semantic d
 | Canonical IR | Specification meaning, IDs, scope, requirements, contracts, decisions, acceptance, eval intent, implementation decomposition, trace, provenance. |
 | Authoring events | **Implemented persistence seam:** validated single-writer NDJSON append log with contiguous sequences, stable event IDs, and supersession-reference checks. |
 | Elicitation | **Implemented deterministic policy seam:** express, guided, strict, and Agent-Workflow authoring profiles produce typed questions and guardrails in `specgen/elicitation-plan/v1alpha1`. |
-| Evidence analysis | Structured repository/document/research evidence bound to revisions where possible. |
+| Evidence analysis | **Implemented deterministic repository seam:** revision-bound evidence discovery, declared interface/data-contract recognition, evidence-backed contradictions, and read-only drift. |
 | Compiler | **Implemented candidate-finalization seam:** valid candidates are assessed under the selected authoring profile, blocked when required guardrails fail, then digest-bound as canonical snapshots. Full event/evidence synthesis remains later work. |
 | Validators | **Implemented core:** JSON Schema, stable-ID uniqueness, critical reference integrity, task dependency cycles, trace references, preservation semantics, snapshot ancestry/digest checks. Later: drift/convergence and target compatibility. |
 | Semantic diff | **Implemented:** versioned `specgen/semantic-delta/v1alpha1` output; stable-ID entity matching; snapshot bookkeeping excluded from semantic changes. |
@@ -78,18 +78,18 @@ Current deterministic core:
 4. Preservation mapping semantics.
 5. Snapshot ancestry and declared canonical-digest verification.
 
-Planned layers: drift/convergence checks, target compatibility, and optional clearly non-authoritative model critique.
+Planned layers: target compatibility and optional clearly non-authoritative model critique. Repository evidence drift is implemented as a separate read-only report seam.
 
 Canonical snapshot digests are SHA-256 over sorted compact UTF-8 JSON with `snapshot.content_digest` omitted before hashing, avoiding a self-referential digest.
 
 ## Compatibility boundary
 
-Agent-Workflow remains a versioned target, not a dependency. Release compatibility authority is under `compat/`; moving development source is declared in `dev/agent-workflow.toml`. See [AGENT_WORKFLOW_INTEGRATION.md](AGENT_WORKFLOW_INTEGRATION.md).
+Agent-Workflow remains a versioned target, not a dependency. Release compatibility authority is under `compat/`; moving development source is configured in the ignored `dev/agent-workflow.toml` from the checked-in `dev/agent-workflow.example.toml`. See [AGENT_WORKFLOW_INTEGRATION.md](AGENT_WORKFLOW_INTEGRATION.md).
 
 
 ## Critical verification seam
 
-Phase 1 is protected by one black-box CLI seam rather than internal unit-test coverage: canonical and authoring-event validation, broken references, task dependency cycles, and digest mismatch. See [`tests/critical-seams/run.py`](../tests/critical-seams/run.py).
+Phase 1 is protected by one public CLI critical-seam integration rather than internal unit-test coverage: canonical and authoring-event validation, broken references, task dependency cycles, and digest mismatch. See [`tests/critical-seams/run.py`](../tests/critical-seams/run.py).
 
 ## Phase 2 public seams
 
@@ -107,3 +107,30 @@ Rendering and diffing require valid `specgen/spec/v1alpha2` inputs. Event persis
 The [authority-flow diagram](#authority-and-flow) is authoritative for mode placement: a mode shapes authoring policy before canonicalization; it is not canonical specification state. See [ADR-0006](adr/ADR-0006-authoring-modes-and-agent-workflow-profile.md).
 
 `agent-workflow` mode adds strict guardrails for phased implementation, requirement/task coverage, structured result contracts, and evaluation intent so a later adapter can lower the snapshot into pinned Agent-Workflow prompt-pack/evaluation-plan contracts.
+
+
+## Phase 4 repository evidence flow
+
+```mermaid
+flowchart LR
+    R[Repository checkout] --> B[Revision / baseline binding]
+    R --> E[Durable evidence discovery]
+    S[Valid canonical snapshot] --> X[Explicit repository references]
+    X --> E
+    E --> A[repository-analysis/v1alpha1]
+    B --> A
+    A --> C[Evidence-backed contradictions]
+    A --> D[Read-only drift comparison]
+    D --> DR[repository-drift/v1alpha1]
+```
+
+This is the single-source diagram for brownfield repository analysis. The deterministic layer recognizes durable declarations and explicit spec references; semantic interpretation of arbitrary source remains outside this boundary. See [ADR-0007](adr/ADR-0007-brownfield-analysis-is-evidence-first-and-read-only.md).
+
+Public seams:
+
+```text
+specgen repo analyze REPO [--spec SNAPSHOT] [--mode MODE]
+specgen repo drift ANALYSIS REPO
+```
+
+`agent-workflow` mode adds the currently declared/live-observed Agent-Workflow target context to the analysis report without importing Agent-Workflow internals.

@@ -1,5 +1,36 @@
 # Changelog
 
+## 0.1.8 — 2026-08-27
+
+Midpoint integrity correction after fresh source audit.
+
+- Regenerate release manifest and align maintained reference-document versions.
+- Align Agent-Workflow compatibility metadata with the current SpecGen release and previously verified pinned 0.9.0 contract digests.
+- Fix the advertised Agent-Workflow compatibility contract ID to match its schema `$id`.
+- Make hidden/external Agent-Workflow evaluation lowering fail closed unless a digest-bound `metadata.oracle_ref` is supplied, instead of silently dropping oracle semantics.
+- No tests added or run by explicit instruction.
+
+## 0.1.7
+
+- Added portable `specgen/evaluation-intent/v1alpha1`.
+- Added Agent-Workflow 0.9.0 prompt-pack/evaluation-plan compiler with pinned-schema validation.
+- Added deterministic task prompt resources and CLI compile surface.
+- No tests added or run for this release slice by explicit release instruction.
+
+## 0.1.6 — 2026-08-27
+
+Phase 4 repository-aware brownfield evidence boundary.
+
+- Add `specgen/repository-analysis/v1alpha1` with revision binding, hashed evidence, durable interface/data-contract discovery, and evidence-backed contradictions.
+- Add `specgen/repository-drift/v1alpha1` for read-only baseline/evidence drift.
+- Add `repo analyze` and `repo drift` CLI seams.
+- Let `agent-workflow` analysis attach declared/live Agent-Workflow target context without importing its runtime.
+- Record ADR-0007 limiting deterministic discovery to durable declarations and explicit references rather than heuristic source-code semantics.
+- Extend only the phase-end black-box critical seam; no unit-test suite added.
+- Record `https://github.com/ngallodev-software/specgen-aw` as the canonical public repository.
+- Keep the phase-end critical seam integration-oriented while removing redundant process launches that added runtime without adding coverage.
+
+
 ## 0.1.5 — 2026-08-27
 
 - Added `express`, `guided`, `strict`, and opinionated `agent-workflow` authoring profiles.
@@ -21,7 +52,7 @@ Phase 2 deterministic projection/history/diff boundary.
 
 ## 0.1.3 - 2026-08-27
 
-- Close Phase 1 with a deliberately small black-box critical-seam corpus through the public CLI.
+- Close Phase 1 with a deliberately small public CLI critical-seam corpus through the public CLI.
 - Cover valid canonical and authoring-event contracts plus broken references, dependency cycles, and stale snapshot digests.
 - Record the successful phase-end verification without expanding into unit-test coverage.
 

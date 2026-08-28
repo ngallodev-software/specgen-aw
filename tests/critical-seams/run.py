@@ -1,27 +1,28 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
+import contextlib
+import io
 import json
-import os
 from pathlib import Path
 import subprocess
-import sys
 import tempfile
+
+from specgen.cli import main as cli_main
 
 ROOT = Path(__file__).resolve().parents[2]
 FIXTURES = Path(__file__).resolve().parent / "fixtures"
-ENV = dict(os.environ, PYTHONPATH=str(ROOT / "src"))
 
 
 def run(*args: str) -> subprocess.CompletedProcess[str]:
-    return subprocess.run(
-        [sys.executable, "-m", "specgen", *args],
-        cwd=ROOT,
-        env=ENV,
-        text=True,
-        capture_output=True,
-        check=False,
-    )
+    stdout = io.StringIO()
+    stderr = io.StringIO()
+    with contextlib.redirect_stdout(stdout), contextlib.redirect_stderr(stderr):
+        try:
+            code = cli_main(list(args))
+        except SystemExit as exc:
+            code = int(exc.code or 0)
+    return subprocess.CompletedProcess(args, code, stdout.getvalue(), stderr.getvalue())
 
 
 def require(condition: bool, message: str) -> None:
@@ -56,7 +57,7 @@ def main() -> int:
 
     contracts = run("contracts")
     require(contracts.returncode == 0, f"contracts: {contracts.stderr or contracts.stdout}")
-    for contract in ("specgen/spec/v1alpha2", "specgen/authoring-event/v1alpha1", "specgen/semantic-delta/v1alpha1", "specgen/elicitation-plan/v1alpha1"):
+    for contract in ("specgen/spec/v1alpha2", "specgen/authoring-event/v1alpha1", "specgen/semantic-delta/v1alpha1", "specgen/elicitation-plan/v1alpha1", "specgen/repository-analysis/v1alpha1", "specgen/repository-drift/v1alpha1"):
         require(contract in contracts.stdout, f"contracts: {contract} missing")
     checks += 1
 
@@ -125,6 +126,84 @@ def main() -> int:
         lines = log.read_text(encoding="utf-8").splitlines()
         require(len(lines) == 2, "events: expected exactly two persisted events")
         require([json.loads(line)["sequence"] for line in lines] == [1, 2], "events: persisted sequence mismatch")
+    checks += 1
+
+    with tempfile.TemporaryDirectory() as tmp:
+        repo = Path(tmp) / "brownfield"
+        (repo / "contracts").mkdir(parents=True)
+        (repo / "api").mkdir()
+        (repo / "pyproject.toml").write_text(
+            '[project]\nname = "brownfield"\nversion = "0.1.0"\n[project.scripts]\nbrown = "brownfield:main"\n',
+            encoding="utf-8",
+        )
+        (repo / "contracts" / "thing.schema.json").write_text(
+            '{"$schema":"https://json-schema.org/draft/2020-12/schema","type":"object"}\n',
+            encoding="utf-8",
+        )
+        (repo / "api" / "openapi.yaml").write_text('openapi: "3.1.0"\ninfo:\n  title: Brownfield\n  version: "1"\npaths: {}\n', encoding="utf-8")
+        subprocess.run(["git", "init", "-q", str(repo)], check=True)
+        subprocess.run(["git", "-C", str(repo), "config", "user.email", "specgen@example.invalid"], check=True)
+        subprocess.run(["git", "-C", str(repo), "config", "user.name", "SpecGen Seam"], check=True)
+        subprocess.run(["git", "-C", str(repo), "add", "."], check=True)
+        subprocess.run(["git", "-C", str(repo), "commit", "-qm", "fixture"], check=True)
+
+        analysis_result = run("repo", "analyze", str(repo), "--mode", "agent-workflow")
+        require(analysis_result.returncode == 0, f"repo analyze: {analysis_result.stderr or analysis_result.stdout}")
+        analysis = json.loads(analysis_result.stdout)
+        require(analysis["schema"] == "specgen/repository-analysis/v1alpha1", "repo analyze: wrong contract")
+        require(analysis["baseline"]["kind"] == "git" and len(analysis["baseline"]["revision"]) == 40, "repo analyze: git baseline missing")
+        kinds = {item["kind"] for item in analysis["interfaces"]}
+        require({"openapi", "python-console-script"}.issubset(kinds), f"repo analyze: interface discovery missing: {sorted(kinds)}")
+        require(any(item["kind"] == "json-schema" for item in analysis["data_contracts"]), "repo analyze: json-schema discovery missing")
+        require(analysis["target_context"]["expected_version"] == "0.9.0", "repo analyze: Agent-Workflow context missing")
+        analysis_path = Path(tmp) / "analysis.json"
+        analysis_path.write_text(analysis_result.stdout, encoding="utf-8")
+        validation = run("validate", str(analysis_path), "--json")
+        require(validation.returncode == 0, f"repo analysis contract validation: {validation.stdout}")
+    checks += 1
+
+    with tempfile.TemporaryDirectory() as tmp:
+        repo = Path(tmp) / "drift"
+        repo.mkdir()
+        tracked = repo / "thing.schema.json"
+        tracked.write_text('{"type":"object"}\n', encoding="utf-8")
+        analysis_result = run("repo", "analyze", str(repo))
+        require(analysis_result.returncode == 0, f"repo drift setup: {analysis_result.stderr or analysis_result.stdout}")
+        analysis_path = Path(tmp) / "analysis.json"
+        analysis_path.write_text(analysis_result.stdout, encoding="utf-8")
+        clean = run("repo", "drift", str(analysis_path), str(repo))
+        require(clean.returncode == 0 and json.loads(clean.stdout)["drifted"] is False, f"repo drift clean: {clean.stderr or clean.stdout}")
+        tracked.write_text('{"type":"string"}\n', encoding="utf-8")
+        changed = run("repo", "drift", str(analysis_path), str(repo))
+        changed_doc = json.loads(changed.stdout)
+        require(changed.returncode == 1 and changed_doc["drifted"] is True, f"repo drift changed: {changed.stderr or changed.stdout}")
+        require(any(item["kind"] == "modified" and item["path"] == "thing.schema.json" for item in changed_doc["changes"]), "repo drift: modified evidence missing")
+    checks += 1
+
+    with tempfile.TemporaryDirectory() as tmp:
+        repo = Path(tmp) / "missing"
+        repo.mkdir()
+        spec = json.loads((FIXTURES / "valid.spec.json").read_text(encoding="utf-8"))
+        spec["provenance"]["sources"].append({
+            "id": "SRC-REPO", "kind": "repository", "description": "Expected repository evidence", "locator": "missing.txt"
+        })
+        spec_path = Path(tmp) / "spec.json"
+        spec_path.write_text(json.dumps(spec), encoding="utf-8")
+        result = run("repo", "analyze", str(repo), "--spec", str(spec_path))
+        require(result.returncode == 1, f"repo missing evidence: expected blocker; got {result.stderr or result.stdout}")
+        report = json.loads(result.stdout)
+        require(any(item["kind"] == "missing_evidence" and item["path"] == "missing.txt" for item in report["contradictions"]), "repo missing evidence: contradiction missing")
+    checks += 1
+
+    with tempfile.TemporaryDirectory() as tmp:
+        repo = Path(tmp) / "plain"
+        repo.mkdir()
+        (repo / "README.md").write_text("# plain\n", encoding="utf-8")
+        first = run("repo", "analyze", str(repo))
+        second = run("repo", "analyze", str(repo))
+        require(first.returncode == second.returncode == 0, f"directory baseline: {first.stderr or second.stderr}")
+        a, b = json.loads(first.stdout), json.loads(second.stdout)
+        require(a["baseline"] == b["baseline"] and a["baseline"]["kind"] == "directory", "directory baseline: not deterministic")
     checks += 1
 
     print(f"critical seams: {checks} checks passed")

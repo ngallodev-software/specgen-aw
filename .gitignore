@@ -5,4 +5,9 @@ dist/
 build/
 *.egg-info/
 .pytest_cache/
+
+# Machine-local Agent-Workflow linkage configuration.
+/dev/agent-workflow.toml
+
+# Machine-local development source links and observed lock reports.
 .dev/

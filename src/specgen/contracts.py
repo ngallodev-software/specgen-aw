@@ -12,7 +12,10 @@ CONTRACT_PATHS: dict[str, str] = {
     "specgen/authoring-event/v1alpha1": "schemas/spec/authoring-event-v1alpha1.schema.json",
     "specgen/semantic-delta/v1alpha1": "schemas/spec/semantic-delta-v1alpha1.schema.json",
     "specgen/elicitation-plan/v1alpha1": "schemas/spec/elicitation-plan-v1alpha1.schema.json",
-    "specgen/compat/agent-workflow/v1alpha1": "schemas/compat/agent-workflow-v1alpha1.schema.json",
+    "specgen/repository-analysis/v1alpha1": "schemas/spec/repository-analysis-v1alpha1.schema.json",
+    "specgen/repository-drift/v1alpha1": "schemas/spec/repository-drift-v1alpha1.schema.json",
+    "specgen/evaluation-intent/v1alpha1": "schemas/spec/evaluation-intent-v1alpha1.schema.json",
+    "specgen/agent-workflow-compatibility/v1alpha1": "schemas/compat/agent-workflow-v1alpha1.schema.json",
 }
 
 

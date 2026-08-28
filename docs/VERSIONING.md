@@ -1,6 +1,6 @@
 # Versioning and Compatibility Policy
 
-> Document version: 0.1.5 · Applies to SpecGen 0.1.5
+> Document version: 0.1.8 · Applies to SpecGen 0.1.8
 
 ## Project releases
 

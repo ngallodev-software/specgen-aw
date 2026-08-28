@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "specgen/repository-analysis/v1alpha1",
+  "title": "SpecGen Repository Analysis v1alpha1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "repository", "baseline", "evidence", "interfaces", "data_contracts", "contradictions"],
+  "properties": {
+    "schema": {"const": "specgen/repository-analysis/v1alpha1"},
+    "repository": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path"],
+      "properties": {
+        "path": {"type": "string", "minLength": 1},
+        "name": {"type": "string"}
+      }
+    },
+    "baseline": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "revision", "dirty"],
+      "properties": {
+        "kind": {"enum": ["git", "directory"]},
+        "revision": {"type": "string", "minLength": 1},
+        "dirty": {"type": "boolean"}
+      }
+    },
+    "spec": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "snapshot_id", "digest"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "snapshot_id": {"type": "string", "minLength": 1},
+        "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}
+      }
+    },
+    "evidence": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/evidence"}
+    },
+    "interfaces": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/discovery"}
+    },
+    "data_contracts": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/discovery"}
+    },
+    "contradictions": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/contradiction"}
+    },
+    "target_context": {"type": "object"}
+  },
+  "$defs": {
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "kind", "path", "digest"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^EVID-[0-9]{4}$"},
+        "kind": {"enum": ["source", "config", "documentation", "interface", "data_contract"]},
+        "path": {"type": "string", "minLength": 1},
+        "digest": {"$ref": "#/$defs/digest"},
+        "description": {"type": "string"}
+      }
+    },
+    "discovery": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "kind", "path", "evidence_ref"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^(IFACE|DATA)-[0-9]{4}$"},
+        "kind": {"type": "string", "minLength": 1},
+        "path": {"type": "string", "minLength": 1},
+        "name": {"type": "string"},
+        "evidence_ref": {"type": "string", "pattern": "^EVID-[0-9]{4}$"}
+      }
+    },
+    "contradiction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "kind", "severity", "message"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^CONFLICT-[0-9]{4}$"},
+        "kind": {"enum": ["missing_evidence", "interface_gap", "data_contract_gap", "baseline_drift"]},
+        "severity": {"enum": ["warning", "blocker"]},
+        "message": {"type": "string", "minLength": 1},
+        "spec_ref": {"type": "string"},
+        "path": {"type": "string"}
+      }
+    }
+  }
+}

@@ -1,6 +1,6 @@
 # Architecture Decision Records
 
-> Document version: 0.1.5 · Applies to SpecGen 0.1.5
+> Document version: 0.1.8 · Applies to SpecGen 0.1.8
 
 ADRs capture significant decisions that would otherwise disappear as the working design changes.
 
@@ -15,3 +15,5 @@ Accepted ADR content is not rewritten to make history look cleaner. A later deci
 - [ADR-0005 — Authoring history uses events, immutable snapshots, and derived deltas](ADR-0005-authoring-history-events-snapshots-and-derived-deltas.md)
 
 - [ADR-0006 — Authoring modes are policy profiles; Agent-Workflow is an opinionated profile](ADR-0006-authoring-modes-and-agent-workflow-profile.md)
+
+- [ADR-0007 — Brownfield analysis is evidence-first and read-only](ADR-0007-brownfield-analysis-is-evidence-first-and-read-only.md)

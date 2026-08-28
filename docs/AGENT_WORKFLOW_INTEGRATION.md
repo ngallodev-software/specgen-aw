@@ -1,6 +1,6 @@
 # Agent-Workflow Integration Architecture
 
-> Document version: 0.1.5 · Applies to SpecGen 0.1.5 · Canonical spec: `specgen/spec/v1alpha2`
+> Document version: 0.1.8 · Applies to SpecGen 0.1.8
 
 ## Baseline
 
@@ -45,8 +45,9 @@ Agent-Workflow 0.9.0's own plugin documentation uses `agent-workflow-spec` as an
 
 ## Development source linkage
 
-During development, `dev/agent-workflow.toml` declares the expected Agent-Workflow
-product version, tracked contract paths, and reference surfaces.
+During development, copy `dev/agent-workflow.example.toml` to the ignored
+`dev/agent-workflow.toml`; it declares the expected Agent-Workflow product
+version, tracked contract paths, and reference surfaces.
 
 `scripts/sync-agent-workflow-dev.py` resolves the source root (optionally through
 `SPECGEN_AGENT_WORKFLOW_ROOT`), validates observed versions/digests against the
@@ -59,3 +60,7 @@ an explicit compatibility decision.
 ## Agent-Workflow authoring mode
 
 `specgen author assess --mode agent-workflow` is an authoring guardrail profile, not the Phase 6 adapter. It requires enough phased/task/result/evaluation structure for later prompt-pack-oriented compilation while preserving `specgen/spec/v1alpha2` as the portable authority. See [ADR-0006](adr/ADR-0006-authoring-modes-and-agent-workflow-profile.md).
+
+## 0.1.8 compiler surface
+
+`specgen agent-workflow compile SPEC --output DIR` emits a JSON-as-YAML `pack.yaml`, deterministic task prompt resources, and an `evaluation-plan.json` when portable evaluation intent is representable. Hidden/external oracle intent must provide `metadata.oracle_ref` with a digest-bound `{id, sha256}` reference; otherwise lowering fails closed with a compile diagnostic rather than silently discarding oracle semantics. Generated target artifacts are validated against the pinned Agent-Workflow 0.9.0 schemas before being written.
