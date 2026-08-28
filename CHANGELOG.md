@@ -1,5 +1,31 @@
 # Changelog
 
+## 0.1.5 — 2026-08-27
+
+- Added `express`, `guided`, `strict`, and opinionated `agent-workflow` authoring profiles.
+- Added `specgen/elicitation-plan/v1alpha1` for deterministic typed questions and guardrails.
+- Added candidate finalization with mode readiness checks and canonical snapshot digest binding.
+- Recorded ADR-0006 preserving authoring modes as policy rather than canonical schema shape.
+
+All notable changes are recorded here. Software releases use Semantic Versioning; machine contracts carry independent explicit identifiers.
+
+## 0.1.4 — 2026-08-27
+
+Phase 2 deterministic projection/history/diff boundary.
+
+- Add deterministic Markdown rendering from valid `specgen/spec/v1alpha2` snapshots.
+- Add validated append-only single-writer NDJSON persistence for `specgen/authoring-event/v1alpha1`.
+- Add versioned `specgen/semantic-delta/v1alpha1` and stable-ID semantic snapshot diffing that excludes snapshot bookkeeping.
+- Add CLI seams: `render`, `events append`, and `diff`.
+- Extend the phase-end black-box critical seam instead of adding unit tests.
+
+## 0.1.3 - 2026-08-27
+
+- Close Phase 1 with a deliberately small black-box critical-seam corpus through the public CLI.
+- Cover valid canonical and authoring-event contracts plus broken references, dependency cycles, and stale snapshot digests.
+- Record the successful phase-end verification without expanding into unit-test coverage.
+
+
 All notable changes are recorded here. Software releases use Semantic Versioning; machine contracts carry independent explicit identifiers.
 
 ## 0.1.2 — 2026-08-27

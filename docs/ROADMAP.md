@@ -1,6 +1,6 @@
 # Roadmap
 
-> Document version: 0.1.2 · Applies to SpecGen 0.1.2
+> Document version: 0.1.5 · Applies to SpecGen 0.1.5
 
 Mutable plan; completed architecture decisions remain in ADRs. Tests are run only on explicit request or at the end of a phase that could have broken behavior; see [ENGINEERING_POLICY.md](ENGINEERING_POLICY.md).
 
@@ -31,26 +31,45 @@ Do not split these further without demonstrated need.
 - Stable-ID and critical referential-integrity checks. **Implemented in 0.1.2.**
 - Trace-reference, preservation, snapshot ancestry, and digest checks. **Implemented in 0.1.2.**
 - Canonical JSON serialization/digest. **Implemented in 0.1.2.**
-- Small known-good/known-bad corpus only where it protects critical validator seams. **Deferred to Phase 1 close.**
+- Small black-box known-good/known-bad corpus protecting the public validator/digest seam. **Done in 0.1.3.**
 
-Exit signal: canonical specs can be validated deterministically without an LLM. **Implementation is in place; Phase 1 remains open until the critical seam corpus is defined and the requested phase-end verification is run.**
+Exit signal: canonical specs can be validated deterministically without an LLM. **Phase 1 complete in 0.1.3; critical seam verification passed at phase close.**
 
 ## Phase 2 — Markdown projection + authoring history
 
-- Deterministic `SPEC.md` projection.
-- Append-only event persistence boundary from ADR-0005.
-- Semantic diff between immutable snapshots.
+Planned source before implementation:
 
-Exit signal: canonical state, history, and human projection cannot drift silently.
+```text
+src/specgen/render.py     canonical snapshot → deterministic Markdown
+src/specgen/history.py    validated append-only authoring-event persistence
+src/specgen/diff.py       immutable snapshots → semantic delta
+```
+
+- Deterministic `SPEC.md` projection. **Implemented in 0.1.4.**
+- Append-only event persistence boundary from ADR-0005. **Implemented in 0.1.4 as a single-writer NDJSON seam.**
+- Versioned `specgen/semantic-delta/v1alpha1` contract. **Implemented in 0.1.4.**
+- Stable-ID semantic diff between immutable snapshots; snapshot bookkeeping excluded. **Implemented in 0.1.4.**
+- Extend the black-box critical seam at phase close. **Done in 0.1.4.**
+
+Exit signal: canonical state, history, and human projection cannot drift silently. **Phase 2 complete in 0.1.4 after phase-end seam verification.**
 
 ## Phase 3 — Elicitation/compiler loop
 
-- Express, guided, and strict/headless ambiguity policies (names provisional).
-- Typed questions linked to affected spec paths/IDs.
-- Structured candidate outputs validated before commit.
-- Explicit assumptions and unresolved questions.
+Planned/implemented source:
 
-Exit signal: ambiguous intent can converge into a valid snapshot with traceable decisions.
+```text
+src/specgen/modes.py        named authoring policy profiles
+src/specgen/elicitation.py  deterministic questions + guardrails
+src/specgen/compiler.py     validated candidate finalization
+```
+
+- Express, guided, strict, and Agent-Workflow authoring profiles. **Implemented in 0.1.5.**
+- Versioned `specgen/elicitation-plan/v1alpha1` with typed questions linked to affected paths/IDs. **Implemented in 0.1.5.**
+- Structured candidate finalization only after canonical and mode guardrails pass. **Implemented in 0.1.5.**
+- Agent-Workflow mode requires phased implementation, requirement/task coverage, task result contracts, evaluation intent, and resolved ambiguity. **Implemented in 0.1.5.**
+- Full conversational/provider-driven question asking remains a later interaction-surface concern.
+
+Exit signal: ambiguous intent can be deterministically assessed for readiness and finalized into a valid digest-bound snapshot without hiding unresolved decisions. **Phase 3 complete in 0.1.5 after phase-end seam verification.**
 
 ## Phase 4 — Repository-aware brownfield analysis
 

@@ -1,6 +1,6 @@
 # Agent-Workflow Integration Architecture
 
-> Document version: 0.1.1 · Applies to SpecGen 0.1.1 · Canonical spec: `specgen/spec/v1alpha2`
+> Document version: 0.1.5 · Applies to SpecGen 0.1.5 · Canonical spec: `specgen/spec/v1alpha2`
 
 ## Baseline
 
@@ -54,3 +54,8 @@ checked-in compatibility fixture, and materializes ignored symlinks below `.dev/
 
 This does not change release compatibility automatically. Drift is evidence requiring
 an explicit compatibility decision.
+
+
+## Agent-Workflow authoring mode
+
+`specgen author assess --mode agent-workflow` is an authoring guardrail profile, not the Phase 6 adapter. It requires enough phased/task/result/evaluation structure for later prompt-pack-oriented compilation while preserving `specgen/spec/v1alpha2` as the portable authority. See [ADR-0006](adr/ADR-0006-authoring-modes-and-agent-workflow-profile.md).

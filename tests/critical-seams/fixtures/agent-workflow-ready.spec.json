@@ -1,0 +1,122 @@
+{
+  "acceptance_criteria": [
+    {
+      "criterion": "The valid fixture exits successfully.",
+      "id": "AC-001",
+      "requirement_ids": [
+        "REQ-001"
+      ],
+      "verification_method": "critical seam runner"
+    }
+  ],
+  "data_contracts": [],
+  "decisions": [],
+  "evaluations": [
+    {
+      "acceptance_ids": [
+        "AC-001"
+      ],
+      "id": "EVAL-001",
+      "kind": "acceptance",
+      "requirement_ids": [
+        "REQ-001"
+      ]
+    }
+  ],
+  "id": "critical-valid",
+  "implementation": {
+    "phases": [
+      {
+        "id": "PHASE-001",
+        "name": "Implementation"
+      }
+    ],
+    "tasks": [
+      {
+        "dependencies": [],
+        "id": "TASK-001",
+        "requirement_ids": [
+          "REQ-001"
+        ],
+        "result_contract": {
+          "schema": "example/task-result/v1"
+        },
+        "title": "Validate the critical seam fixture"
+      }
+    ]
+  },
+  "intent": {
+    "non_goals": [],
+    "objectives": [
+      "Remain valid through the CLI."
+    ],
+    "problem": "Exercise the public validation seam."
+  },
+  "interfaces": [],
+  "preservation": {
+    "claims": [
+      {
+        "id": "PRES-001",
+        "source_ref": "SRC-001",
+        "statement": "Referential integrity is load-bearing.",
+        "status": "represented",
+        "target_refs": [
+          "REQ-001"
+        ]
+      }
+    ]
+  },
+  "provenance": {
+    "sources": [
+      {
+        "description": "Critical seam fixture source.",
+        "id": "SRC-001",
+        "kind": "user_decision",
+        "locator": "critical-seam-fixture"
+      }
+    ]
+  },
+  "requirements": [
+    {
+      "id": "REQ-001",
+      "priority": "must",
+      "provenance_refs": [
+        "SRC-001"
+      ],
+      "statement": "Validation must preserve referential integrity.",
+      "type": "functional",
+      "verification_refs": [
+        "AC-001",
+        "EVAL-001"
+      ]
+    }
+  ],
+  "risks": [],
+  "schema": "specgen/spec/v1alpha2",
+  "scope": {
+    "excluded": [],
+    "included": [
+      "critical validator seam"
+    ]
+  },
+  "snapshot": {
+    "authoring_event_ids": [],
+    "created_at": "2026-08-27T00:00:00Z",
+    "id": "SNAP-001",
+    "sequence": 1
+  },
+  "state": {
+    "kind": "current"
+  },
+  "status": "draft",
+  "title": "Critical seam valid snapshot",
+  "traceability": [
+    {
+      "from": "REQ-001",
+      "relation": "verified_by",
+      "to": "AC-001"
+    }
+  ],
+  "unresolved_questions": [],
+  "version": "0.1.5"
+}

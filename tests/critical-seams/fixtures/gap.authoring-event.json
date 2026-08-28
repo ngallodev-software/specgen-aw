@@ -1,0 +1,15 @@
+{
+  "schema": "specgen/authoring-event/v1alpha1",
+  "id": "EVT-003",
+  "spec_id": "critical-valid",
+  "sequence": 3,
+  "recorded_at": "2026-08-27T00:01:00Z",
+  "kind": "decision",
+  "actor": "user",
+  "affected_refs": [
+    "REQ-002"
+  ],
+  "payload": {
+    "decision": "Authoring history is append-only."
+  }
+}

@@ -1,0 +1,128 @@
+{
+  "schema": "specgen/spec/v1alpha2",
+  "id": "critical-valid",
+  "title": "Critical seam valid snapshot",
+  "version": "0.1.4",
+  "status": "draft",
+  "state": {
+    "kind": "current"
+  },
+  "snapshot": {
+    "id": "SNAP-002",
+    "sequence": 2,
+    "created_at": "2026-08-27T00:00:00Z",
+    "authoring_event_ids": [],
+    "parent_snapshot_id": "SNAP-001"
+  },
+  "intent": {
+    "problem": "Exercise the public validation seam.",
+    "objectives": [
+      "Remain valid through the CLI."
+    ],
+    "non_goals": []
+  },
+  "scope": {
+    "included": [
+      "critical validator seam"
+    ],
+    "excluded": []
+  },
+  "requirements": [
+    {
+      "id": "REQ-001",
+      "type": "functional",
+      "statement": "Validation must preserve referential integrity and deterministic projections.",
+      "priority": "must",
+      "verification_refs": [
+        "AC-001"
+      ],
+      "provenance_refs": [
+        "SRC-001"
+      ]
+    },
+    {
+      "id": "REQ-002",
+      "type": "invariant",
+      "statement": "Authoring history must be append-only.",
+      "priority": "must",
+      "verification_refs": [
+        "AC-002"
+      ],
+      "provenance_refs": [
+        "SRC-001"
+      ]
+    }
+  ],
+  "interfaces": [],
+  "data_contracts": [],
+  "decisions": [],
+  "acceptance_criteria": [
+    {
+      "id": "AC-001",
+      "requirement_ids": [
+        "REQ-001"
+      ],
+      "criterion": "The valid fixture exits successfully.",
+      "verification_method": "critical seam runner"
+    },
+    {
+      "id": "AC-002",
+      "requirement_ids": [
+        "REQ-002"
+      ],
+      "criterion": "A second event appends at the next sequence only.",
+      "verification_method": "critical seam runner"
+    }
+  ],
+  "evaluations": [],
+  "implementation": {
+    "tasks": [
+      {
+        "id": "TASK-001",
+        "requirement_ids": [
+          "REQ-001"
+        ],
+        "dependencies": [],
+        "title": "Validate the critical seam fixture"
+      }
+    ],
+    "phases": []
+  },
+  "risks": [],
+  "unresolved_questions": [],
+  "traceability": [
+    {
+      "from": "REQ-001",
+      "to": "AC-001",
+      "relation": "verified_by"
+    },
+    {
+      "from": "REQ-002",
+      "to": "AC-002",
+      "relation": "verified_by"
+    }
+  ],
+  "preservation": {
+    "claims": [
+      {
+        "id": "PRES-001",
+        "source_ref": "SRC-001",
+        "status": "represented",
+        "target_refs": [
+          "REQ-001"
+        ],
+        "statement": "Referential integrity is load-bearing."
+      }
+    ]
+  },
+  "provenance": {
+    "sources": [
+      {
+        "id": "SRC-001",
+        "kind": "user_decision",
+        "locator": "critical-seam-fixture",
+        "description": "Critical seam fixture source."
+      }
+    ]
+  }
+}

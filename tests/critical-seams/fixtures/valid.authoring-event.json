@@ -1,0 +1,13 @@
+{
+  "schema": "specgen/authoring-event/v1alpha1",
+  "id": "EVT-001",
+  "spec_id": "critical-valid",
+  "sequence": 1,
+  "recorded_at": "2026-08-27T00:00:00Z",
+  "kind": "decision",
+  "actor": "user",
+  "affected_refs": ["REQ-001"],
+  "payload": {
+    "summary": "Require referential integrity."
+  }
+}
