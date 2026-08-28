@@ -1,0 +1,12 @@
+[agent_workflow]
+name = "agent-workflow"
+product_version = "0.9.0"
+source_snapshot = "agent-workflow-0.9.0-phases8-9-dev-source-20260827"
+source_root = "/lump/apps/agent-workflow"
+
+paths = [
+  "VERSION",
+  "src/agent_workflow",
+  "schemas",
+  "docs",
+]

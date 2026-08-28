@@ -1,4 +1,4 @@
-<!-- document-version: 0.1.1; applies-to: SpecGen 0.1.1 -->
+<!-- document-version: 0.1.2; applies-to: SpecGen 0.1.2 -->
 <div align="center">
 
 # spec-gen
@@ -6,7 +6,7 @@
 
 **Turn ambiguous engineering intent into versioned specifications humans can review and agents can execute — without a 47-page manifesto.**
 
-![Version](https://img.shields.io/badge/version-0.1.1-blue)
+![Version](https://img.shields.io/badge/version-0.1.2-blue)
 ![Spec Schema](https://img.shields.io/badge/spec%20schema-v1alpha2-purple)
 ![Agent--Workflow](https://img.shields.io/badge/Agent--Workflow-0.9.0%20aware-2ea44f)
 ![Status](https://img.shields.io/badge/status-alpha-orange)
@@ -23,7 +23,7 @@ Spec-gen is a machine-first specification authoring/compiler project. It keeps u
 
 **Current contracts:**
 
-- project `0.1.1`;
+- project `0.1.2`;
 - canonical snapshot `specgen/spec/v1alpha2`;
 - retained compatibility snapshot `specgen/spec/v1alpha1`;
 - authoring event `specgen/authoring-event/v1alpha1`;
@@ -55,7 +55,16 @@ scripts/              development/packaging helpers
 src/specgen/          lean implementation core
 ```
 
-Phase 1 source is intentionally roughed out before implementation: `contracts.py`, `canonical.py`, and `validate.py`. See the [roadmap](docs/ROADMAP.md#phase-1--canonical-ir--deterministic-validator).
+Phase 1 now has its minimal deterministic core: `contracts.py`, `canonical.py`, and `validate.py`. It discovers versioned contracts, produces stable SHA-256 snapshot digests, and validates schema plus critical cross-object references without an LLM. See the [roadmap](docs/ROADMAP.md#phase-1--canonical-ir--deterministic-validator).
+
+Current CLI seams:
+
+```bash
+specgen contracts
+specgen validate path/to/spec.json
+specgen validate path/to/spec.json --json
+specgen digest path/to/spec.json
+```
 
 ## Engineering policy
 

@@ -1,6 +1,6 @@
 # Architecture
 
-> Document version: 0.1.1 · Applies to SpecGen 0.1.1 · Canonical spec: `specgen/spec/v1alpha2`
+> Document version: 0.1.2 · Applies to SpecGen 0.1.2 · Canonical spec: `specgen/spec/v1alpha2`
 
 Working architecture. Significant changes require an ADR. Engineering constraints are in [ENGINEERING_POLICY.md](ENGINEERING_POLICY.md).
 
@@ -51,7 +51,7 @@ flowchart LR
 
 Proposed state must identify both `base_snapshot_id` and `change_id`. Semantic deltas remain derived artifacts rather than canonical truth.
 
-## Planned components
+## Components
 
 | Component | Responsibility |
 |---|---|
@@ -59,8 +59,8 @@ Proposed state must identify both `base_snapshot_id` and `change_id`. Semantic d
 | Authoring events | Append-only decisions/evidence/questions/corrections/supersession history. |
 | Elicitation | Ask only high-value questions not safely derivable from evidence. |
 | Evidence analysis | Structured repository/document/research evidence bound to revisions where possible. |
-| Compiler | Convert event/evidence state into deterministic canonical snapshots. |
-| Validators | Schema, referential integrity, trace coverage, preservation, drift/convergence, target compatibility. |
+| Compiler | Planned: convert event/evidence state into deterministic canonical snapshots. Canonical JSON serialization/digest boundary is implemented. |
+| Validators | **Implemented core:** JSON Schema, stable-ID uniqueness, critical reference integrity, task dependency cycles, trace references, preservation semantics, snapshot ancestry/digest checks. Later: drift/convergence and target compatibility. |
 | Renderers | Read-only human projections from canonical state. |
 | Evaluation compiler | Lower verification intent into portable/target-specific eval artifacts. |
 | Target adapters | Isolated lowering into exact public external contracts. |
@@ -68,13 +68,17 @@ Proposed state must identify both `base_snapshot_id` and `change_id`. Semantic d
 
 ## Validation layers
 
-1. JSON Schema.
-2. Stable-ID and referential integrity.
-3. Trace coverage.
-4. Preservation coverage.
-5. Deterministic semantic lint/drift/convergence checks.
-6. Target compatibility.
-7. Optional model-assisted critique, clearly non-authoritative.
+Current deterministic core:
+
+1. JSON Schema Draft 2020-12 + format checks.
+2. Stable-ID uniqueness and critical reference integrity.
+3. Trace-reference integrity and authoring coverage warnings.
+4. Preservation mapping semantics.
+5. Snapshot ancestry and declared canonical-digest verification.
+
+Planned layers: drift/convergence checks, target compatibility, and optional clearly non-authoritative model critique.
+
+Canonical snapshot digests are SHA-256 over sorted compact UTF-8 JSON with `snapshot.content_digest` omitted before hashing, avoiding a self-referential digest.
 
 ## Compatibility boundary
 

@@ -1,6 +1,6 @@
 # Roadmap
 
-> Document version: 0.1.1 · Applies to SpecGen 0.1.1
+> Document version: 0.1.2 · Applies to SpecGen 0.1.2
 
 Mutable plan; completed architecture decisions remain in ADRs. Tests are run only on explicit request or at the end of a phase that could have broken behavior; see [ENGINEERING_POLICY.md](ENGINEERING_POLICY.md).
 
@@ -27,13 +27,13 @@ src/specgen/validate.py     schema + ID/ref + trace/preservation checks
 
 Do not split these further without demonstrated need.
 
-- Schema loader/validator for `v1alpha2` and authoring events.
-- Stable-ID and referential-integrity checks.
-- Trace and preservation coverage checks.
-- Canonical JSON serialization/digest.
-- Small known-good/known-bad corpus only where it protects critical validator seams.
+- Schema discovery/validation for `v1alpha2` and authoring events. **Implemented in 0.1.2.**
+- Stable-ID and critical referential-integrity checks. **Implemented in 0.1.2.**
+- Trace-reference, preservation, snapshot ancestry, and digest checks. **Implemented in 0.1.2.**
+- Canonical JSON serialization/digest. **Implemented in 0.1.2.**
+- Small known-good/known-bad corpus only where it protects critical validator seams. **Deferred to Phase 1 close.**
 
-Exit signal: canonical specs can be validated deterministically without an LLM.
+Exit signal: canonical specs can be validated deterministically without an LLM. **Implementation is in place; Phase 1 remains open until the critical seam corpus is defined and the requested phase-end verification is run.**
 
 ## Phase 2 — Markdown projection + authoring history
 

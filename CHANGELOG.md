@@ -2,6 +2,17 @@
 
 All notable changes are recorded here. Software releases use Semantic Versioning; machine contracts carry independent explicit identifiers.
 
+## 0.1.2 — 2026-08-27
+
+Phase 1 deterministic contract core, implementation checkpoint.
+
+- Add explicit contract discovery for published SpecGen schema identifiers.
+- Add compact sorted canonical JSON serialization and SHA-256 snapshot digests; declared snapshot digests omit their own field before hashing.
+- Add deterministic JSON Schema + semantic validation for stable IDs, critical references, trace links, preservation mappings, task dependency cycles, snapshot ancestry, and declared digests.
+- Add CLI seams: `contracts`, `validate`, and `digest`; validation can emit structured JSON diagnostics.
+- Add the `jsonschema` runtime dependency; no broader framework layers introduced.
+- Keep Phase 1 open for the intentionally small critical-seam corpus and phase-end verification. No tests run at this checkpoint.
+
 ## 0.1.1 — 2026-08-27
 
 First deliberate contract revision and engineering-policy baseline.

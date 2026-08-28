@@ -1,12 +1,12 @@
 # Versioning and Compatibility Policy
 
-> Document version: 0.1.1 · Applies to SpecGen 0.1.1
+> Document version: 0.1.2 · Applies to SpecGen 0.1.2
 
 ## Project releases
 
 SpecGen uses Semantic Versioning. Pre-1.0 releases may make breaking product/API changes, but every breaking change is recorded in the changelog and machine contracts retain explicit immutable identifiers.
 
-Current release: `0.1.1`.
+Current release: `0.1.2`.
 
 ## Machine-readable contracts
 
