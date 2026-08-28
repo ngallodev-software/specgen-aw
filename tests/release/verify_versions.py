@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import json
+import os
 import re
 import sys
 import tomllib
@@ -78,7 +79,7 @@ def main() -> int:
     source = config["source"]
     if source["expected_product_version"] != aw_version:
         fail("development config and compatibility metadata disagree on Agent-Workflow version")
-    live_root = Path(source["default_root"])
+    live_root = Path(os.environ.get(source.get("env_override", "SPECGEN_AGENT_WORKFLOW_ROOT"), source["default_root"]))
     if not live_root.is_absolute():
         live_root = (ROOT / live_root).resolve()
     live_version = text(live_root / source["version_file"]).strip()
