@@ -1,66 +1,108 @@
 # Agent-Workflow Integration Architecture
 
-> Document version: 0.1.8 · Applies to SpecGen 0.1.8
+> Document version: 0.2.0 · Applies to SpecGen 0.2.0
 
 ## Baseline
 
-This repository's initial compatibility knowledge comes from the attached authoritative Agent-Workflow `0.9.0` Phase 8–9 development source snapshot dated 2026-08-27. Compatibility fixtures are copied byte-for-byte from that source and SHA-256 pinned in `compat/agent-workflow/compatibility.json`.
+Release compatibility is pinned under `compat/agent-workflow/`; moving development source is observed separately through `dev/agent-workflow.toml`. The adapter targets Agent-Workflow `0.9.0` public contracts and never imports private Agent-Workflow Python implementation modules.
 
 ## Contract mapping
 
 | SpecGen concern | Agent-Workflow 0.9.0 contract | Relationship |
 |---|---|---|
 | implementation phases/tasks/dependencies | `agent-workflow/prompt-pack/v1` | compile target |
-| executable evaluation plan | `agent-workflow/evaluation-plan/v1` | compile target where representable |
-| source/repository baseline | `agent-workflow/source-baseline/v1` | interoperate/reference |
+| executable evaluation plan | `agent-workflow/evaluation-plan/v1` | compile target where faithfully representable |
+| source/repository baseline | `agent-workflow/source-baseline/v1` | compile target from bound Git analysis |
 | logical execution role | `agent-workflow/agent-role/v1` | optional target hint only |
-| generic task result envelope | `agent-workflow/task-result/v1` | pattern/target contract |
-| runtime state/provenance/status | documented public CLI `--json` contracts | black-box consumption only |
-| optional hosting | Agent-Workflow trusted plugin API | future adapter/plugin |
+| generic task result envelope | `agent-workflow/task-result/v1` | packaged result-contract schema |
+| runtime state/provenance/status | documented public CLI/API contracts | black-box consumption only |
+| optional hosting | Agent-Workflow trusted plugin API | Phase 7 adapter seam |
 
 ## Non-negotiable boundaries
 
 1. No core import dependency on `agent_workflow.*`.
 2. No duplicate Agent Run lifecycle, review authority, acceptance authority, worker supervision, or mutable status database.
-3. No claim of support for an Agent-Workflow version merely because an old schema still appears to validate. Product version and contract identity are both recorded.
-4. Agent-Workflow-specific execution fields remain in adapter/extension space unless they independently belong to general specification semantics.
+3. No compatibility claim based only on accidental schema validation; product version and exact contract identities are pinned.
+4. Agent-Workflow-specific execution fields remain adapter/extension concerns unless they independently belong to general specification semantics.
+5. Lowering fails closed when target contracts cannot preserve material SpecGen meaning.
 
-## Compatibility update workflow
+## 0.1.10 compiler surface
 
-When a new Agent-Workflow source/version is assessed:
+```bash
+specgen agent-workflow compile SPEC \
+  --output TARGET_DIR \
+  [--repository-analysis ANALYSIS] \
+  [--repository-root REPO]
+```
 
-1. Record exact product version and source revision/snapshot.
-2. Compare every consumed/emitted public schema and public JSON contract.
-3. Add new immutable fixtures under `compat/agent-workflow/<version>/`.
-4. Record SHA-256 digests.
-5. Classify each contract as unchanged/additive/breaking.
-6. Update adapter behavior and migrations if required.
-7. Run target-specific validation/integration corpus.
-8. Only then mark the new version `verified`.
+Compilation requires an `agent-workflow`-ready canonical snapshot and an empty output directory. This avoids stale resources surviving a later deterministic compile.
 
-## Future plugin shape
+The output is an Agent-Workflow-native prompt-pack source tree:
 
-Agent-Workflow 0.9.0's own plugin documentation uses `agent-workflow-spec` as an example command for “author and compile implementation specifications.” This is a strong fit for an optional thin host package. The plugin should expose SpecGen-owned schemas/templates as digest-bound package resources and delegate authoring/compilation to the independent SpecGen package.
+```text
+TARGET_DIR/
+├── pack.yaml
+├── README.md
+├── EXECUTION_PROTOCOL.md
+├── DELEGATION_RUNBOOK.md
+├── evaluation-plan.json          # only when evaluation intent exists
+├── source-baseline.json          # only when repository analysis is supplied
+├── MANIFEST.sha256
+├── result-contracts/
+├── templates/
+└── phase-*/
+    ├── README.md
+    ├── MASTER_IMPLEMENTATION_PROMPT.md
+    └── tickets/
+```
 
+`pack.yaml` is emitted as deterministic JSON text, which is valid YAML and avoids adding a YAML dependency to SpecGen core.
+
+`MANIFEST.json` is intentionally absent from source prompt packs. Agent-Workflow reserves that filename for the canonical `agent-workflow/pack-manifest/v1` archive-integrity artifact created by its own `pack archive` operation. SpecGen emits the supported source checksum sidecar `MANIFEST.sha256` instead.
+
+### Result contracts
+
+Agent-Workflow requires `result_contract.schema` to be a normalized pack-relative path whose bytes are pinned at launch. SpecGen therefore packages the schema bytes under `result-contracts/` and writes the pack-relative path into each task.
+
+The portable task contract currently lowers when `result_contract.schema` is either:
+
+- the pinned `agent-workflow/task-result/v1` schema ID; or
+- an inline JSON Schema object.
+
+Unresolvable schema identifiers/paths or unsupported result-contract fields fail closed rather than leaving a dangling target reference.
+
+### Source baseline
+
+When repository provenance exists, compilation requires a valid `specgen/repository-analysis/v1alpha1` artifact bound to the exact canonical spec ID, snapshot ID, and digest. The analysis must use a Git baseline. SpecGen re-reads the live Git HEAD and dirty state, derives the branch, and refuses to emit a baseline if the repository drifted.
+
+A directory-digest baseline cannot be faithfully expressed as Agent-Workflow's Git-oriented `source-baseline/v1`; compilation therefore fails rather than inventing a head or branch.
+
+### Evaluation lowering
+
+Portable evaluation commands lower to Agent-Workflow acceptance commands. Command-based evaluation uses the target `acceptance_commands` scorer. Explicit scorer names must be supported by Agent-Workflow `0.9.0`; multiple distinct per-evaluation scorer assignments are rejected because Agent-Workflow carries scorers globally.
+
+Hidden/external oracles require digest-bound `metadata.oracle_ref = {id, sha256}`. SpecGen maps the evaluation through requirement/acceptance relationships to the implementation task IDs required by Agent-Workflow `oracle_refs`. If multiple incompatible oracles would target the same task, compilation fails.
+
+Unknown evaluation metadata that cannot be represented is also a blocking diagnostic. The adapter does not silently union, drop, or relabel evaluation semantics.
 
 ## Development source linkage
 
-During development, copy `dev/agent-workflow.example.toml` to the ignored
-`dev/agent-workflow.toml`; it declares the expected Agent-Workflow product
-version, tracked contract paths, and reference surfaces.
+Copy `dev/agent-workflow.example.toml` to ignored `dev/agent-workflow.toml`. `scripts/sync-agent-workflow-dev.py` resolves the live checkout, compares observed public surfaces with release fixtures, and materializes ignored links under `.dev/`.
 
-`scripts/sync-agent-workflow-dev.py` resolves the source root (optionally through
-`SPECGEN_AGENT_WORKFLOW_ROOT`), validates observed versions/digests against the
-checked-in compatibility fixture, and materializes ignored symlinks below `.dev/`.
+Development drift is evidence requiring an explicit compatibility decision; it never silently rewrites release compatibility.
 
-This does not change release compatibility automatically. Drift is evidence requiring
-an explicit compatibility decision.
+## Authoring mode vs target adapter
 
+`specgen author assess --mode agent-workflow` is an authoring policy profile over `specgen/spec/v1alpha2`. It establishes implementation-readiness guardrails but is not the target compiler. Phase 6 then lowers the validated portable snapshot into Agent-Workflow resources without moving execution authority into SpecGen. See ADR-0006.
 
-## Agent-Workflow authoring mode
+## Optional plugin direction
 
-`specgen author assess --mode agent-workflow` is an authoring guardrail profile, not the Phase 6 adapter. It requires enough phased/task/result/evaluation structure for later prompt-pack-oriented compilation while preserving `specgen/spec/v1alpha2` as the portable authority. See [ADR-0006](adr/ADR-0006-authoring-modes-and-agent-workflow-profile.md).
+Agent-Workflow's public trusted plugin API is a suitable Phase 7 host seam. The plugin remains thin: expose SpecGen commands/resources and delegate to SpecGen core; do not duplicate the canonical model or execution lifecycle.
 
-## 0.1.8 compiler surface
+## Optional host plugin
 
-`specgen agent-workflow compile SPEC --output DIR` emits a JSON-as-YAML `pack.yaml`, deterministic task prompt resources, and an `evaluation-plan.json` when portable evaluation intent is representable. Hidden/external oracle intent must provide `metadata.oracle_ref` with a digest-bound `{id, sha256}` reference; otherwise lowering fails closed with a compile diagnostic rather than silently discarding oracle semantics. Generated target artifacts are validated against the pinned Agent-Workflow 0.9.0 schemas before being written.
+SpecGen registers the optional `agent-workflow-spec` entry point in the public `agent_workflow.plugins` group. Agent-Workflow must explicitly enable it; normal SpecGen CLI/library use never imports Agent-Workflow. The adapter imports only `agent_workflow.plugin_api` inside `plugin()` and exposes one host command, `spec`, with compatibility, assess, analyze, finalize, and compile subcommands.
+
+The host version must exactly match the pinned `0.9.0` compatibility target. A mismatch fails closed. The plugin is a trusted in-process adapter, not a security boundary or a second execution authority. No private `agent_workflow.*` modules are imported.
+
+`PluginPackageResource` is intentionally not used for the initial integration because the plugin does not need Agent-Workflow to activate duplicate copies of SpecGen's canonical schemas/assets. If a future Agent-Workflow capability requires packaged activation, resources must be digest-bound to the SpecGen-owned bytes rather than forked.

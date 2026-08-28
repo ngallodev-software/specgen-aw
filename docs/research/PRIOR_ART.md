@@ -1,6 +1,6 @@
 # Prior Art — Initial Assessment
 
-> Document version: 0.1.8 · Applies to SpecGen 0.1.8
+> Document version: 0.2.0 · Applies to SpecGen 0.2.0
 
 Status: preliminary. This is a shortlist for code-level analysis, not a final reuse decision.
 

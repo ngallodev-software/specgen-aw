@@ -1,5 +1,55 @@
 # Changelog
 
+## 0.2.0 — 2026-08-27
+
+Initial public release closeout over the completed 0.1.x implementation phases.
+
+- Promote the coherent canonical authoring, repository evidence, evaluation, Agent-Workflow compilation, skill/plugin, and programmatic API surface to the initial public release.
+- Keep `specgen/spec/v1alpha2` and all previously published contract IDs unchanged; the software release does not redefine existing schema meaning.
+- Reconcile package, compatibility, README, roadmap, and maintained reference-document release markers.
+- Remove obsolete generated README variants and old checkpoint archives from the repository root.
+- Preserve Agent-Workflow 0.9.0 as an optional, explicitly versioned target and public-plugin host rather than a core runtime dependency.
+- Keep standalone HTTP/service infrastructure deferred until a concrete requirement justifies a new authority boundary.
+- Release overlay remains cumulative from authoritative SpecGen 0.1.8 and is self-applying/deletion-aware.
+- Tests are intentionally deferred until after overlay delivery, per release instruction.
+
+## 0.1.11 — 2026-08-27
+
+Complete the minimal application/programmatic API and installed-runtime asset boundary.
+
+- Add deterministic canonical candidate creation plus load/write conveniences.
+- Add authoring-event record convenience over the existing validated single-writer event log.
+- Expand `specgen.api` without introducing persistence, services, provider frameworks, or another specification model.
+- Install the existing source-owned schemas, Agent-Workflow compatibility fixtures/metadata, and skill as distribution data.
+- Locate runtime contracts in either a source checkout or installed distribution so normal package/plugin use does not depend on repository-relative paths.
+- No tests added or run; verification remains deferred until overlays are delivered.
+
+## 0.1.10 — 2026-08-27
+
+Complete the agent-facing and programmatic integration surfaces without creating another specification authority.
+
+- Add the thin `skills/specgen/SKILL.md` workflow over existing canonical authorities.
+- Add stable `specgen.api` facade for programmatic integrations without service/persistence architecture.
+- Add optional `agent-workflow-spec` public plugin entry point with compatibility, assess, analyze, finalize, and compile commands.
+- Add public Agent-Workflow compatibility inspection and shared target writing for CLI/plugin callers.
+- Keep Agent-Workflow optional: no private imports, no runtime dependency, no duplicate model, and no speculative plugin package resources.
+- No tests added or run; verification remains deferred until overlays are delivered.
+
+## 0.1.9 — 2026-08-27
+
+Complete the Agent-Workflow 0.9.0 compilation seam without changing the canonical SpecGen schema.
+
+- Require `agent-workflow` authoring readiness before target compilation.
+- Generate Agent-Workflow-native phase/ticket prompt-pack resources and prevent stale output by requiring an empty target directory.
+- Package task result contracts as real pack-relative JSON Schema resources; fail closed on unresolvable or unsupported result-contract semantics.
+- Emit `agent-workflow/source-baseline/v1` from an exact snapshot-bound Git repository analysis and re-check live HEAD/dirty state before lowering.
+- Correct hidden/external oracle lowering so Agent-Workflow `oracle_refs` are keyed by implementation task IDs rather than SpecGen evaluation IDs.
+- Remove the invalid fallback scorer `acceptance`; command-based evaluation uses Agent-Workflow's `acceptance_commands` scorer and unsupported/global-scorer conflicts fail closed.
+- Reject evaluation metadata that cannot be represented rather than silently discarding it.
+- Emit source prompt-pack `MANIFEST.sha256`; deliberately do not emit `MANIFEST.json`, which Agent-Workflow reserves for its own archive-integrity contract.
+- Align current release/reference surfaces to 0.1.9 and correct the stale `Current release: 0.1.5` versioning reference.
+- No tests added or run by explicit instruction.
+
 ## 0.1.8 — 2026-08-27
 
 Midpoint integrity correction after fresh source audit.
@@ -30,7 +80,6 @@ Phase 4 repository-aware brownfield evidence boundary.
 - Record `https://github.com/ngallodev-software/specgen-aw` as the canonical public repository.
 - Keep the phase-end critical seam integration-oriented while removing redundant process launches that added runtime without adding coverage.
 
-
 ## 0.1.5 — 2026-08-27
 
 - Added `express`, `guided`, `strict`, and opinionated `agent-workflow` authoring profiles.
@@ -55,7 +104,6 @@ Phase 2 deterministic projection/history/diff boundary.
 - Close Phase 1 with a deliberately small public CLI critical-seam corpus through the public CLI.
 - Cover valid canonical and authoring-event contracts plus broken references, dependency cycles, and stale snapshot digests.
 - Record the successful phase-end verification without expanding into unit-test coverage.
-
 
 All notable changes are recorded here. Software releases use Semantic Versioning; machine contracts carry independent explicit identifiers.
 

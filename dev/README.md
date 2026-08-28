@@ -1,6 +1,6 @@
 # Development source links
 
-> Document version: 0.1.8 · Applies to SpecGen 0.1.8
+> Document version: 0.2.0 · Applies to SpecGen 0.2.0
 
 Copy `dev/agent-workflow.example.toml` to the ignored
 `dev/agent-workflow.toml`, then set the local Agent-Workflow source root. The

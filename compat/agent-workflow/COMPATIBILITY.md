@@ -1,26 +1,33 @@
 # Agent-Workflow Compatibility
 
-> Document version: 0.1.8 · Applies to SpecGen 0.1.8
+> Document version: 0.2.0 · Applies to SpecGen 0.2.0
 
-SpecGen is independently installable. This directory records the Agent-Workflow contracts an adapter is allowed to understand. Vendored schemas are **compatibility fixtures**, not imported runtime authority.
+SpecGen is independently installable. This directory records the Agent-Workflow contracts an adapter is allowed to understand. Vendored schemas are compatibility fixtures, not imported runtime authority.
 
 ## Initial target
 
-Authoritative source snapshot supplied in this project thread:
-
 - Agent-Workflow product version: `0.9.0`
-- snapshot label: `agent-workflow-0.9.0-phases8-9-dev-source-20260827`
+- pinned snapshot label: `agent-workflow-0.9.0-phases8-9-dev-source-20260827`
 
 Recognized contracts:
 
-- `agent-workflow/prompt-pack/v1` — target compilation format for implementation workflow/task structure.
-- `agent-workflow/evaluation-plan/v1` — target compilation format for executable evaluation plans.
-- `agent-workflow/source-baseline/v1` — repository/source baseline interoperability.
-- `agent-workflow/agent-role/v1` — optional target execution hint vocabulary; not part of SpecGen core semantics.
-- `agent-workflow/task-result/v1` — baseline result contract pattern for target tasks; SpecGen may also generate task-specific JSON Schemas.
+- `agent-workflow/prompt-pack/v1` — implementation workflow/task structure.
+- `agent-workflow/evaluation-plan/v1` — executable evaluation plan where portable intent is representable.
+- `agent-workflow/source-baseline/v1` — Git source-baseline target.
+- `agent-workflow/agent-role/v1` — optional logical target hint vocabulary.
+- `agent-workflow/task-result/v1` — generic result schema that SpecGen can package as a task-local contract resource.
 
-Agent-Workflow documentation additionally defines stable public `--json` integration surfaces and a trusted plugin API. Future integration must use those public seams rather than private modules.
+Agent-Workflow also publishes a trusted plugin API and stable integration surfaces. SpecGen uses those public seams rather than private modules.
 
-## Policy
+## Adapter policy
 
-A future Agent-Workflow release is not automatically compatible merely because it still reports `0.x` or accepts similar files. Adapter support must be updated against explicit schema/API identifiers and verification fixtures.
+- Generated artifacts are validated against the pinned schema fixtures before writing.
+- Source-baseline emission requires exact SpecGen repository-analysis/spec binding and live Git-state agreement.
+- Result contracts are packaged as real pack-relative JSON Schema resources.
+- Hidden/external evaluation oracles are digest-bound and mapped to Agent-Workflow task IDs.
+- Unsupported or ambiguously representable evaluation/result/source semantics fail closed.
+- A future Agent-Workflow release is not automatically compatible because similar files still validate; compatibility must be reassessed deliberately.
+
+## Plugin adapter
+
+SpecGen `0.1.10` optionally registers `agent-workflow-spec` in the public `agent_workflow.plugins` entry-point group. The adapter imports only `agent_workflow.plugin_api`, requires host version `0.9.0`, and delegates to SpecGen's stable programmatic facade. Canonical schemas are not duplicated as plugin package resources.
