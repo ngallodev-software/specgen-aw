@@ -7,6 +7,7 @@ model, persistence layer, or execution lifecycle.
 from .agent_workflow import compile_target as compile_agent_workflow_target
 from .agent_workflow import write_target as write_agent_workflow_target
 from .application import create_candidate, load_document, record_event, write_document
+from .brownfield import brownfield_plan, codebase_memory_capability
 from .canonical import snapshot_digest
 from .compiler import finalize_candidate
 from .contracts import agent_workflow_compatibility, known_contracts
@@ -22,6 +23,8 @@ from .validate import validate
 
 __all__ = (
     "agent_workflow_compatibility",
+    "brownfield_plan",
+    "codebase_memory_capability",
     "analyze_repository",
     "append_event",
     "assess",

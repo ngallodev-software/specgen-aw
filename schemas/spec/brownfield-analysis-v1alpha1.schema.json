@@ -1,0 +1,103 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "specgen/brownfield-analysis/v1alpha1",
+  "title": "SpecGen Agent-Assisted Brownfield Analysis v1alpha1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "repository", "baseline", "repository_analysis_digest", "producer", "findings", "open_questions"],
+  "properties": {
+    "schema": {"const": "specgen/brownfield-analysis/v1alpha1"},
+    "repository": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path"],
+      "properties": {"path": {"type": "string", "minLength": 1}, "name": {"type": "string"}}
+    },
+    "baseline": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "revision", "dirty"],
+      "properties": {
+        "kind": {"enum": ["git", "directory"]},
+        "revision": {"type": "string", "minLength": 1},
+        "dirty": {"type": "boolean"}
+      }
+    },
+    "repository_analysis_digest": {"$ref": "#/$defs/digest"},
+    "producer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "tool"],
+      "properties": {
+        "kind": {"const": "agent-assisted"},
+        "tool": {"enum": ["codebase-memory-mcp", "repository-tools", "mixed"]},
+        "tool_version": {"type": "string"},
+        "agent": {"type": "string"}
+      }
+    },
+    "spec": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "snapshot_id", "digest"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "snapshot_id": {"type": "string", "minLength": 1},
+        "digest": {"$ref": "#/$defs/digest"}
+      }
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "kind", "summary", "confidence", "evidence", "affected_refs"],
+        "properties": {
+          "id": {"type": "string", "pattern": "^BFIND-[0-9]{4}$"},
+          "kind": {"enum": ["architecture", "behavior", "entry_point", "dependency", "data_flow", "interface", "persistence", "test_coverage", "risk", "preservation", "unknown"]},
+          "summary": {"type": "string", "minLength": 1},
+          "confidence": {"enum": ["observed", "strong_inference", "tentative"]},
+          "evidence": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["tool"],
+              "properties": {
+                "tool": {"type": "string", "minLength": 1},
+                "path": {"type": "string", "minLength": 1},
+                "symbol": {"type": "string", "minLength": 1},
+                "query": {"type": "string", "minLength": 1},
+                "digest": {"$ref": "#/$defs/digest"}
+              },
+              "anyOf": [
+                {"required": ["path"]},
+                {"required": ["symbol"]},
+                {"required": ["query"]}
+              ]
+            }
+          },
+          "affected_refs": {"type": "array", "items": {"type": "string"}, "uniqueItems": true}
+        }
+      }
+    },
+    "open_questions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "prompt", "reason", "needs_user_decision"],
+        "properties": {
+          "id": {"type": "string", "pattern": "^BFQ-[0-9]{4}$"},
+          "prompt": {"type": "string", "minLength": 1},
+          "reason": {"type": "string", "minLength": 1},
+          "needs_user_decision": {"type": "boolean"},
+          "affected_refs": {"type": "array", "items": {"type": "string"}, "uniqueItems": true}
+        }
+      }
+    }
+  },
+  "$defs": {
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}
+  }
+}

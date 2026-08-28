@@ -68,10 +68,14 @@ specgen evals intent spec.json
 
 ## Brownfield repositories
 
+For substantial existing-code analysis, use the dedicated `specgen-brownfield` skill when available. It separates user decision questions from code-answerable research and prefers optional `codebase-memory-mcp` graph intelligence before broad file reads.
+
+
 Analyze the exact repository state that informed the spec:
 
 ```bash
 specgen repo analyze /path/to/repo --spec spec.json --mode MODE > repository-analysis.json
+specgen brownfield plan /path/to/repo --spec spec.json --mode MODE > brownfield-plan.json
 ```
 
 Use discovered durable declarations and explicit referenced evidence as facts. Surface contradictions and missing evidence. Semantic conclusions that require code understanding belong in agent reasoning and must be recorded as decisions/inferences rather than presented as deterministic discovery.

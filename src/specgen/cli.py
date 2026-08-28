@@ -8,6 +8,7 @@ from typing import Any
 from . import __version__
 from .agent_workflow import compile_target, write_target
 from .canonical import snapshot_digest
+from .brownfield import brownfield_plan, codebase_memory_capability
 from .compiler import finalize_candidate
 from .contracts import agent_workflow_compatibility, known_contracts
 from .diff import semantic_delta
@@ -59,6 +60,20 @@ def main(argv: list[str] | None = None) -> int:
         "--repository-root",
         help="live repository root used to verify the analysis Git state; defaults to analysis.repository.path",
     )
+
+    brownfield_parser = sub.add_parser("brownfield")
+    brownfield_sub = brownfield_parser.add_subparsers(dest="brownfield_command", required=True)
+    brownfield_sub.add_parser(
+        "capabilities",
+        help="report optional brownfield code-intelligence capabilities",
+    )
+    brownfield_plan_parser = brownfield_sub.add_parser(
+        "plan",
+        help="build a targeted brownfield research plan for an agent",
+    )
+    brownfield_plan_parser.add_argument("path", help="repository root")
+    brownfield_plan_parser.add_argument("--spec", help="optional canonical spec snapshot to steer research")
+    brownfield_plan_parser.add_argument("--mode", choices=mode_names(), default="guided")
 
     author_parser = sub.add_parser("author")
     author_sub = author_parser.add_subparsers(dest="author_command", required=True)
@@ -128,6 +143,18 @@ def main(argv: list[str] | None = None) -> int:
             return 2
         print(json.dumps(intent, indent=2, sort_keys=True, ensure_ascii=False))
         return 0
+    if args.command == "brownfield" and args.brownfield_command == "capabilities":
+        print(json.dumps({"codebase_memory": codebase_memory_capability()}, indent=2, sort_keys=True))
+        return 0
+    if args.command == "brownfield" and args.brownfield_command == "plan":
+        try:
+            spec = _load_json(args.spec) if args.spec else None
+            plan = brownfield_plan(args.path, spec, args.mode)
+        except (OSError, ValueError, json.JSONDecodeError) as exc:
+            print(f"specgen: {exc}")
+            return 2
+        print(json.dumps(plan, indent=2, sort_keys=True, ensure_ascii=False))
+        return 1 if plan["repository_analysis"]["blocker_count"] else 0
     if args.command == "agent-workflow" and args.aw_command == "compile":
         try:
             document = _load_json(args.path)

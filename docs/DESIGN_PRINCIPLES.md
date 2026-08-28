@@ -21,3 +21,4 @@ Normative unless superseded by an accepted ADR. Execution policy is in [ENGINEER
 15. **Complexity must earn its cost.** Lean common paths beat speculative abstraction.
 16. **Tests protect seams, not line counts.** Prefer E2E and critical integration coverage; unit tests are exceptional.
 17. **Documentation is a versioned interface.** Keep it focused, linked, non-duplicative, and updated only when relevant claims change.
+18. **Optional code intelligence is evidence, not specification authority.** Agents may use local graph/index tools to investigate brownfield systems, but deterministic repository evidence, agent inference, and user decisions remain distinguishable.

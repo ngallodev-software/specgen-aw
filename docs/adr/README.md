@@ -17,3 +17,5 @@ Accepted ADR content is not rewritten to make history look cleaner. A later deci
 - [ADR-0006 — Authoring modes are policy profiles; Agent-Workflow is an opinionated profile](ADR-0006-authoring-modes-and-agent-workflow-profile.md)
 
 - [ADR-0007 — Brownfield analysis is evidence-first and read-only](ADR-0007-brownfield-analysis-is-evidence-first-and-read-only.md)
+
+- [ADR-0008 — Agent-assisted brownfield analysis stays separate and optional](ADR-0008-agent-assisted-brownfield-analysis-is-separate-and-optional.md)

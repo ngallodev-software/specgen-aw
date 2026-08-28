@@ -19,6 +19,8 @@ Current derived semantic-delta contract: `specgen/semantic-delta/v1alpha1`.
 Current elicitation-plan contract: `specgen/elicitation-plan/v1alpha1`.
 Current repository-analysis contract: `specgen/repository-analysis/v1alpha1`.
 Current repository-drift contract: `specgen/repository-drift/v1alpha1`.
+Current brownfield research-plan contract: `specgen/brownfield-plan/v1alpha1`.
+Current agent-assisted brownfield-analysis contract: `specgen/brownfield-analysis/v1alpha1`.
 Current evaluation-intent contract: `specgen/evaluation-intent/v1alpha1`.
 
 Rules:

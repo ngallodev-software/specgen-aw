@@ -1,5 +1,16 @@
 # Changelog
 
+## Unreleased
+
+- Add an end-to-end application usage guide and focused brownfield authoring guide.
+- Add `specgen brownfield capabilities` and `specgen brownfield plan` over the existing deterministic repository-analysis boundary.
+- Add optional `codebase-memory-mcp` detection; ordinary SpecGen use remains dependency-free and MCP registration remains owned by the invoking agent/runtime.
+- Add `specgen/brownfield-plan/v1alpha1` and `specgen/brownfield-analysis/v1alpha1` so targeted research instructions and semantic agent findings remain distinct from deterministic repository evidence.
+- Add a dedicated `specgen-brownfield` skill that asks users only for decisions the code cannot answer and uses graph search/call tracing/snippet reads with explicit narrowing and stop conditions.
+- Record ADR-0008 preserving the deterministic/agent-assisted evidence boundary.
+- No tests added or run during this implementation checkpoint.
+
+
 ## 0.2.0 — 2026-08-27
 
 Initial public release closeout over the completed 0.1.x implementation phases.

@@ -92,3 +92,16 @@ No standalone HTTP service is justified for the initial release. Do not add auth
 ## Explicitly deferred
 
 General execution engine, duplicated worker/review/acceptance lifecycle, database as specification authority, generalized plugin/hook marketplace, speculative provider abstraction, arbitrary source-code semantic parsing, or other orchestration not justified by a concrete requirement.
+
+## Post-0.2 development — Targeted brownfield intelligence
+
+In development after the initial public release:
+
+- application usage guide covering the canonical authoring lifecycle;
+- `specgen/brownfield-plan/v1alpha1` for separating user decision questions from codebase research tasks;
+- `specgen/brownfield-analysis/v1alpha1` for evidence-located agent semantic findings with explicit confidence;
+- optional `codebase-memory-mcp` capability detection and graph-assisted research strategy, with no runtime dependency;
+- dedicated brownfield agent skill that narrows architecture/search/trace/snippet work and stops when remaining uncertainty is a user decision;
+- deterministic `repository-analysis/v1alpha1` remains unchanged and authoritative only for its evidence-first scope.
+
+This work deliberately does not add a generic semantic indexer to SpecGen core or make a third-party MCP server a specification authority.

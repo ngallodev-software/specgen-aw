@@ -44,6 +44,7 @@ flowchart LR
 | Authoring events | Validated append-only single-writer NDJSON history with stable IDs and contiguous sequencing. |
 | Elicitation | Express/guided/strict/Agent-Workflow policy profiles producing typed questions and guardrails. |
 | Evidence analysis | Revision-bound deterministic repository evidence and declared interface/data-contract discovery; no arbitrary source semantic claims. |
+| Brownfield research | Targeted agent research plan plus separately typed semantic findings; may use optional codebase-memory-mcp without making it a core dependency or authority. |
 | Compiler | Candidate readiness/finalization and digest-bound immutable canonical snapshots. |
 | Validators | JSON Schema, IDs/refs, dependencies, trace, preservation, snapshot ancestry/digest checks. |
 | Semantic diff | Stable-ID semantic comparison excluding snapshot bookkeeping. |
@@ -74,6 +75,26 @@ flowchart LR
 ```
 
 This is the canonical repository-analysis diagram. Semantic interpretation of arbitrary source remains outside the deterministic boundary.
+
+Agent-assisted brownfield analysis is a second, explicitly non-deterministic layer:
+
+```text
+canonical intent + repository-analysis/v1alpha1
+                  |
+                  v
+       brownfield-plan/v1alpha1
+          |                 |
+          |                 +--> user decision questions
+          v
+ optional codebase-memory-mcp / targeted repository tools
+          |
+          v
+ brownfield-analysis/v1alpha1
+          |
+          +--> selected provenance / requirements / preservation / risk updates
+```
+
+The plan may detect a local `codebase-memory-mcp` executable, but MCP registration is owned by the calling agent/runtime. The semantic artifact records evidence locators and confidence; it never upgrades inference into deterministic discovery. See [BROWNFIELD_AUTHORING.md](BROWNFIELD_AUTHORING.md) and ADR-0008.
 
 ## Agent-Workflow target lowering
 
@@ -110,6 +131,8 @@ specgen author assess SNAPSHOT --mode MODE
 specgen author finalize SNAPSHOT --mode MODE --output SNAPSHOT
 specgen repo analyze REPO [--spec SNAPSHOT] [--mode MODE]
 specgen repo drift ANALYSIS REPO
+specgen brownfield capabilities
+specgen brownfield plan REPO [--spec SNAPSHOT] [--mode MODE]
 specgen evals intent SNAPSHOT
 specgen agent-workflow compile SNAPSHOT --output DIR [--repository-analysis ANALYSIS] [--repository-root REPO]
 ```
