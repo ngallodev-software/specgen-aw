@@ -6,6 +6,7 @@ import io
 import json
 from pathlib import Path
 import subprocess
+import sys
 import tempfile
 
 from specgen.cli import main as cli_main
@@ -32,6 +33,14 @@ def require(condition: bool, message: str) -> None:
 
 def main() -> int:
     checks = 0
+    version_check = subprocess.run(
+        [sys.executable, str(ROOT / "tests" / "release" / "verify_versions.py")],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+    )
+    require(version_check.returncode == 0, f"version agreement: {version_check.stderr or version_check.stdout}")
+    checks += 1
     cases = [
         ("valid snapshot", "valid.spec.json", 0, None),
         ("valid authoring event", "valid.authoring-event.json", 0, None),
