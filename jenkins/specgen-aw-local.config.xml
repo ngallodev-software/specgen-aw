@@ -14,14 +14,6 @@
     <org.jenkinsci.plugins.workflow.job.properties.DisableConcurrentBuildsJobProperty>
       <abortPrevious>false</abortPrevious>
     </org.jenkinsci.plugins.workflow.job.properties.DisableConcurrentBuildsJobProperty>
-    <org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
-      <triggers>
-        <hudson.triggers.SCMTrigger>
-          <spec>H/5 * * * *</spec>
-          <ignorePostCommitHooks>false</ignorePostCommitHooks>
-        </hudson.triggers.SCMTrigger>
-      </triggers>
-    </org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
   </properties>
   <definition class="org.jenkinsci.plugins.workflow.cps.CpsScmFlowDefinition" plugin="workflow-cps@4350.vcc65d4958821">
     <scm class="hudson.plugins.git.GitSCM" plugin="git@5.10.1">
@@ -44,5 +36,6 @@
     <lightweight>true</lightweight>
   </definition>
   <triggers/>
+  <authToken>specgen-local-trigger</authToken>
   <disabled>false</disabled>
 </flow-definition>
