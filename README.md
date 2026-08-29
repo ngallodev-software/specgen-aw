@@ -36,6 +36,16 @@ Agent-Workflow is the first-class compilation target, not a runtime dependency. 
 - evaluation intent `specgen/evaluation-intent/v1alpha1`;
 - Agent-Workflow target `0.9.0`.
 
+## Installation
+
+Run `scripts/install.sh` from a checkout to create or reuse the per-user shared
+environment at `${XDG_DATA_HOME:-$HOME/.local/share}/agent-tools/venv`. The
+`specgen` executable is linked into `~/.local/bin`; the installer links the
+SpecGen skills into the generic agent, Codex, Claude, Pi, and OpenCode skill
+directories. If the local Agent-Workflow checkout is available, its pinned
+compatible version is installed into the same environment. Set
+`AGENT_TOOLS_VENV` or `SPECGEN_VENV` to override the environment location.
+
 Published contract identifiers are versioned independently from the software release. `v1alpha1` remains immutable; `v1alpha2` is the current canonical contract.
 
 ## Quick start

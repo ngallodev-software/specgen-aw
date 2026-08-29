@@ -6,6 +6,7 @@ from __future__ import annotations
 import json
 import os
 import re
+import subprocess
 import sys
 import tomllib
 from pathlib import Path
@@ -72,6 +73,16 @@ def main() -> int:
     if target["name"] != "agent-workflow":
         fail("compatibility target is not Agent-Workflow")
 
+    snapshot_path = ROOT / "compat" / "agent-workflow" / aw_version / "SNAPSHOT.json"
+    snapshot = json.loads(text(snapshot_path))
+    if snapshot.get("schema") != "specgen/agent-workflow-compatibility-snapshot/v1":
+        fail("Agent-Workflow compatibility snapshot has the wrong schema")
+    if snapshot.get("version") != aw_version:
+        fail("Agent-Workflow compatibility snapshot has the wrong version")
+    projects = snapshot.get("python", {}).get("projects", {})
+    if set(projects) != {"agent-workflow", "specgen"}:
+        fail("Agent-Workflow compatibility snapshot lacks shared-environment project requirements")
+
     config_path = ROOT / "dev" / "agent-workflow.toml"
     if not config_path.is_file():
         config_path = ROOT / "dev" / "agent-workflow.example.toml"
@@ -85,6 +96,16 @@ def main() -> int:
     live_version = text(live_root / source["version_file"]).strip()
     if live_version != aw_version:
         fail(f"Agent-Workflow app VERSION={live_version}, expected {aw_version}")
+    for relative, expected_digest in snapshot["schemas"].items():
+        path = live_root / relative
+        if not path.is_file() or __import__("hashlib").sha256(path.read_bytes()).hexdigest() != expected_digest:
+            fail(f"Agent-Workflow schema drift: {relative}")
+
+    pip_check = subprocess.run(
+        [sys.executable, "-m", "pip", "check"], capture_output=True, text=True
+    )
+    if pip_check.returncode:
+        fail(f"shared Python environment requirements are inconsistent: {pip_check.stdout or pip_check.stderr}")
 
     from specgen.agent_workflow import AW_VERSION
     from specgen.repository import _agent_workflow_context

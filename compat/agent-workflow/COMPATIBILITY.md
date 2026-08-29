@@ -4,6 +4,20 @@
 
 SpecGen is independently installable. This directory records the Agent-Workflow contracts an adapter is allowed to understand. Vendored schemas are compatibility fixtures, not imported runtime authority.
 
+`0.9.0/SNAPSHOT.json` is the deterministic compatibility capture. It records
+the source revision, all Agent-Workflow schema digests, and the Python
+requirements for both projects as installed in the shared environment. Refresh
+it only through the capture command after an explicit compatibility review:
+
+```bash
+python scripts/capture-agent-workflow-compat.py \\
+  --source /path/to/agent-workflow \\
+  --output compat/agent-workflow/0.9.0
+```
+
+The live source may be dirty during development, but schema drift and
+inconsistent shared-environment requirements fail release verification.
+
 ## Initial target
 
 - Agent-Workflow product version: `0.9.0`
