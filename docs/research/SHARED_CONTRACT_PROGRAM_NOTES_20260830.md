@@ -54,6 +54,8 @@ provenance-linked derivatives and never rewrite sealed historical artifacts.
 | `analysis` was a valid SpecGen role hint but not a configured Agent-Workflow runtime role. | contract mapping gap | The first execution used the configured `implementation` role without selecting a model; future target lowering needs a validated logical-role mapping or a neutral declared role. |
 | Retry run `shared-contract-inventory-r1-20260830` could create and validate its handoff but could not commit because the headless Codex workspace sandbox could not write linked-worktree Git metadata outside its writable root. Host-side `git add` and commit succeeded immediately. | Agent-Workflow/Codex sandbox integration gap | Do not accept the partial retry. Configure the worker's writable Git administrative path or provide a documented coordinator-commit protocol with provenance before launching the bundle foundation task. |
 | The retry's child MCP `pack_validate` request was blocked by the host approval policy even though the CLI validation route is available. | Agent runtime integration gap | Task prompts should prefer the installed CLI for local pack validation under non-interactive approval policies. |
+| `delegate` treated an inline prompt as a path and attempted a worktree before failing with `ENAMETOOLONG`; retry then found the clean branch/worktree left behind. | Agent-Workflow CLI and rollback gap | Pass a short prompt file path today; make `delegate` reject non-path input before worktree creation or add an explicit inline-prompt option. |
+| A local Agent-Workflow configuration with custom preferred Luna names and inherited named profiles was rejected because profiles were required to be preferred names, blocking all later CLI commands and a worker closeout. | configuration validation regression | Allow inactive named profiles; profile selection is already guarded by requested/preferred-name resolution. |
 
 ## Strengths to retain
 
@@ -81,3 +83,13 @@ provenance-linked derivatives and never rewrite sealed historical artifacts.
 
 Each phase needs independent review plus the existing application build,
 install, schema, and relevant end-to-end checks before the next phase starts.
+
+## Phase-1 disposition
+
+The inventory task's generated `AC-001` wrongly includes the bundle wheel and
+both application adapters, which are explicitly assigned to later tasks. Its
+completed evidence is therefore retained as `partial`, rather than rewritten
+as a false success. On 2026-08-30 the user explicitly authorized advancing to
+the next phase after review of this mismatch; the bundle foundation remains
+subject to its own independent completion, evaluation, review, and acceptance
+gates.
