@@ -1,0 +1,38 @@
+{
+  "schema": "specgen/shared-contract-fixture-baseline/v1",
+  "captured_on": "2026-08-30",
+  "bundle_candidate": "specgen-agent-workflow-contracts",
+  "sources": [
+    {
+      "application": "agent-workflow",
+      "version": "0.9.1",
+      "snapshot": "agent-workflow-0.9.1-release-tooling-b5e73c9",
+      "git_commit": "b5e73c95384b840527999b23727053a5db26adae",
+      "files": [
+        {"path": "schemas/pack.schema.json", "schema_id": "agent-workflow/prompt-pack/v1", "sha256": "cc8efd2446165392ee4a4268a16b63d850fe0efba650e9067d493deb8d2ad51e"},
+        {"path": "schemas/evaluation-plan.schema.json", "schema_id": "agent-workflow/evaluation-plan/v1", "sha256": "571edfaadfb078bbeb11fae00422d89366887036bec23460884fc23e84a0ddee"},
+        {"path": "schemas/source-baseline.schema.json", "schema_id": "agent-workflow/source-baseline/v1", "sha256": "da835fd07fae196f8d9dac396413e1c435725d0e1db0cb378ebab195b6609134"},
+        {"path": "schemas/agent-role-v1.schema.json", "schema_id": "agent-workflow/agent-role/v1", "sha256": "93aa44ceb71597e1a99a89e66135449a436673248749799d7ef25b6659c22de4"},
+        {"path": "schemas/task-result.schema.json", "schema_id": "agent-workflow/task-result/v1", "sha256": "f7ae2d01e8638c1d057e772befebc465e1501d1ddc49f0c03a54bf1b09b59810"}
+      ]
+    },
+    {
+      "application": "specgen",
+      "version": "0.2.0",
+      "snapshot": "specgen-aw-1a64d60",
+      "git_commit": "1a64d60bc5ccb9ba17bf38633b3dffc31db39329",
+      "files": [
+        {"path": "compat/agent-workflow/0.9.0/schemas/pack.schema.json", "schema_id": "agent-workflow/prompt-pack/v1", "sha256": "cc8efd2446165392ee4a4268a16b63d850fe0efba650e9067d493deb8d2ad51e"},
+        {"path": "compat/agent-workflow/0.9.0/schemas/evaluation-plan.schema.json", "schema_id": "agent-workflow/evaluation-plan/v1", "sha256": "571edfaadfb078bbeb11fae00422d89366887036bec23460884fc23e84a0ddee"},
+        {"path": "compat/agent-workflow/0.9.0/schemas/source-baseline.schema.json", "schema_id": "agent-workflow/source-baseline/v1", "sha256": "da835fd07fae196f8d9dac396413e1c435725d0e1db0cb378ebab195b6609134"},
+        {"path": "compat/agent-workflow/0.9.0/schemas/agent-role-v1.schema.json", "schema_id": "agent-workflow/agent-role/v1", "sha256": "93aa44ceb71597e1a99a89e66135449a436673248749799d7ef25b6659c22de4"},
+        {"path": "compat/agent-workflow/0.9.0/schemas/task-result.schema.json", "schema_id": "agent-workflow/task-result/v1", "sha256": "f7ae2d01e8638c1d057e772befebc465e1501d1ddc49f0c03a54bf1b09b59810"},
+        {"path": "compat/agent-workflow/0.9.1/schemas/pack.schema.json", "schema_id": "agent-workflow/prompt-pack/v1", "sha256": "cc8efd2446165392ee4a4268a16b63d850fe0efba650e9067d493deb8d2ad51e"},
+        {"path": "compat/agent-workflow/0.9.1/schemas/evaluation-plan.schema.json", "schema_id": "agent-workflow/evaluation-plan/v1", "sha256": "571edfaadfb078bbeb11fae00422d89366887036bec23460884fc23e84a0ddee"},
+        {"path": "compat/agent-workflow/0.9.1/schemas/source-baseline.schema.json", "schema_id": "agent-workflow/source-baseline/v1", "sha256": "da835fd07fae196f8d9dac396413e1c435725d0e1db0cb378ebab195b6609134"},
+        {"path": "compat/agent-workflow/0.9.1/schemas/agent-role-v1.schema.json", "schema_id": "agent-workflow/agent-role/v1", "sha256": "93aa44ceb71597e1a99a89e66135449a436673248749799d7ef25b6659c22de4"},
+        {"path": "compat/agent-workflow/0.9.1/schemas/task-result.schema.json", "schema_id": "agent-workflow/task-result/v1", "sha256": "f7ae2d01e8638c1d057e772befebc465e1501d1ddc49f0c03a54bf1b09b59810"}
+      ]
+    }
+  ]
+}
