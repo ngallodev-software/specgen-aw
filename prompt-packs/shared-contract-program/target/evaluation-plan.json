@@ -1,0 +1,67 @@
+{
+  "acceptance_commands": [
+    {
+      "argv": [
+        "python",
+        "-m",
+        "pytest",
+        "-q",
+        "tests"
+      ],
+      "id": "EVAL-001",
+      "result_format": "exit-code",
+      "timeout_seconds": 300
+    },
+    {
+      "argv": [
+        "python",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/acceptance"
+      ],
+      "id": "EVAL-002",
+      "result_format": "exit-code",
+      "timeout_seconds": 300
+    },
+    {
+      "argv": [
+        "python",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/migrations"
+      ],
+      "id": "EVAL-003",
+      "result_format": "exit-code",
+      "timeout_seconds": 300
+    },
+    {
+      "argv": [
+        "python",
+        "-m",
+        "pytest",
+        "-q",
+        "tests"
+      ],
+      "id": "EVAL-004",
+      "result_format": "exit-code",
+      "timeout_seconds": 300
+    }
+  ],
+  "dataset_split": "validation",
+  "repetitions": 1,
+  "sandbox": "docker",
+  "schema": "agent-workflow/evaluation-plan/v1",
+  "scorers": [
+    "acceptance_commands"
+  ],
+  "task_ids": [
+    "TASK-001",
+    "TASK-002",
+    "TASK-003",
+    "TASK-004",
+    "TASK-005"
+  ],
+  "timeout_seconds": 300
+}

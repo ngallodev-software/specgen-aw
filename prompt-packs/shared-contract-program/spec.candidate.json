@@ -1,0 +1,49 @@
+{
+  "schema": "specgen/spec/v1alpha2",
+  "id": "shared-contract-program-20260830",
+  "title": "Shared SpecGen and Agent-Workflow contract bundle",
+  "version": "0.1.0",
+  "status": "draft",
+  "state": {"kind": "current"},
+  "snapshot": {"id": "SNAP-001", "sequence": 1, "created_at": "2026-08-30T00:00:00Z", "authoring_event_ids": []},
+  "target_application_id": "agent-workflow-spec-contracts",
+  "intent": {
+    "problem": "SpecGen and Agent-Workflow duplicate cross-boundary schemas and compatibility fixtures while lacking a deterministic, migration-capable shared contract authority.",
+    "objectives": ["Publish a small immutable shared Python contract bundle.", "Make native target handoffs exact-version and digest verified.", "Preserve sealed artifacts through derived deterministic migration."],
+    "non_goals": ["Create shared scheduling, lifecycle, review, logging, or generic CRUD.", "Force a model, role, or parallel execution topology.", "Make portable SpecGen packs parse as native Agent-Workflow packs."]
+  },
+  "scope": {"included": ["shared schema/ID/validation/digest/negotiation/migration seams", "SpecGen producer integration", "Agent-Workflow consumer integration", "cross-repository conformance"], "excluded": ["external registry publication until repository/signing authority is approved"]},
+  "provenance": {"sources": [{"id": "SRC-001", "kind": "user_decision", "locator": "shared-contract-program-20260830", "description": "Approved shared-contract architecture and migration requirements."}]},
+  "requirements": [
+    {"id": "REQ-001", "priority": "must", "type": "functional", "statement": "A separately released bundle owns every shared SpecGen-Agent-Workflow semantic seam: schemas and IDs, normalization, validation, descriptors/digests, negotiation, migrations, and conformance fixtures.", "provenance_refs": ["SRC-001"], "verification_refs": ["AC-001", "EVAL-001"]},
+    {"id": "REQ-002", "priority": "must", "type": "functional", "statement": "SpecGen-generated native targets declare exact bundle version and digest; Agent-Workflow rejects a mismatch before execution.", "provenance_refs": ["SRC-001"], "verification_refs": ["AC-002", "EVAL-002"]},
+    {"id": "REQ-003", "priority": "must", "type": "functional", "statement": "Every supported shared-artifact version transition has deterministic validated migration that emits provenance-linked derived artifacts and fails closed when meaning cannot be preserved.", "provenance_refs": ["SRC-001"], "verification_refs": ["AC-003", "EVAL-003"]},
+    {"id": "REQ-004", "priority": "must", "type": "functional", "statement": "SpecGen retains canonical authoring and compilation; Agent-Workflow retains runtime interpretation, scheduling, execution, evaluation, review, and sealing.", "provenance_refs": ["SRC-001"], "verification_refs": ["AC-004", "EVAL-004"]}
+  ],
+  "acceptance_criteria": [
+    {"id": "AC-001", "requirement_ids": ["REQ-001"], "criterion": "The bundle wheel exposes only documented shared contract seams, all source schemas are immutable/versioned, and both applications import it through narrow adapters.", "verification_method": "wheel inventory and cross-repository conformance tests"},
+    {"id": "AC-002", "requirement_ids": ["REQ-002"], "criterion": "An exact producer/consumer bundle match is accepted and version or digest mismatches fail before Agent Run preparation/execution.", "verification_method": "installed producer-consumer acceptance journey"},
+    {"id": "AC-003", "requirement_ids": ["REQ-003"], "criterion": "Supported old fixtures migrate to validated derived current artifacts with source/target digest provenance; unsupported changes return an actionable manual migration error and sealed sources remain byte-identical.", "verification_method": "migration fixture matrix"},
+    {"id": "AC-004", "requirement_ids": ["REQ-004"], "criterion": "The bundle contains no application lifecycle/scheduler/authoring implementation and docs/test boundaries prove each application retains its named authority.", "verification_method": "source inventory and independent review"}
+  ],
+  "evaluations": [
+    {"id": "EVAL-001", "kind": "acceptance", "requirement_ids": ["REQ-001"], "acceptance_ids": ["AC-001"], "command": ["python", "-m", "pytest", "-q", "tests"]},
+    {"id": "EVAL-002", "kind": "acceptance", "requirement_ids": ["REQ-002"], "acceptance_ids": ["AC-002"], "command": ["python", "-m", "pytest", "-q", "tests/acceptance"]},
+    {"id": "EVAL-003", "kind": "acceptance", "requirement_ids": ["REQ-003"], "acceptance_ids": ["AC-003"], "command": ["python", "-m", "pytest", "-q", "tests/migrations"]},
+    {"id": "EVAL-004", "kind": "acceptance", "requirement_ids": ["REQ-004"], "acceptance_ids": ["AC-004"], "command": ["python", "-m", "pytest", "-q", "tests"]}
+  ],
+  "implementation": {"tasks": [
+    {"id": "TASK-001", "title": "Characterize and freeze the shared seam inventory", "requirement_ids": ["REQ-001", "REQ-004"], "dependencies": [], "result_contract": {"schema": "agent-workflow/task-result/v1"}, "expected_outputs": ["file-by-file extraction inventory for both repositories", "approved bundle public API and ownership matrix", "baseline fixture digests"], "role_hint": "analysis"},
+    {"id": "TASK-002", "title": "Create the immutable shared contract bundle", "requirement_ids": ["REQ-001", "REQ-003", "REQ-004"], "dependencies": ["TASK-001"], "result_contract": {"schema": "agent-workflow/task-result/v1"}, "expected_outputs": ["sibling Python package with schemas, descriptors, validation, negotiation, migrations, CLI/API, wheel tests", "supported-version policy and immutable fixtures"], "role_hint": "implementation"},
+    {"id": "TASK-003", "title": "Integrate SpecGen as bundle-versioned native target producer", "requirement_ids": ["REQ-001", "REQ-002", "REQ-004"], "dependencies": ["TASK-002"], "result_contract": {"schema": "agent-workflow/task-result/v1"}, "expected_outputs": ["SpecGen adapter uses bundle APIs", "native target declares bundle version/digest", "producer mismatch and packaging tests"], "role_hint": "implementation"},
+    {"id": "TASK-004", "title": "Integrate Agent-Workflow as bundle-versioned native target consumer", "requirement_ids": ["REQ-001", "REQ-002", "REQ-004"], "dependencies": ["TASK-002"], "result_contract": {"schema": "agent-workflow/task-result/v1"}, "expected_outputs": ["native validation uses bundle APIs", "preparation rejects incompatible bundle provenance", "consumer mismatch and installed-product tests"], "role_hint": "implementation"},
+    {"id": "TASK-005", "title": "Prove migration and cross-product conformance", "requirement_ids": ["REQ-002", "REQ-003", "REQ-004"], "dependencies": ["TASK-003", "TASK-004"], "result_contract": {"schema": "agent-workflow/task-result/v1"}, "expected_outputs": ["exact-match/mismatch conformance matrix", "migration fixture matrix", "independent phase review and release evidence"], "role_hint": "review"}
+  ], "phases": [
+    {"id": "PHASE-001", "name": "Inventory and bundle foundation", "task_ids": ["TASK-001", "TASK-002"], "mandatory_order": ["TASK-001", "TASK-002"], "description": "Freeze scope before extraction; create only the shared contract package."},
+    {"id": "PHASE-002", "name": "Parallel producer and consumer integration", "task_ids": ["TASK-003", "TASK-004"], "description": "Run in parallel after the bundle is independently reviewed; DAG permits but does not force concurrency."},
+    {"id": "PHASE-003", "name": "Cross-product verification and sealing", "task_ids": ["TASK-005"], "mandatory_order": ["TASK-005"], "description": "Verify compatibility, migrations, boundaries, package installation, and independent review."}
+  ]},
+  "interfaces": [], "data_contracts": [], "decisions": [], "risks": [{"id": "RISK-001", "name": "Publishing authority not yet selected", "description": "Local implementation can proceed, but external publication remains blocked pending repository/registry/signing authority."}], "unresolved_questions": [],
+  "traceability": [{"from": "REQ-001", "to": "AC-001", "relation": "verified_by"}, {"from": "REQ-002", "to": "AC-002", "relation": "verified_by"}, {"from": "REQ-003", "to": "AC-003", "relation": "verified_by"}, {"from": "REQ-004", "to": "AC-004", "relation": "verified_by"}],
+  "preservation": {"claims": [{"id": "PRES-001", "source_ref": "SRC-001", "statement": "Sealed historical artifacts are immutable; migration creates a linked derivative.", "status": "represented", "target_refs": ["REQ-003"]}]}
+}

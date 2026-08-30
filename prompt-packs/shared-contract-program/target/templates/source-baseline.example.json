@@ -1,0 +1,12 @@
+{
+  "components": {
+    "primary": {
+      "branch": "<git-branch>",
+      "dirty": false,
+      "head": "<git-head>",
+      "path": "."
+    }
+  },
+  "generated_at": "<canonical-snapshot-created-at>",
+  "schema": "agent-workflow/source-baseline/v1"
+}

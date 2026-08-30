@@ -1,0 +1,110 @@
+{
+  "pack_id": "shared-contract-program-20260830",
+  "phases": [
+    {
+      "directory": "phase-01-PHASE-001-11de6907",
+      "id": "PHASE-001",
+      "mandatory_order": [
+        "TASK-001",
+        "TASK-002"
+      ],
+      "name": "Inventory and bundle foundation",
+      "tasks": [
+        {
+          "agent_run_id": "specgen-476a7bc10fa1983f",
+          "dependencies": [],
+          "id": "TASK-001",
+          "prompt": "phase-01-PHASE-001-11de6907/tickets/TASK-001-a3b4d261.md",
+          "result_contract": {
+            "required": true,
+            "schema": "result-contracts/agent-workflow-task-result-v1.schema.json"
+          },
+          "tier": "implementation"
+        },
+        {
+          "agent_run_id": "specgen-87a1a687ee38e2c7",
+          "dependencies": [
+            "TASK-001"
+          ],
+          "id": "TASK-002",
+          "prompt": "phase-01-PHASE-001-11de6907/tickets/TASK-002-4d2253b8.md",
+          "result_contract": {
+            "required": true,
+            "schema": "result-contracts/agent-workflow-task-result-v1.schema.json"
+          },
+          "tier": "implementation"
+        }
+      ]
+    },
+    {
+      "directory": "phase-02-PHASE-002-e9cac1df",
+      "id": "PHASE-002",
+      "name": "Parallel producer and consumer integration",
+      "tasks": [
+        {
+          "agent_run_id": "specgen-f9424fdd140cdbd4",
+          "dependencies": [
+            "TASK-002"
+          ],
+          "id": "TASK-003",
+          "prompt": "phase-02-PHASE-002-e9cac1df/tickets/TASK-003-bd2c6623.md",
+          "result_contract": {
+            "required": true,
+            "schema": "result-contracts/agent-workflow-task-result-v1.schema.json"
+          },
+          "tier": "implementation"
+        },
+        {
+          "agent_run_id": "specgen-09db4a9904142446",
+          "dependencies": [
+            "TASK-002"
+          ],
+          "id": "TASK-004",
+          "prompt": "phase-02-PHASE-002-e9cac1df/tickets/TASK-004-3d210ec1.md",
+          "result_contract": {
+            "required": true,
+            "schema": "result-contracts/agent-workflow-task-result-v1.schema.json"
+          },
+          "tier": "implementation"
+        }
+      ]
+    },
+    {
+      "directory": "phase-03-PHASE-003-4e5fb633",
+      "id": "PHASE-003",
+      "mandatory_order": [
+        "TASK-005"
+      ],
+      "name": "Cross-product verification and sealing",
+      "tasks": [
+        {
+          "agent_run_id": "specgen-9c668a85792ebf24",
+          "dependencies": [
+            "TASK-003",
+            "TASK-004"
+          ],
+          "id": "TASK-005",
+          "prompt": "phase-03-PHASE-003-4e5fb633/tickets/TASK-005-bc4e0f9f.md",
+          "result_contract": {
+            "required": true,
+            "schema": "result-contracts/agent-workflow-task-result-v1.schema.json"
+          },
+          "tier": "implementation"
+        }
+      ]
+    }
+  ],
+  "schema": "agent-workflow/prompt-pack/v1",
+  "workflow": {
+    "minimum_version": "0.9.1",
+    "name": "agent-workflow",
+    "requires": [
+      "completion_report",
+      "durable_agent_run",
+      "independent_phase_gate",
+      "isolated_worktree",
+      "persistent_log",
+      "source_baseline"
+    ]
+  }
+}
