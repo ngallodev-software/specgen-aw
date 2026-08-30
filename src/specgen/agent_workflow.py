@@ -46,7 +46,7 @@ _ALLOWED_EVALUATION_METADATA = frozenset(
 
 def _schema(name: str) -> dict[str, Any]:
     schema_id = {
-        "pack.schema.json": "agent-workflow/prompt-pack/v1",
+        "pack.schema.json": "agent-workflow/prompt-pack/v2",
         "evaluation-plan.schema.json": "agent-workflow/evaluation-plan/v1",
         "source-baseline.schema.json": "agent-workflow/source-baseline/v1",
         "agent-role-v1.schema.json": "agent-workflow/agent-role/v1",
@@ -61,7 +61,7 @@ def _schema(name: str) -> dict[str, Any]:
 
 def _check(schema_name: str, value: dict[str, Any]) -> None:
     schema_id = {
-        "pack.schema.json": "agent-workflow/prompt-pack/v1",
+        "pack.schema.json": "agent-workflow/prompt-pack/v2",
         "evaluation-plan.schema.json": "agent-workflow/evaluation-plan/v1",
         "source-baseline.schema.json": "agent-workflow/source-baseline/v1",
         "agent-role-v1.schema.json": "agent-workflow/agent-role/v1",
@@ -476,18 +476,18 @@ def compile_prompt_pack(
             + ", ".join(unassigned)
         )
     pack: dict[str, Any] = {
-        "schema": "agent-workflow/prompt-pack/v1",
+        "schema": "agent-workflow/prompt-pack/v2",
         "pack_id": document["id"],
         "workflow": {
             "name": "agent-workflow",
             "minimum_version": AW_VERSION,
             "requires": [
                 *AW_STANDARD_REQUIRES,
-                f"contract-bundle=={bundle_requirement('agent-workflow/prompt-pack/v1')[0]}",
+                f"contract-bundle=={bundle_requirement('agent-workflow/prompt-pack/v2')[0]}",
                 *(
                     f"contract-schema-digest:{schema_id}={bundle_requirement(schema_id)[1]}"
                     for schema_id in (
-                        "agent-workflow/prompt-pack/v1",
+                        "agent-workflow/prompt-pack/v2",
                         "agent-workflow/evaluation-plan/v1",
                         "agent-workflow/source-baseline/v1",
                         "agent-workflow/agent-role/v1",
@@ -497,6 +497,11 @@ def compile_prompt_pack(
             ],
         },
         "phases": phases,
+        "bundle_provenance": {
+            "bundle_version": bundle_requirement("agent-workflow/prompt-pack/v2")[0],
+            "schema_id": "agent-workflow/prompt-pack/v2",
+            "schema_digest": bundle_requirement("agent-workflow/prompt-pack/v2")[1],
+        },
     }
     _check("pack.schema.json", pack)
     return pack, resources

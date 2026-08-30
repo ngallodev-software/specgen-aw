@@ -13,16 +13,22 @@ def test_native_pack_declares_exact_bundle_and_all_schema_digests():
     pack, _ = compile_prompt_pack(document)
     requirements = set(pack["workflow"]["requires"])
 
-    version, _ = require("agent-workflow/prompt-pack/v1")
+    version, digest = require("agent-workflow/prompt-pack/v2")
     assert f"contract-bundle=={version}" in requirements
     for schema_id in (
-        "agent-workflow/prompt-pack/v1",
+        "agent-workflow/prompt-pack/v2",
         "agent-workflow/evaluation-plan/v1",
         "agent-workflow/source-baseline/v1",
         "agent-workflow/agent-role/v1",
         "agent-workflow/task-result/v1",
     ):
         assert f"contract-schema-digest:{schema_id}={require(schema_id)[1]}" in requirements
+    assert pack["schema"] == "agent-workflow/prompt-pack/v2"
+    assert pack["bundle_provenance"] == {
+        "bundle_version": version,
+        "schema_id": "agent-workflow/prompt-pack/v2",
+        "schema_digest": digest,
+    }
 
 
 def test_bundle_digest_declaration_is_not_substitutable():
