@@ -55,7 +55,7 @@ flowchart LR
 
 ## Canonical contract boundaries
 
-`v1alpha2` carries stable lifecycle-aware IDs, current/proposed state, immutable snapshot identity/ancestry, typed provenance, preservation claims, and invariant requirements. Proposed state identifies `base_snapshot_id` and `change_id`. `v1alpha1` remains immutable.
+`v1alpha2` carries stable lifecycle-aware IDs, an optional portable `target_application_id`, current/proposed state, immutable snapshot identity/ancestry, typed provenance, preservation claims, and invariant requirements. The application identifier is canonical snapshot data, validated as lowercase kebab-case, and is distinct from both the SpecGen `id` and target `pack_id`. Proposed state identifies `base_snapshot_id` and `change_id`. `v1alpha1` remains immutable.
 
 Canonical snapshot digests are SHA-256 over sorted compact UTF-8 JSON with `snapshot.content_digest` omitted before hashing, avoiding self-reference.
 

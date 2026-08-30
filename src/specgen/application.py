@@ -35,6 +35,7 @@ def create_candidate(
     spec_id: str,
     title: str,
     *,
+    target_application_id: str | None = None,
     version: str = "0.1.0",
     created_at: str,
     snapshot_id: str | None = None,
@@ -69,6 +70,8 @@ def create_candidate(
         "preservation": {"claims": []},
         "provenance": {"sources": []},
     }
+    if target_application_id is not None:
+        document["target_application_id"] = target_application_id
     result = validate(document)
     if not result.valid:
         first = result.diagnostics[0]

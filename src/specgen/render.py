@@ -46,6 +46,7 @@ def render_markdown(spec: dict[str, Any]) -> str:
         "",
         f"> Spec `{spec['id']}` · version `{spec['version']}` · snapshot `{snapshot['id']}` · {state['kind']} · {spec['status']}",
         "",
+        *([f"**Target application:** `{spec['target_application_id']}`", ""] if spec.get("target_application_id") else []),
         "## Snapshot",
         "",
         f"- **Created:** {snapshot['created_at']}",

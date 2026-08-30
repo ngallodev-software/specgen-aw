@@ -230,6 +230,11 @@ def _task_prompt(
         f"- Task ID: `{task['id']}`",
         f"- Tier: `{task.get('tier', 'implementation')}`",
     ]
+    lines.append(
+        f"- Target application: `{document['target_application_id']}`"
+        if document.get("target_application_id")
+        else "- Target application: not declared (new or not-yet-existing application)"
+    )
     role = task.get("role") or task.get("role_hint")
     if isinstance(role, str) and role:
         lines.append(f"- Logical role hint: `{role}`")
@@ -320,6 +325,10 @@ def _root_pack_resources(document: dict[str, Any], has_source_baseline: bool) ->
         "README.md": (
             f"# {document['title']} — Agent-Workflow target\n\n"
             f"Generated from SpecGen `{document['id']}` snapshot `{document['snapshot']['id']}` ({digest}).\n\n"
+            + (f"Target application: `{document['target_application_id']}`.\n\n"
+               if document.get("target_application_id")
+               else "Target application: not declared (new or not-yet-existing application semantics).\n\n")
+            +
             "`pack.yaml` is the Agent-Workflow execution manifest. The canonical SpecGen snapshot remains the specification authority.\n\n"
             f"{baseline_note}\n"
         ),

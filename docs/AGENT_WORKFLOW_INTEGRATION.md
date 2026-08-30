@@ -58,7 +58,11 @@ TARGET_DIR/
 
 `pack.yaml` is emitted as deterministic JSON text, which is valid YAML and avoids adding a YAML dependency to SpecGen core.
 
+The optional canonical `target_application_id` identifies the portable application being changed. It is a lowercase kebab-case identifier (1–63 characters), with one value per canonical snapshot; it is not derived from a path and does not replace the SpecGen `id` or Agent-Workflow `pack_id`. Agent-Workflow 0.9.0 has no application field in `prompt-pack/v1`, so the adapter preserves the identifier in generated README/task prompts while leaving `pack.yaml` and its legacy `pack_id` meaning unchanged. If it is absent, the target is intentionally unspecified; this supports a new or not-yet-existing application and does not imply that a repository baseline exists.
+
 `MANIFEST.json` is intentionally absent from source prompt packs. Agent-Workflow reserves that filename for the canonical `agent-workflow/pack-manifest/v1` archive-integrity artifact created by its own `pack archive` operation. SpecGen emits the supported source checksum sidecar `MANIFEST.sha256` instead.
+
+The existing `MANIFEST.sha256` covers the generated application-ID projections. Archive behavior therefore remains Agent-Workflow-owned and unchanged; no second canonical manifest or path-derived identity is introduced.
 
 ### Result contracts
 
