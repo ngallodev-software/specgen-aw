@@ -18,6 +18,10 @@ agent-workflow-spec = "specgen.agent_workflow_plugin:plugin"
 [project.urls]
 Repository = "https://github.com/ngallodev-software/specgen-aw"
 
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+
 [tool.setuptools.packages.find]
 where = ["src"]
 
