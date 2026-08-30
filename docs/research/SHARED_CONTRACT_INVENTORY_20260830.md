@@ -11,10 +11,20 @@ This is an extraction inventory, not a claim that the bundle already exists.
 
 | File | Disposition | Reason/evidence |
 | --- | --- | --- |
-| `compat/agent-workflow/0.9.0/schemas/{pack,evaluation-plan,source-baseline,agent-role-v1,task-result}.schema.json` | extract as historical fixtures | Versioned compatibility bytes; all five match 0.9.1. |
-| `compat/agent-workflow/0.9.1/schemas/{pack,evaluation-plan,source-baseline,agent-role-v1,task-result}.schema.json` | extract as release fixtures | Current compiler input; IDs and bytes are frozen by `SNAPSHOT.json`. |
-| `compat/agent-workflow/{0.9.0,0.9.1}/SNAPSHOT.json` | retain as provenance evidence; replace with bundle metadata after migration | Captures source commit, schema digests, and dependency context. |
-| `compat/agent-workflow/{0.9.0,0.9.1}/SOURCE.json` | retain as provenance evidence | Captures compatibility snapshot/archive identity. |
+| `compat/agent-workflow/0.9.0/schemas/pack.schema.json` | extract as historical fixture | `agent-workflow/prompt-pack/v1`; byte-identical to 0.9.1. |
+| `compat/agent-workflow/0.9.0/schemas/evaluation-plan.schema.json` | extract as historical fixture | `agent-workflow/evaluation-plan/v1`; byte-identical to 0.9.1. |
+| `compat/agent-workflow/0.9.0/schemas/source-baseline.schema.json` | extract as historical fixture | `agent-workflow/source-baseline/v1`; byte-identical to 0.9.1. |
+| `compat/agent-workflow/0.9.0/schemas/agent-role-v1.schema.json` | extract as historical fixture | `agent-workflow/agent-role/v1`; byte-identical to 0.9.1. |
+| `compat/agent-workflow/0.9.0/schemas/task-result.schema.json` | extract as historical fixture | `agent-workflow/task-result/v1`; byte-identical to 0.9.1. |
+| `compat/agent-workflow/0.9.1/schemas/pack.schema.json` | extract as release fixture | Current compiler input; digest frozen by `SNAPSHOT.json`. |
+| `compat/agent-workflow/0.9.1/schemas/evaluation-plan.schema.json` | extract as release fixture | Current compiler input; digest frozen by `SNAPSHOT.json`. |
+| `compat/agent-workflow/0.9.1/schemas/source-baseline.schema.json` | extract as release fixture | Current compiler input; digest frozen by `SNAPSHOT.json`. |
+| `compat/agent-workflow/0.9.1/schemas/agent-role-v1.schema.json` | extract as release fixture | Current compiler input; digest frozen by `SNAPSHOT.json`. |
+| `compat/agent-workflow/0.9.1/schemas/task-result.schema.json` | extract as release fixture | Current compiler input; digest frozen by `SNAPSHOT.json`. |
+| `compat/agent-workflow/0.9.0/SNAPSHOT.json` | retain as provenance evidence | Captures source commit, schema digests, and dependency context. |
+| `compat/agent-workflow/0.9.1/SNAPSHOT.json` | retain as provenance evidence; replace with bundle metadata after migration | Captures source commit, schema digests, and dependency context. |
+| `compat/agent-workflow/0.9.0/SOURCE.json` | retain as provenance evidence | Captures compatibility snapshot/archive identity. |
+| `compat/agent-workflow/0.9.1/SOURCE.json` | retain as provenance evidence | Captures compatibility snapshot/archive identity. |
 | `compat/agent-workflow/compatibility.json` | retain as application support policy; adapt to bundle provenance | Application-version compatibility is not bundle authority. |
 | `src/specgen/agent_workflow.py` | narrow adapter; remove local schema loading in extraction phase | Compiles target artifacts and validates against vendored bytes today; does not run workers. |
 | `src/specgen/contracts.py` | narrow adapter | Exposes contract lookup and compatibility projection. |
@@ -27,7 +37,7 @@ This is an extraction inventory, not a claim that the bundle already exists.
 
 | File | Disposition | Reason/evidence |
 | --- | --- | --- |
-| `schemas/pack.schema.json` | extract shared schema bytes; semantic owner remains Agent-Workflow | Native `agent-workflow/prompt-pack/v1` contract consumed by compiler and runtime. |
+| `schemas/pack.schema.json` | extract shared schema bytes; semantic owner remains Agent-Workflow | `agent-workflow/prompt-pack/v1`; consumed by compiler and runtime. |
 | `schemas/evaluation-plan.schema.json` | extract shared schema bytes | Cross-application evaluation intent handoff. |
 | `schemas/source-baseline.schema.json` | extract shared schema bytes | Cross-application Git provenance handoff. |
 | `schemas/agent-role-v1.schema.json` | extract shared schema bytes | Logical role compatibility hint; runtime resolution remains Agent-Workflow. |
@@ -44,6 +54,11 @@ each file separately. No private Agent-Workflow module is a proposed bundle
 public import.
 
 ## Approved bundle surface and ownership
+
+The machine-readable freeze of this API and ownership decision is
+[`SHARED_CONTRACT_SURFACE_20260830.json`](SHARED_CONTRACT_SURFACE_20260830.json).
+It is intentionally a design/boundary artifact; it does not publish a bundle
+or grant either application permission to import private modules.
 
 The separately released bundle has the following public surface, with stable
 namespaced IDs and immutable versioned bytes:

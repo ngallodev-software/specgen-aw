@@ -1,0 +1,42 @@
+{
+  "schema": "specgen/shared-contract-surface/v1",
+  "captured_on": "2026-08-30",
+  "bundle": {
+    "name": "specgen-agent-workflow-contracts",
+    "release_policy": "immutable",
+    "version_policy": "semantic version; shared meaning changes require a new release and explicit migrations",
+    "public_api": [
+      "schemas and namespaced schema IDs",
+      "canonical JSON normalization and bytes",
+      "schema validation and diagnostics",
+      "artifact descriptors and SHA-256 digests",
+      "version/schema-digest/feature negotiation",
+      "deterministic supported-version migrations",
+      "immutable conformance fixtures and expected outcomes"
+    ],
+    "public_api_exclusions": [
+      "authoring or specification compilation",
+      "prompt-pack interpretation",
+      "scheduler, worker launch, model selection, or execution",
+      "evaluation execution, review disposition, acceptance, or sealing",
+      "repository mutation, persistence, or generic CRUD"
+    ]
+  },
+  "shared_contracts": [
+    {"id": "agent-workflow/prompt-pack/v1", "schema": "pack.schema.json"},
+    {"id": "agent-workflow/evaluation-plan/v1", "schema": "evaluation-plan.schema.json"},
+    {"id": "agent-workflow/source-baseline/v1", "schema": "source-baseline.schema.json"},
+    {"id": "agent-workflow/agent-role/v1", "schema": "agent-role-v1.schema.json"},
+    {"id": "agent-workflow/task-result/v1", "schema": "task-result.schema.json"}
+  ],
+  "ownership": [
+    {"seam": "schemas, IDs, normalization, validation, descriptors, digests, negotiation, migrations, conformance", "bundle": "owner"},
+    {"seam": "canonical authoring, specification history, readiness, target compilation", "specgen": "owner", "bundle": "adapter_only"},
+    {"seam": "prompt-pack interpretation, scheduling, role/model resolution, execution, lifecycle", "agent_workflow": "owner", "bundle": "adapter_only"},
+    {"seam": "evaluation execution, review, acceptance, sealing", "agent_workflow": "owner", "bundle": "excluded"}
+  ],
+  "adapters": {
+    "specgen": {"allowed_import": "documented bundle surface", "private_agent_workflow_imports": false},
+    "agent_workflow": {"allowed_import": "documented bundle surface", "private_specgen_imports": false}
+  }
+}
