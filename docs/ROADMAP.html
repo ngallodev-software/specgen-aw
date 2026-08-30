@@ -1,0 +1,89 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ROADMAP</title><style>
+:root { color-scheme: light dark; --bg:#f6f8fa; --panel:#fff; --ink:#24292f; --muted:#57606a; --accent:#0969da; --line:#d0d7de; }
+@media (prefers-color-scheme: dark) { :root { --bg:#0d1117; --panel:#161b22; --ink:#e6edf3; --muted:#8b949e; --accent:#58a6ff; --line:#30363d; } }
+* { box-sizing:border-box; } body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.65 system-ui,-apple-system,Segoe UI,sans-serif; }
+main { max-width:1100px; margin:0 auto; padding:2rem 1.25rem 4rem; } article { background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:clamp(1.25rem,3vw,3rem); box-shadow:0 4px 18px #00000012; }
+h1,h2,h3 { line-height:1.25; margin-top:1.8em; } h1 { margin-top:0; font-size:2.35rem; } h2 { border-bottom:1px solid var(--line); padding-bottom:.35rem; } a { color:var(--accent); } code { padding:.15em .35em; border-radius:5px; background:color-mix(in srgb,var(--muted) 15%,transparent); } pre { overflow:auto; padding:1rem; border-radius:8px; background:#161b22; color:#e6edf3; } table { display:block; overflow:auto; border-collapse:collapse; } th,td { border:1px solid var(--line); padding:.55rem .75rem; text-align:left; } th { background:color-mix(in srgb,var(--accent) 12%,transparent); } blockquote { margin-left:0; padding:.5rem 1rem; border-left:4px solid var(--accent); color:var(--muted); } .mermaid { background:var(--panel); padding:1rem; border:1px solid var(--line); border-radius:8px; overflow:auto; }
+nav { margin-bottom:1rem; color:var(--muted); } nav a { margin-right:1rem; }
+</style></head><body><main><nav><a href="../README.html">README</a><a href="index.html">Documentation index</a></nav><article><h1 id="roadmap">Roadmap</h1>
+<blockquote>
+<p>Document version: 0.2.0 · Applies to SpecGen 0.2.0</p>
+</blockquote>
+<p>Mutable plan; completed architecture decisions remain in ADRs. Testing follows <a href="ENGINEERING_POLICY.html">ENGINEERING_POLICY.md</a> and is currently disabled by explicit release instruction.</p>
+<h2 id="phase-0-foundation-and-prior-art-assessment">Phase 0 — Foundation and prior-art assessment</h2>
+<p>Versioning, contract namespace, ADR discipline, compatibility fixtures, development Agent-Workflow linkage, prior-art assessment, engineering policy, and the first deliberate canonical revision (<code>specgen/spec/v1alpha2</code>) are complete.</p>
+<h2 id="phase-1-canonical-ir-deterministic-validator">Phase 1 — Canonical IR + deterministic validator</h2>
+<p>Complete in <code>0.1.3</code>: contract discovery, JSON Schema validation, stable-ID/reference/trace/preservation checks, dependency cycles, snapshot ancestry/digest checks, canonical serialization/digest, and the deliberately small public critical seam.</p>
+<h2 id="phase-2-markdown-projection-authoring-history">Phase 2 — Markdown projection + authoring history</h2>
+<p>Complete in <code>0.1.4</code>: deterministic Markdown rendering, append-only single-writer authoring events, immutable snapshot semantics, <code>specgen/semantic-delta/v1alpha1</code>, and stable-ID semantic diffing.</p>
+<h2 id="phase-3-elicitationcompiler-loop">Phase 3 — Elicitation/compiler loop</h2>
+<p>Complete in <code>0.1.5</code>: express/guided/strict/agent-workflow authoring profiles, <code>specgen/elicitation-plan/v1alpha1</code>, deterministic readiness assessment, and canonical finalization. Provider-driven conversation remains an interaction-surface concern rather than canonical authority.</p>
+<h2 id="phase-4-repository-aware-brownfield-analysis">Phase 4 — Repository-aware brownfield analysis</h2>
+<p>Complete in <code>0.1.6</code>: <code>repository-analysis/v1alpha1</code>, Git/directory baselines, durable contract/interface discovery, explicit referenced evidence, contradictions, <code>repository-drift/v1alpha1</code>, Agent-Workflow development target context, and ADR-0007's evidence-first boundary.</p>
+<h2 id="phase-5-evaluation-model">Phase 5 — Evaluation model</h2>
+<p>Implementation complete in <code>0.1.7</code>; integrity corrected in <code>0.1.8</code>.</p>
+<ul>
+<li>portable <code>specgen/evaluation-intent/v1alpha1</code>;</li>
+<li>requirement ↔ acceptance ↔ evaluation relationships;</li>
+<li>public/hidden/external oracle classification;</li>
+<li>digest-bound hidden/external target references when lowered.</li>
+</ul>
+<h2 id="phase-6-agent-workflow-adapter">Phase 6 — Agent-Workflow adapter</h2>
+<p><strong>Complete in <code>0.1.9</code> at the implementation level; tests intentionally not run.</strong></p>
+<p>Implemented:</p>
+<ul>
+<li>Agent-Workflow-ready authoring state is required before target compilation;</li>
+<li>native phase/ticket prompt-pack resource layout;</li>
+<li>deterministic prompt resources carrying requirements, acceptance, evaluation/test intent, dependencies, expected outputs, source context, result handoff, and stop/writable guardrails;</li>
+<li>task result-contract schemas are packaged as pack-relative JSON Schema resources;</li>
+<li>evaluation lowering fails closed on unsupported metadata, invalid scorers, per-evaluation/global-scorer mismatch, unresolved oracle/task mapping, or incompatible task oracles;</li>
+<li>hidden/external oracle references are mapped to Agent-Workflow task IDs rather than SpecGen evaluation IDs;</li>
+<li>Git-bound <code>agent-workflow/source-baseline/v1</code> emission from an exact snapshot-bound repository analysis;</li>
+<li>live repository drift checking before baseline emission;</li>
+<li>source prompt-pack <code>MANIFEST.sha256</code> emission;</li>
+<li>no hand-authored <code>MANIFEST.json</code>, because Agent-Workflow reserves it for its archive-integrity contract;</li>
+<li>target output directories must be empty, preventing stale resources from surviving recompilation.</li>
+</ul>
+<p>Remaining Phase 6 work is release verification only, and must not be run until testing is explicitly re-enabled.</p>
+<h2 id="phase-7-agent-skill-optional-agent-workflow-plugin">Phase 7 — Agent skill + optional Agent-Workflow plugin</h2>
+<p><strong>Complete in <code>0.1.10</code> at the implementation level; tests intentionally deferred.</strong></p>
+<ul>
+<li>thin agent-facing skill over the canonical CLI/library behavior;</li>
+<li>practical express/guided/strict/agent-workflow workflow guidance;</li>
+<li>repository analysis, uncertainty, preservation, traceability, evaluation, finalization, target compilation, and stop-condition guidance;</li>
+<li>optional <code>agent-workflow-spec</code> entry point exposing <code>agent-workflow spec ...</code> through Agent-Workflow's public trusted plugin API only;</li>
+<li>plugin commands delegate to SpecGen authorities and return structured host data;</li>
+<li>no SpecGen-internal plugin framework, no private Agent-Workflow imports, and no duplicate specification model;</li>
+<li>no package resources are registered merely to satisfy a plugin surface: the adapter advertises logical SpecGen resources and leaves canonical schemas owned by SpecGen.</li>
+</ul>
+<h2 id="phase-8-minimal-applicationprogrammatic-api">Phase 8 — Minimal application/programmatic API</h2>
+<p><strong>Complete in <code>0.1.11</code> at the implementation level; tests intentionally deferred.</strong></p>
+<p><code>specgen.api</code> is the stable Python facade over existing authorities for canonical candidate creation/load/write, authoring-event recording, repository analysis, readiness assessment/finalization, validation, rendering, semantic diff, evaluation intent, target compilation/writing, contract/mode discovery, snapshot digests, drift, and compatibility inspection. The conveniences remain contract-backed and do not create mutable service authority.</p>
+<p>Normal installed distributions now carry the same source-owned canonical schemas, pinned Agent-Workflow compatibility schemas, compatibility metadata, and skill as installation data. Runtime lookup supports both source checkouts and installed distributions without maintaining duplicate schema copies.</p>
+<p>No standalone HTTP service is justified for the initial release. Do not add authentication, databases, background workers, task queues, websockets, provider frameworks, or duplicate persistence unless a concrete later requirement demands them. An HTTP service requires an ADR before implementation.</p>
+<h2 id="initial-public-release-closeout">Initial public release closeout</h2>
+<p><strong>Complete in <code>0.2.0</code>; testing follows overlay delivery.</strong></p>
+<ul>
+<li>release/package/reference surfaces reconciled to <code>0.2.0</code>;</li>
+<li>release manifest regeneration remains part of the self-applying overlay;</li>
+<li>README/changelog/roadmap claims reconciled to implemented behavior;</li>
+<li>immutable old schema versions retained with unchanged meanings;</li>
+<li>fresh source-tree consistency audit completed before test execution;</li>
+<li>obsolete generated README variants and old root checkpoint archives removed explicitly;</li>
+<li>cumulative self-applying release overlay produced from authoritative <code>0.1.8</code>;</li>
+<li>clean source archives are defined by the regenerated <code>MANIFEST.sha256</code> inventory and contain only managed release files;</li>
+<li>deferred work and remaining architecture choices are reported as release notes rather than expanded into speculative code.</li>
+</ul>
+<h2 id="explicitly-deferred">Explicitly deferred</h2>
+<p>General execution engine, duplicated worker/review/acceptance lifecycle, database as specification authority, generalized plugin/hook marketplace, speculative provider abstraction, arbitrary source-code semantic parsing, or other orchestration not justified by a concrete requirement.</p>
+<h2 id="post-02-development-targeted-brownfield-intelligence">Post-0.2 development — Targeted brownfield intelligence</h2>
+<p>In development after the initial public release:</p>
+<ul>
+<li>application usage guide covering the canonical authoring lifecycle;</li>
+<li><code>specgen/brownfield-plan/v1alpha1</code> for separating user decision questions from codebase research tasks;</li>
+<li><code>specgen/brownfield-analysis/v1alpha1</code> for evidence-located agent semantic findings with explicit confidence;</li>
+<li>optional <code>codebase-memory-mcp</code> capability detection and graph-assisted research strategy, with no runtime dependency;</li>
+<li>dedicated brownfield agent skill that narrows architecture/search/trace/snippet work and stops when remaining uncertainty is a user decision;</li>
+<li>deterministic <code>repository-analysis/v1alpha1</code> remains unchanged and authoritative only for its evidence-first scope.</li>
+</ul>
+<p>This work deliberately does not add a generic semantic indexer to SpecGen core or make a third-party MCP server a specification authority.</p></article></main><script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs'; mermaid.initialize({startOnLoad:true,theme:'neutral'});</script></body></html>

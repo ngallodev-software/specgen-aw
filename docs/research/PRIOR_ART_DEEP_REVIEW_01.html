@@ -1,0 +1,241 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>PRIOR ART DEEP REVIEW 01</title><style>
+:root { color-scheme: light dark; --bg:#f6f8fa; --panel:#fff; --ink:#24292f; --muted:#57606a; --accent:#0969da; --line:#d0d7de; }
+@media (prefers-color-scheme: dark) { :root { --bg:#0d1117; --panel:#161b22; --ink:#e6edf3; --muted:#8b949e; --accent:#58a6ff; --line:#30363d; } }
+* { box-sizing:border-box; } body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.65 system-ui,-apple-system,Segoe UI,sans-serif; }
+main { max-width:1100px; margin:0 auto; padding:2rem 1.25rem 4rem; } article { background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:clamp(1.25rem,3vw,3rem); box-shadow:0 4px 18px #00000012; }
+h1,h2,h3 { line-height:1.25; margin-top:1.8em; } h1 { margin-top:0; font-size:2.35rem; } h2 { border-bottom:1px solid var(--line); padding-bottom:.35rem; } a { color:var(--accent); } code { padding:.15em .35em; border-radius:5px; background:color-mix(in srgb,var(--muted) 15%,transparent); } pre { overflow:auto; padding:1rem; border-radius:8px; background:#161b22; color:#e6edf3; } table { display:block; overflow:auto; border-collapse:collapse; } th,td { border:1px solid var(--line); padding:.55rem .75rem; text-align:left; } th { background:color-mix(in srgb,var(--accent) 12%,transparent); } blockquote { margin-left:0; padding:.5rem 1rem; border-left:4px solid var(--accent); color:var(--muted); } .mermaid { background:var(--panel); padding:1rem; border:1px solid var(--line); border-radius:8px; overflow:auto; }
+nav { margin-bottom:1rem; color:var(--muted); } nav a { margin-right:1rem; }
+</style></head><body><main><nav><a href="../../README.html">README</a><a href="../index.html">Documentation index</a></nav><article><h1 id="prior-art-deep-review-01-specification-authority-history-and-agent-handoff">Prior-art deep review 01 — specification authority, history, and agent handoff</h1>
+<blockquote>
+<p>Document version: 0.2.0 · Applies to SpecGen 0.2.0</p>
+</blockquote>
+<p>Date: 2026-08-27
+Status: Initial source-level assessment</p>
+<p>This review focuses on mechanisms rather than product popularity. The question is:
+which ideas materially improve correctness, provenance, reviewability, or agent
+handoff enough to earn permanent surface area in SpecGen?</p>
+<h2 id="sources-reviewed">Sources reviewed</h2>
+<h3 id="specbuilder">specBuilder</h3>
+<p>Repository: https://github.com/dshills/specBuilder</p>
+<p>Relevant mechanisms:</p>
+<ul>
+<li>planner → asker → compiler → validator pipeline;</li>
+<li>typed questions mapped to affected spec paths;</li>
+<li>immutable/versioned answers (<code>supersedes</code> relationship);</li>
+<li>append-only compiled snapshots;</li>
+<li>canonical structured spec plus Markdown and trace artifacts;</li>
+<li>schema validation plus semantic issues;</li>
+<li>trace coverage requirement for populated spec fields;</li>
+<li>explicit export bundles for downstream coding agents.</li>
+</ul>
+<p>Assessment:</p>
+<ul>
+<li><strong>RETAIN/ADAPT:</strong> constrained compiler framing rather than chatbot framing.</li>
+<li><strong>RETAIN/ADAPT:</strong> question ledger + affected paths/IDs.</li>
+<li><strong>RETAIN/ADAPT:</strong> immutable answer/decision history.</li>
+<li><strong>RETAIN/ADAPT:</strong> snapshot immutability and deterministic compilation goals.</li>
+<li><strong>RETAIN/ADAPT:</strong> explicit trace artifact/coverage checking.</li>
+<li><strong>REJECT AS CORE SHAPE:</strong> adopting <code>ProjectImplementationSpec</code> wholesale. It is
+  useful prior art but mixes product, implementation, UI/API, planning, and acceptance
+  into one project-shaped contract that is narrower than SpecGen's target domain.</li>
+<li><strong>DEFER:</strong> database/application architecture. SpecGen should establish portable
+  contracts and CLI/compiler semantics before selecting a persistent service model.</li>
+</ul>
+<h2 id="github-spec-kit">GitHub Spec Kit</h2>
+<p>Repository: https://github.com/github/spec-kit
+Documentation: https://github.github.com/spec-kit/</p>
+<p>Current workflow is substantially broader than early Spec Kit: core SDD remains
+Spec → Plan → Tasks → Implement, but the project now includes clarification,
+checklists, cross-artifact analysis, convergence, extensions, presets, workflows,
+and many coding-agent integrations.</p>
+<p>Relevant mechanisms:</p>
+<ul>
+<li>project constitution/organizational rules preceding feature work;</li>
+<li>clarification as a quality gate when ambiguity matters;</li>
+<li>read-only cross-artifact consistency analysis;</li>
+<li>dependency-ordered task generation;</li>
+<li>convergence check after implementation;</li>
+<li>agent integration as replaceable delivery adapters;</li>
+<li>capability/version inspection for automation.</li>
+</ul>
+<p>Assessment:</p>
+<ul>
+<li><strong>RETAIN/ADAPT:</strong> explicit quality gates: clarify, analyze, converge.</li>
+<li><strong>RETAIN/ADAPT:</strong> project-wide policy/constitution concept, but represent it as
+  versioned context/constraints rather than special Markdown authority.</li>
+<li><strong>RETAIN/ADAPT:</strong> broad agent portability through thin adapters.</li>
+<li><strong>RETAIN/ADAPT:</strong> machine-readable capability/version discovery.</li>
+<li><strong>REJECT AS AUTHORITY MODEL:</strong> Markdown artifact chain as the primary canonical
+  state. SpecGen needs one structured authority with projections.</li>
+<li><strong>DEFER:</strong> broad extension/preset ecosystem until at least two concrete third-party
+  integrations demonstrate the required abstraction.</li>
+</ul>
+<h2 id="openspec">OpenSpec</h2>
+<p>Repository: https://github.com/Fission-AI/OpenSpec</p>
+<p>OpenSpec is especially strong on brownfield change semantics. Its current model keeps
+resolved system truth under <code>openspec/specs/</code> and proposed work under
+<code>openspec/changes/</code>, with proposal/design/tasks and delta specs grouped by change.
+It also defines workflow schemas as artifact dependency graphs.</p>
+<p>Relevant mechanisms:</p>
+<ul>
+<li>current truth separated from proposed change;</li>
+<li>explicit added/modified/removed requirement deltas;</li>
+<li>scenario-linked requirements;</li>
+<li>change folders that co-locate proposal/design/tasks/deltas;</li>
+<li>configurable artifact dependency graphs;</li>
+<li>project context + per-artifact rules;</li>
+<li>explore-before-commit workflow for uncertain ideas.</li>
+</ul>
+<p>Assessment:</p>
+<ul>
+<li><strong>RETAIN/ADAPT:</strong> semantic added/modified/removed delta views.</li>
+<li><strong>RETAIN/ADAPT:</strong> distinction between current truth and a proposed future state.</li>
+<li><strong>RETAIN/ADAPT:</strong> artifact dependency graph as a possible compiler/workflow model.</li>
+<li><strong>RETAIN/ADAPT:</strong> explicit project context/rules injection, but typed where possible.</li>
+<li><strong>REJECT AS SOLE AUTHORITY:</strong> patch/delta files cannot replace a resolved canonical
+  full-state machine contract.</li>
+<li><strong>DEFER:</strong> arbitrary user-defined workflow schemas until the core compiler has a
+  stable artifact graph.</li>
+</ul>
+<h2 id="bmad-bmad-spec">BMAD / bmad-spec</h2>
+<p>Repository: https://github.com/bmad-code-org/BMAD-METHOD
+Relevant skill: <code>src/bmm-skills/plan/bmad-spec/SKILL.md</code></p>
+<p>The current <code>bmad-spec</code> implementation is notable because <code>.memlog.md</code>, not <code>SPEC.md</code>,
+is canonical. The memlog is append-only and records decisions, constraints,
+capabilities, assumptions, questions, direction, notes, and events. <code>SPEC.md</code> and
+spec-authored companions are re-derived from it. Capability IDs remain stable and are
+not reused. The skill also defines a preservation pass that checks load-bearing source
+claims were not silently dropped.</p>
+<p>Relevant mechanisms:</p>
+<ul>
+<li>append-only decision memory;</li>
+<li>derived current contract;</li>
+<li>stable capability IDs across updates;</li>
+<li>explicit assumptions/open questions rather than fabrication;</li>
+<li>load-bearing-content preservation audit;</li>
+<li>single-writer ownership for generated artifacts;</li>
+<li>lean kernel plus discoverable companions.</li>
+</ul>
+<p>Assessment:</p>
+<ul>
+<li><strong>RETAIN/ADAPT:</strong> append-only authoring event journal.</li>
+<li><strong>RETAIN/ADAPT:</strong> stable IDs that survive updates and retirement.</li>
+<li><strong>RETAIN/ADAPT:</strong> preservation validation from source evidence to spec.</li>
+<li><strong>RETAIN/ADAPT:</strong> assumptions/questions as explicit unresolved state.</li>
+<li><strong>ADAPT, NOT COPY:</strong> single-writer principle becomes canonical compiler authority;
+  SpecGen's canonical snapshot remains structured JSON rather than rendered Markdown.</li>
+<li><strong>REJECT:</strong> five-field kernel as SpecGen's universal canonical schema. It is an
+  intentionally compressed downstream contract, whereas SpecGen needs richer typed
+  data/contracts/eval/trace structure.</li>
+</ul>
+<h2 id="cavekit">Cavekit</h2>
+<p>Repository: https://github.com/JuliusBrussee/cavekit</p>
+<p>Cavekit v4 is particularly useful as negative architectural evidence: its author
+rewrote a much larger v3 system after concluding that agent swarms, orchestration,
+hooks, dashboards, and many skills cost more complexity/context than they returned.
+The surviving core centers on one durable spec, a small command loop, drift checking,
+and backpropagating test failures into bugs/invariants.</p>
+<p>Relevant mechanisms:</p>
+<ul>
+<li>durable context that survives agent resets;</li>
+<li>tiny default workflow surface;</li>
+<li>explicit interfaces/invariants/tasks/bugs sections;</li>
+<li>read-only drift detection;</li>
+<li>test failure → durable bug → generalized invariant feedback;</li>
+<li>optional research/review/grilling only when the task earns the ceremony;</li>
+<li>strict complexity/context-budget discipline.</li>
+</ul>
+<p>Assessment:</p>
+<ul>
+<li><strong>RETAIN/ADAPT:</strong> right-sized ceremony and small common path.</li>
+<li><strong>RETAIN/ADAPT:</strong> failure backpropagation into durable knowledge.</li>
+<li><strong>RETAIN/ADAPT:</strong> read-only drift checker separate from mutator/compiler.</li>
+<li><strong>RETAIN/ADAPT:</strong> explicit invariant concept; likely represent as requirement or
+  constraint subtype rather than special Markdown section.</li>
+<li><strong>REJECT:</strong> Markdown-only canonical body. It conflicts with SpecGen's machine-first
+  interoperability goal.</li>
+<li><strong>REJECT:</strong> execution/orchestration features from older Cavekit; Agent-Workflow owns
+  that domain for our first execution target.</li>
+</ul>
+<h1 id="cross-project-conclusions">Cross-project conclusions</h1>
+<h2 id="1-separate-authoring-history-from-current-canonical-truth">1. Separate authoring history from current canonical truth</h2>
+<p>Strongest synthesis:</p>
+<pre><code class="language-text">append-only events
+      │
+      ▼
+deterministic compiler
+      │
+      ▼
+immutable canonical snapshot
+      │
+      ├── human projection
+      ├── semantic delta vs prior snapshot
+      ├── eval artifacts
+      └── execution-target compilation
+</code></pre>
+<p>Accepted as ADR-0005.</p>
+<h2 id="2-preserve-source-claims-not-just-final-prose">2. Preserve source claims, not just final prose</h2>
+<p>SpecBuilder trace coverage and BMAD's preservation sweep converge on the same lesson:
+a spec compiler must detect silent loss of load-bearing input. SpecGen should eventually
+have a deterministic preservation/coverage report that maps evidence/decisions to
+canonical fields and flags materially unrepresented claims.</p>
+<h2 id="3-treat-ambiguity-handling-as-a-quality-policy-not-mandatory-ceremony">3. Treat ambiguity handling as a quality policy, not mandatory ceremony</h2>
+<p>Spec Kit clarification, OpenSpec explore, BMAD express/guided modes, and Cavekit grill
+all imply the same useful behavior: sparse/ambiguous input sometimes needs interactive
+questions, but rich structured input should not be forced through a ritual questionnaire.</p>
+<p>SpecGen should support at least:</p>
+<ul>
+<li><code>express</code>: best-effort compile + assumptions/open questions;</li>
+<li><code>guided</code>: targeted elicitation until selected quality thresholds are met;</li>
+<li><code>strict/headless</code>: fail closed when required intent cannot be derived safely.</li>
+</ul>
+<p>The exact names remain provisional.</p>
+<h2 id="4-add-current-vs-proposed-semantics-without-turning-patches-into-truth">4. Add current-vs-proposed semantics without turning patches into truth</h2>
+<p>OpenSpec's brownfield model is strong. SpecGen should support a proposal/change object
+that can produce a candidate next canonical snapshot and a semantic delta, while keeping
+the full validated snapshot as the downstream contract.</p>
+<h2 id="5-make-driftconvergence-first-class-read-only-operations">5. Make drift/convergence first-class read-only operations</h2>
+<p>Spec Kit's analyze/converge and Cavekit's check suggest distinct validators:</p>
+<ul>
+<li>specification integrity: schema, IDs, references, trace coverage;</li>
+<li>evidence drift: repository/source facts no longer match baseline;</li>
+<li>implementation convergence: current implementation satisfies canonical spec;</li>
+<li>target compatibility: compiled artifacts still validate against target contracts.</li>
+</ul>
+<p>Mutators should not hide inside these checks.</p>
+<h2 id="6-complexity-must-be-evidence-backed">6. Complexity must be evidence-backed</h2>
+<p>Cavekit's v3→v4 rewrite is a useful warning for SpecGen. Avoid adding orchestration,
+agent swarms, a plugin marketplace, a large persistence service, or bespoke execution
+lifecycle until a concrete requirement cannot be handled by the compiler/adapter model.</p>
+<h1 id="immediate-schema-implications-for-v1alpha1">Immediate schema implications for v1alpha1</h1>
+<p>Candidate refinements before Phase 1 implementation:</p>
+<ol>
+<li>Add stable identity semantics for every durable object and a retirement rule.</li>
+<li>Define provenance categories: user decision, source evidence, inference, assumption.</li>
+<li>Define a separate authoring-event contract instead of embedding full history in the
+   canonical spec snapshot.</li>
+<li>Define snapshot identity/digest metadata.</li>
+<li>Make semantic deltas derived from snapshot comparison.</li>
+<li>Add explicit invariant/constraint representation if current requirement typing is
+   insufficient.</li>
+<li>Add preservation/trace coverage expectations.</li>
+<li>Add proposal/candidate-snapshot semantics to the roadmap, not necessarily the first
+   canonical schema revision.</li>
+</ol>
+<h1 id="licensing-note">Licensing note</h1>
+<p>All reviewed projects are being treated as prior art/inspiration unless source is
+explicitly copied later. Any copied/adapted code must be reviewed against its license
+and retain required notices. Mechanism-level architectural inspiration should remain
+credited in README/research/ADRs.</p>
+<h2 id="011-disposition">0.1.1 disposition</h2>
+<p>The immediate schema implications above were applied as follows:</p>
+<ul>
+<li>stable durable-object identity/retirement: <code>specgen/spec/v1alpha2</code>;</li>
+<li>typed provenance: <code>v1alpha2.provenance.sources</code>;</li>
+<li>authoring history: separate <code>specgen/authoring-event/v1alpha1</code> contract;</li>
+<li>snapshot identity/ancestry/event references: <code>v1alpha2.snapshot</code>;</li>
+<li>preservation coverage: <code>v1alpha2.preservation.claims</code>;</li>
+<li>invariant representation: <code>requirements[].type = invariant</code>;</li>
+<li>current/proposed semantics: <code>v1alpha2.state</code>, with proposed state bound to a base snapshot/change ID;</li>
+<li>semantic deltas remain derived and are not canonical truth.</li>
+</ul></article></main><script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs'; mermaid.initialize({startOnLoad:true,theme:'neutral'});</script></body></html>

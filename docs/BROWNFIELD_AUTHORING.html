@@ -1,0 +1,72 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>BROWNFIELD AUTHORING</title><style>
+:root { color-scheme: light dark; --bg:#f6f8fa; --panel:#fff; --ink:#24292f; --muted:#57606a; --accent:#0969da; --line:#d0d7de; }
+@media (prefers-color-scheme: dark) { :root { --bg:#0d1117; --panel:#161b22; --ink:#e6edf3; --muted:#8b949e; --accent:#58a6ff; --line:#30363d; } }
+* { box-sizing:border-box; } body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.65 system-ui,-apple-system,Segoe UI,sans-serif; }
+main { max-width:1100px; margin:0 auto; padding:2rem 1.25rem 4rem; } article { background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:clamp(1.25rem,3vw,3rem); box-shadow:0 4px 18px #00000012; }
+h1,h2,h3 { line-height:1.25; margin-top:1.8em; } h1 { margin-top:0; font-size:2.35rem; } h2 { border-bottom:1px solid var(--line); padding-bottom:.35rem; } a { color:var(--accent); } code { padding:.15em .35em; border-radius:5px; background:color-mix(in srgb,var(--muted) 15%,transparent); } pre { overflow:auto; padding:1rem; border-radius:8px; background:#161b22; color:#e6edf3; } table { display:block; overflow:auto; border-collapse:collapse; } th,td { border:1px solid var(--line); padding:.55rem .75rem; text-align:left; } th { background:color-mix(in srgb,var(--accent) 12%,transparent); } blockquote { margin-left:0; padding:.5rem 1rem; border-left:4px solid var(--accent); color:var(--muted); } .mermaid { background:var(--panel); padding:1rem; border:1px solid var(--line); border-radius:8px; overflow:auto; }
+nav { margin-bottom:1rem; color:var(--muted); } nav a { margin-right:1rem; }
+</style></head><body><main><nav><a href="../README.html">README</a><a href="index.html">Documentation index</a></nav><article><h1 id="brownfield-specification-authoring">Brownfield Specification Authoring</h1>
+<blockquote>
+<p>Document version: 0.2.0 · Applies to SpecGen 0.2.0 plus post-release development additions described here</p>
+</blockquote>
+<p>Brownfield authoring has two distinct evidence layers:</p>
+<ol>
+<li><strong>deterministic repository evidence</strong> — <code>specgen/repository-analysis/v1alpha1</code>;</li>
+<li><strong>agent-assisted semantic analysis</strong> — <code>specgen/brownfield-analysis/v1alpha1</code>.</li>
+</ol>
+<p>Keeping them separate prevents a code-intelligence tool or agent inference from being mistaken for deterministic discovery.</p>
+<h2 id="what-the-user-should-answer">What the user should answer</h2>
+<p>Ask the user for information the repository cannot authorize:</p>
+<ul>
+<li>desired behavior and outcome;</li>
+<li>scope and explicit non-goals;</li>
+<li>preservation/compatibility promises;</li>
+<li>priority or policy choices between viable approaches;</li>
+<li>acceptance expectations when existing tests do not define the desired result.</li>
+</ul>
+<p>Do not make the user act as a source-code index. Questions such as “which file handles this?”, “what calls this method?”, or “where is the schema?” should normally be answered through repository analysis.</p>
+<h2 id="what-the-agent-should-investigate">What the agent should investigate</h2>
+<p>Investigate only enough of the codebase to establish:</p>
+<ul>
+<li>the current behavior and its entry points;</li>
+<li>relevant callers/callees and component boundaries;</li>
+<li>interfaces, data contracts, persistence/configuration seams, and cross-service dependencies;</li>
+<li>existing tests or observable behavior that should be preserved;</li>
+<li>likely blast radius and implementation constraints;</li>
+<li>contradictions between requested/spec-declared behavior and current evidence.</li>
+</ul>
+<p>Connectivity is evidence, not scope authorization. A highly connected symbol may identify risk without making every consumer part of the requested change.</p>
+<h2 id="efficient-codebase-memory-mcp-use">Efficient <code>codebase-memory-mcp</code> use</h2>
+<p>When the agent exposes <code>codebase-memory-mcp</code>, prefer graph queries over broad file enumeration. Current public tooling includes project indexing/status, structured graph search, call-path tracing, Git-diff impact mapping, read-only graph queries, graph schema inspection, source snippets, architecture summaries, and indexed code search. The tool's own guidance recommends discovering exact symbols before tracing them. See the upstream project documentation at <a href="https://github.com/DeusData/codebase-memory-mcp">https://github.com/DeusData/codebase-memory-mcp</a> for the current tool surface.</p>
+<p>Use this progression:</p>
+<ol>
+<li><strong>Establish the project once.</strong> List projects/index status; index only when necessary.</li>
+<li><strong>Inspect graph shape once.</strong> Use <code>get_graph_schema</code> before custom graph queries.</li>
+<li><strong>Get one architecture overview.</strong> Use it to choose likely packages/routes/components, not to summarize the repository for its own sake.</li>
+<li><strong>Search narrowly.</strong> Start from requirement language, interface names, route names, domain nouns, or explicit spec paths. Prefer structured symbol/route searches before grep-style text searches.</li>
+<li><strong>Trace shallowly.</strong> Start call-path traversal at depth 1–2. Increase depth only when a missing boundary materially affects the specification.</li>
+<li><strong>Read decisive snippets.</strong> Retrieve source only after symbols are identified. Read supporting tests/contracts/configuration where they establish behavior or preservation constraints.</li>
+<li><strong>Assess blast radius.</strong> Inspect incoming consumers and shared types/contracts. Use <code>detect_changes</code> only for an actual Git diff; it is not a substitute for proposed-change reasoning.</li>
+<li><strong>Stop.</strong> Once the material behavior, dependencies, risks, and unresolved user decisions are known, stop exploring adjacent code.</li>
+</ol>
+<p>Avoid whole-graph dumps, exhaustive symbol inventories, deep traces by default, repeated architecture calls, or source reads that do not answer a specification question.</p>
+<h2 id="confidence-discipline">Confidence discipline</h2>
+<p>The artifact also binds <code>repository_analysis_digest</code> to the exact deterministic report summarized by the brownfield plan. A <code>brownfield-analysis/v1alpha1</code> finding declares one of:</p>
+<ul>
+<li><code>observed</code> — directly supported by code/declaration/graph evidence;</li>
+<li><code>strong_inference</code> — multiple observations support the conclusion, but it is not a literal declaration;</li>
+<li><code>tentative</code> — plausible and useful enough to record, but further evidence or a user decision is needed.</li>
+</ul>
+<p>A user-authorized product decision is not an agent inference and should enter canonical provenance as user input/decision.</p>
+<h2 id="converting-analysis-into-a-specification">Converting analysis into a specification</h2>
+<p>Do not copy the repository's architecture wholesale into the spec. Convert only material findings into:</p>
+<ul>
+<li>requirements and invariants;</li>
+<li>preserved behaviors;</li>
+<li>interfaces/data contracts;</li>
+<li>constraints and risks;</li>
+<li>acceptance/evaluation intent;</li>
+<li>implementation phases/tasks when the chosen authoring mode requires them.</li>
+</ul>
+<p>Every important semantic conclusion should retain a path/symbol/tool evidence trail. Large code excerpts are unnecessary; record locators and digests where practical.</p>
+<p>Before finalization or target compilation, check repository drift. If the baseline moved, revalidate the findings that materially support the proposed change.</p></article></main><script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs'; mermaid.initialize({startOnLoad:true,theme:'neutral'});</script></body></html>

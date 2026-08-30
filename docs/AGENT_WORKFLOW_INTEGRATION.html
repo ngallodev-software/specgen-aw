@@ -1,0 +1,122 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>AGENT WORKFLOW INTEGRATION</title><style>
+:root { color-scheme: light dark; --bg:#f6f8fa; --panel:#fff; --ink:#24292f; --muted:#57606a; --accent:#0969da; --line:#d0d7de; }
+@media (prefers-color-scheme: dark) { :root { --bg:#0d1117; --panel:#161b22; --ink:#e6edf3; --muted:#8b949e; --accent:#58a6ff; --line:#30363d; } }
+* { box-sizing:border-box; } body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.65 system-ui,-apple-system,Segoe UI,sans-serif; }
+main { max-width:1100px; margin:0 auto; padding:2rem 1.25rem 4rem; } article { background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:clamp(1.25rem,3vw,3rem); box-shadow:0 4px 18px #00000012; }
+h1,h2,h3 { line-height:1.25; margin-top:1.8em; } h1 { margin-top:0; font-size:2.35rem; } h2 { border-bottom:1px solid var(--line); padding-bottom:.35rem; } a { color:var(--accent); } code { padding:.15em .35em; border-radius:5px; background:color-mix(in srgb,var(--muted) 15%,transparent); } pre { overflow:auto; padding:1rem; border-radius:8px; background:#161b22; color:#e6edf3; } table { display:block; overflow:auto; border-collapse:collapse; } th,td { border:1px solid var(--line); padding:.55rem .75rem; text-align:left; } th { background:color-mix(in srgb,var(--accent) 12%,transparent); } blockquote { margin-left:0; padding:.5rem 1rem; border-left:4px solid var(--accent); color:var(--muted); } .mermaid { background:var(--panel); padding:1rem; border:1px solid var(--line); border-radius:8px; overflow:auto; }
+nav { margin-bottom:1rem; color:var(--muted); } nav a { margin-right:1rem; }
+</style></head><body><main><nav><a href="../README.html">README</a><a href="index.html">Documentation index</a></nav><article><h1 id="agent-workflow-integration-architecture">Agent-Workflow Integration Architecture</h1>
+<blockquote>
+<p>Document version: 0.2.0 · Applies to SpecGen 0.2.0</p>
+</blockquote>
+<h2 id="baseline">Baseline</h2>
+<p>Branch and promotion handling follows <a href="DELIVERY_WORKFLOW.html">the accepted delivery workflow</a>: synchronize production first, rebase QA and work branches, use isolated worktrees, gate QA through Jenkins, and tag only the promoted production commit.</p>
+<p>Release compatibility is pinned under <code>compat/agent-workflow/</code>; moving development source is observed separately through <code>dev/agent-workflow.toml</code>. The adapter targets Agent-Workflow <code>0.9.1</code> public contracts and never imports private Agent-Workflow Python implementation modules.</p>
+<h2 id="contract-mapping">Contract mapping</h2>
+<table>
+<thead>
+<tr>
+<th>SpecGen concern</th>
+<th>Agent-Workflow 0.9.1 contract</th>
+<th>Relationship</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>implementation phases/tasks/dependencies</td>
+<td><code>agent-workflow/prompt-pack/v1</code></td>
+<td>compile target</td>
+</tr>
+<tr>
+<td>executable evaluation plan</td>
+<td><code>agent-workflow/evaluation-plan/v1</code></td>
+<td>compile target where faithfully representable</td>
+</tr>
+<tr>
+<td>source/repository baseline</td>
+<td><code>agent-workflow/source-baseline/v1</code></td>
+<td>compile target from bound Git analysis</td>
+</tr>
+<tr>
+<td>logical execution role</td>
+<td><code>agent-workflow/agent-role/v1</code></td>
+<td>optional target hint only</td>
+</tr>
+<tr>
+<td>generic task result envelope</td>
+<td><code>agent-workflow/task-result/v1</code></td>
+<td>packaged result-contract schema</td>
+</tr>
+<tr>
+<td>runtime state/provenance/status</td>
+<td>documented public CLI/API contracts</td>
+<td>black-box consumption only</td>
+</tr>
+<tr>
+<td>optional hosting</td>
+<td>Agent-Workflow trusted plugin API</td>
+<td>Phase 7 adapter seam</td>
+</tr>
+</tbody>
+</table>
+<h2 id="non-negotiable-boundaries">Non-negotiable boundaries</h2>
+<ol>
+<li>No core import dependency on <code>agent_workflow.*</code>.</li>
+<li>No duplicate Agent Run lifecycle, review authority, acceptance authority, worker supervision, or mutable status database.</li>
+<li>No compatibility claim based only on accidental schema validation; product version and exact contract identities are pinned.</li>
+<li>Agent-Workflow-specific execution fields remain adapter/extension concerns unless they independently belong to general specification semantics.</li>
+<li>Lowering fails closed when target contracts cannot preserve material SpecGen meaning.</li>
+</ol>
+<h2 id="0110-compiler-surface">0.1.10 compiler surface</h2>
+<pre><code class="language-bash">specgen agent-workflow compile SPEC \
+  --output TARGET_DIR \
+  [--repository-analysis ANALYSIS] \
+  [--repository-root REPO]
+</code></pre>
+<p>Compilation requires an <code>agent-workflow</code>-ready canonical snapshot and an empty real output directory. This avoids stale resources surviving a later deterministic compile and prevents a symlink from redirecting generated pack files outside the selected root.</p>
+<p>The output is an Agent-Workflow-native prompt-pack source tree:</p>
+<pre><code class="language-text">TARGET_DIR/
+├── pack.yaml
+├── README.md
+├── EXECUTION_PROTOCOL.md
+├── DELEGATION_RUNBOOK.md
+├── evaluation-plan.json          # only when evaluation intent exists
+├── source-baseline.json          # only when repository analysis is supplied
+├── MANIFEST.sha256
+├── result-contracts/
+├── templates/
+└── phase-*/
+    ├── README.md
+    ├── MASTER_IMPLEMENTATION_PROMPT.md
+    └── tickets/
+</code></pre>
+<p><code>pack.yaml</code> is emitted as deterministic JSON text, which is valid YAML and avoids adding a YAML dependency to SpecGen core.</p>
+<p>The optional canonical <code>target_application_id</code> identifies the portable application being changed. It is a lowercase kebab-case identifier (1–63 characters), with one value per canonical snapshot; it is not derived from a path and does not replace the SpecGen <code>id</code> or Agent-Workflow <code>pack_id</code>. Agent-Workflow 0.9.1 has no application field in <code>prompt-pack/v1</code>, so the adapter preserves the identifier in generated README/task prompts while leaving <code>pack.yaml</code> and its legacy <code>pack_id</code> meaning unchanged. If it is absent, the target is intentionally unspecified; this supports a new or not-yet-existing application and does not imply that a repository baseline exists.</p>
+<p><code>MANIFEST.json</code> is intentionally absent from source prompt packs. Agent-Workflow reserves that filename for the canonical <code>agent-workflow/pack-manifest/v1</code> archive-integrity artifact created by its own <code>pack archive</code> operation. SpecGen emits the supported source checksum sidecar <code>MANIFEST.sha256</code> instead.</p>
+<p>The existing <code>MANIFEST.sha256</code> covers the generated application-ID projections. Archive behavior therefore remains Agent-Workflow-owned and unchanged; no second canonical manifest or path-derived identity is introduced.</p>
+<h3 id="result-contracts">Result contracts</h3>
+<p>Agent-Workflow requires <code>result_contract.schema</code> to be a normalized pack-relative path whose bytes are pinned at launch. SpecGen therefore packages the schema bytes under <code>result-contracts/</code> and writes the pack-relative path into each task.</p>
+<p>The portable task contract currently lowers when <code>result_contract.schema</code> is either:</p>
+<ul>
+<li>the pinned <code>agent-workflow/task-result/v1</code> schema ID; or</li>
+<li>an inline JSON Schema object.</li>
+</ul>
+<p>Unresolvable schema identifiers/paths or unsupported result-contract fields fail closed rather than leaving a dangling target reference.</p>
+<h3 id="source-baseline">Source baseline</h3>
+<p>When repository provenance exists, compilation requires a valid <code>specgen/repository-analysis/v1alpha1</code> artifact bound to the exact canonical spec ID, snapshot ID, and digest. The analysis must use a Git baseline. SpecGen re-reads the live Git HEAD and dirty state, derives the branch, and refuses to emit a baseline if the repository drifted.</p>
+<p>A directory-digest baseline cannot be faithfully expressed as Agent-Workflow's Git-oriented <code>source-baseline/v1</code>; compilation therefore fails rather than inventing a head or branch.</p>
+<h3 id="evaluation-lowering">Evaluation lowering</h3>
+<p>Portable evaluation commands lower to Agent-Workflow acceptance commands. Command-based evaluation uses the target <code>acceptance_commands</code> scorer. Explicit scorer names must be supported by Agent-Workflow <code>0.9.1</code>; multiple distinct per-evaluation scorer assignments are rejected because Agent-Workflow carries scorers globally.</p>
+<p>Hidden/external oracles require digest-bound <code>metadata.oracle_ref = {id, sha256}</code>. SpecGen maps the evaluation through requirement/acceptance relationships to the implementation task IDs required by Agent-Workflow <code>oracle_refs</code>. If multiple incompatible oracles would target the same task, compilation fails.</p>
+<p>Unknown evaluation metadata that cannot be represented is also a blocking diagnostic. The adapter does not silently union, drop, or relabel evaluation semantics.</p>
+<h2 id="development-source-linkage">Development source linkage</h2>
+<p>Copy <code>dev/agent-workflow.example.toml</code> to ignored <code>dev/agent-workflow.toml</code>. <code>scripts/sync-agent-workflow-dev.py</code> resolves the live checkout, compares observed public surfaces with release fixtures, and materializes ignored links under <code>.dev/</code>.</p>
+<p>Development drift is evidence requiring an explicit compatibility decision; it never silently rewrites release compatibility.</p>
+<h2 id="authoring-mode-vs-target-adapter">Authoring mode vs target adapter</h2>
+<p><code>specgen author assess --mode agent-workflow</code> is an authoring policy profile over <code>specgen/spec/v1alpha2</code>. It establishes implementation-readiness guardrails but is not the target compiler. Phase 6 then lowers the validated portable snapshot into Agent-Workflow resources without moving execution authority into SpecGen. See ADR-0006.</p>
+<h2 id="optional-plugin-direction">Optional plugin direction</h2>
+<p>Agent-Workflow's public trusted plugin API is a suitable Phase 7 host seam. The plugin remains thin: expose SpecGen commands/resources and delegate to SpecGen core; do not duplicate the canonical model or execution lifecycle.</p>
+<h2 id="optional-host-plugin">Optional host plugin</h2>
+<p>SpecGen registers the optional <code>agent-workflow-spec</code> entry point in the public <code>agent_workflow.plugins</code> group. Agent-Workflow must explicitly enable it; normal SpecGen CLI/library use never imports Agent-Workflow. The adapter imports only <code>agent_workflow.plugin_api</code> inside <code>plugin()</code> and exposes one host command, <code>spec</code>, with compatibility, assess, analyze, finalize, and compile subcommands.</p>
+<p>The host version must exactly match the pinned <code>0.9.1</code> compatibility target. A mismatch fails closed. The plugin is a trusted in-process adapter, not a security boundary or a second execution authority. No private <code>agent_workflow.*</code> modules are imported.</p>
+<p><code>PluginPackageResource</code> is intentionally not used for the initial integration because the plugin does not need Agent-Workflow to activate duplicate copies of SpecGen's canonical schemas/assets. If a future Agent-Workflow capability requires packaged activation, resources must be digest-bound to the SpecGen-owned bytes rather than forked.</p></article></main><script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs'; mermaid.initialize({startOnLoad:true,theme:'neutral'});</script></body></html>

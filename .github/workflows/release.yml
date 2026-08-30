@@ -1,0 +1,53 @@
+name: release
+
+on:
+  push:
+    tags: ["v*.*.*"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install build dependencies
+        run: python -m pip install --upgrade pip build jsonschema markdown
+      - name: Render documentation
+        run: python scripts/render-docs-html.py
+      - name: Verify release metadata
+        env:
+          SPECGEN_RELEASE_FIXTURE_ONLY: "1"
+        run: python tests/release/verify_versions.py
+      - name: Verify tag matches VERSION
+        if: startsWith(github.ref, 'refs/tags/')
+        run: test "${GITHUB_REF_NAME#v}" = "$(cat VERSION)"
+      - name: Build artifacts
+        run: python -m build
+      - name: Verify wheel source freshness
+        run: python scripts/verify-wheel-sources.py dist/*.whl
+      - name: Build release archive
+        run: python scripts/build-release-archive.py --dist dist --output dist/specgen-${{ github.ref_name }}-release.tar.gz --version "$(cat VERSION)" --commit "$GITHUB_SHA"
+      - name: Checksum release archive
+        run: sha256sum dist/specgen-*-release.tar.gz > dist/SHA256SUMS
+      - name: Upload release artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: specgen-release-${{ github.ref_name }}
+          path: |
+            dist/specgen-*-release.tar.gz
+            dist/SHA256SUMS
+      - name: Publish GitHub release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            dist/specgen-*-release.tar.gz
+            dist/SHA256SUMS

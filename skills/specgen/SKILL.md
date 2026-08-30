@@ -107,6 +107,11 @@ Do not add tests or evaluations merely to increase a count. Verification should 
 
 ## Agent-Workflow mode and compilation
 
+For branch, worktree, CI, promotion, and release-tag requirements, follow
+[`docs/DELIVERY_WORKFLOW.md`](../../docs/DELIVERY_WORKFLOW.md). New specs and
+prompt packs should carry its base/QA branch, rebase points, version gates,
+required evidence, and promotion steps into their delivery sections.
+
 Use `agent-workflow` mode when the intended handoff is phased autonomous implementation:
 
 ```bash
@@ -133,6 +138,19 @@ specgen agent-workflow compile spec.json --output targets/agent-workflow
 Compilation is fail-closed. Unsupported result schemas, stale repository evidence, directory-only baselines, evaluation metadata that cannot be represented, incompatible per-evaluation scorers, or ambiguous hidden/external oracle mappings must be resolved in the canonical spec/evidence rather than silently dropped.
 
 The generated directory is an Agent-Workflow prompt-pack source tree. `MANIFEST.sha256` is the source checksum sidecar. Do not create `MANIFEST.json` manually; Agent-Workflow owns that reserved archive-integrity artifact.
+
+## Continuous improvement
+
+After every material authoring, brownfield, or target-compilation outcome,
+assess whether the canonical requirements, evidence, traceability, evaluation
+intent, prompts, and result expectations were sufficient and understandable.
+Record actionable strengths, friction, missing information, and target-loss
+findings as an authoring event when they change specification reasoning, or in
+the SpecGen backlog/review evidence when they indicate a product gap. Separate
+facts about the produced artifacts from claims about an external agent host:
+SpecGen can provide portable instructions and initial evidence, but it cannot
+assert execution, logging, result verification, review, or acceptance that the
+consumer did not supply.
 
 ## Optional Agent-Workflow host
 

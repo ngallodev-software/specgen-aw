@@ -1,0 +1,68 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ADR-0005-authoring-history-events-snapshots-and-derived-deltas</title><style>
+:root { color-scheme: light dark; --bg:#f6f8fa; --panel:#fff; --ink:#24292f; --muted:#57606a; --accent:#0969da; --line:#d0d7de; }
+@media (prefers-color-scheme: dark) { :root { --bg:#0d1117; --panel:#161b22; --ink:#e6edf3; --muted:#8b949e; --accent:#58a6ff; --line:#30363d; } }
+* { box-sizing:border-box; } body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.65 system-ui,-apple-system,Segoe UI,sans-serif; }
+main { max-width:1100px; margin:0 auto; padding:2rem 1.25rem 4rem; } article { background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:clamp(1.25rem,3vw,3rem); box-shadow:0 4px 18px #00000012; }
+h1,h2,h3 { line-height:1.25; margin-top:1.8em; } h1 { margin-top:0; font-size:2.35rem; } h2 { border-bottom:1px solid var(--line); padding-bottom:.35rem; } a { color:var(--accent); } code { padding:.15em .35em; border-radius:5px; background:color-mix(in srgb,var(--muted) 15%,transparent); } pre { overflow:auto; padding:1rem; border-radius:8px; background:#161b22; color:#e6edf3; } table { display:block; overflow:auto; border-collapse:collapse; } th,td { border:1px solid var(--line); padding:.55rem .75rem; text-align:left; } th { background:color-mix(in srgb,var(--accent) 12%,transparent); } blockquote { margin-left:0; padding:.5rem 1rem; border-left:4px solid var(--accent); color:var(--muted); } .mermaid { background:var(--panel); padding:1rem; border:1px solid var(--line); border-radius:8px; overflow:auto; }
+nav { margin-bottom:1rem; color:var(--muted); } nav a { margin-right:1rem; }
+</style></head><body><main><nav><a href="../../README.html">README</a><a href="../index.html">Documentation index</a></nav><article><h1 id="adr-0005-authoring-history-uses-events-immutable-snapshots-and-derived-deltas">ADR-0005 — Authoring history uses events, immutable snapshots, and derived deltas</h1>
+<ul>
+<li>Status: Accepted</li>
+<li>Date: 2026-08-27</li>
+<li>Decision owners: SpecGen maintainers</li>
+</ul>
+<h2 id="context">Context</h2>
+<p>Prior-art review surfaced three strong but different persistence models:</p>
+<ol>
+<li>specBuilder keeps immutable/versioned answers and append-only compiled snapshots.</li>
+<li>BMAD <code>bmad-spec</code> treats an append-only <code>.memlog.md</code> as decision-of-record and re-derives the current spec.</li>
+<li>OpenSpec separates current truth from explicit proposed change/delta artifacts.</li>
+</ol>
+<p>Each solves a different problem. A single representation forced to serve audit history,
+reproducible compilation, and human change review creates avoidable coupling.</p>
+<h2 id="decision">Decision</h2>
+<p>SpecGen will separate these concerns:</p>
+<h3 id="1-append-only-authoring-event-journal">1. Append-only authoring event journal</h3>
+<p>User decisions, accepted assumptions, evidence observations, unresolved questions,
+corrections, and explicit supersession events are recorded chronologically. Existing
+events are not edited in place.</p>
+<p>The journal preserves <em>why and when specification meaning changed</em>.</p>
+<h3 id="2-immutable-canonical-snapshots">2. Immutable canonical snapshots</h3>
+<p>A successful compilation emits an immutable canonical <code>specgen/spec/&lt;version&gt;</code>
+snapshot with a deterministic digest and links to the authoring event range/evidence
+from which it was derived.</p>
+<p>The snapshot preserves <em>exactly what the specification meant at a point in time</em>.</p>
+<h3 id="3-derived-semantic-deltas">3. Derived semantic deltas</h3>
+<p>Human-reviewable added/modified/removed changes are derived by comparing canonical
+snapshots. A delta may be materialized as an artifact, but it is not an independent
+source of truth unless a future ADR explicitly introduces a proposal workflow.</p>
+<p>The delta explains <em>what changed between two known states</em>.</p>
+<h2 id="consequences">Consequences</h2>
+<ul>
+<li>Markdown remains a derived projection and is not the history authority.</li>
+<li>Event history can preserve superseded decisions without polluting the current spec.</li>
+<li>Snapshots are reproducible and suitable for digest binding and external compilation.</li>
+<li>Brownfield reviews can use explicit semantic deltas without making patch syntax the
+  sole specification representation.</li>
+<li>Elicitation persistence and canonical compilation are related but distinct APIs.</li>
+<li>The implementation must define stable event IDs, snapshot IDs, supersession
+  semantics, and deterministic snapshot derivation before <code>v1beta1</code>.</li>
+</ul>
+<h2 id="rejected-alternatives">Rejected alternatives</h2>
+<h3 id="mutable-canonical-document-only">Mutable canonical document only</h3>
+<p>Simple, but loses authored decision history and makes provenance difficult.</p>
+<h3 id="event-log-only">Event log only</h3>
+<p>Excellent audit history but inefficient as the only downstream machine contract;
+consumers should not have to replay authoring history to know current truth.</p>
+<h3 id="snapshot-only">Snapshot only</h3>
+<p>Reproducible but weak at explaining why decisions changed.</p>
+<h3 id="deltachange-folders-as-sole-authority">Delta/change folders as sole authority</h3>
+<p>Strong for review and brownfield work but cumbersome for consumers that need a full,
+resolved current-state contract.</p>
+<h2 id="prior-art-influence">Prior-art influence</h2>
+<ul>
+<li><code>dshills/specBuilder</code>: immutable answer versions, append-only snapshots, traceability.</li>
+<li><code>bmad-code-org/BMAD-METHOD</code> <code>bmad-spec</code>: append-only decision memory and derived spec.</li>
+<li><code>Fission-AI/OpenSpec</code>: current truth separated from proposed deltas.</li>
+</ul>
+<p>This ADR adapts these mechanisms; it does not copy their schemas or persistence code.</p></article></main><script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs'; mermaid.initialize({startOnLoad:true,theme:'neutral'});</script></body></html>

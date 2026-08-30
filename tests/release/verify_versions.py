@@ -11,6 +11,8 @@ import sys
 import tomllib
 from pathlib import Path
 
+from jsonschema import Draft202012Validator
+
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "src"))
 
@@ -24,6 +26,12 @@ def text(path: Path) -> str:
         return path.read_text(encoding="utf-8")
     except OSError as exc:
         fail(f"cannot read {path}: {exc}")
+
+
+def sha256(path: Path) -> str:
+    import hashlib
+
+    return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
 def main() -> int:
@@ -47,6 +55,7 @@ def main() -> int:
         ROOT / "docs" / "ENGINEERING_POLICY.md",
         ROOT / "docs" / "ROADMAP.md",
         ROOT / "docs" / "VERSIONING.md",
+        ROOT / "docs" / "DELIVERY_WORKFLOW.md",
         ROOT / "docs" / "adr" / "README.md",
         ROOT / "docs" / "research" / "ASSESSMENT_MATRIX.md",
         ROOT / "docs" / "research" / "PRIOR_ART.md",
@@ -66,12 +75,42 @@ def main() -> int:
             fail(f"{path.relative_to(ROOT)} has no matching applicability version")
 
     compatibility = json.loads(text(ROOT / "compat" / "agent-workflow" / "compatibility.json"))
+    compatibility_schema = json.loads(text(ROOT / "schemas" / "compat" / "agent-workflow-v1alpha1.schema.json"))
+    errors = sorted(Draft202012Validator(compatibility_schema).iter_errors(compatibility), key=str)
+    if errors:
+        fail(f"compatibility metadata does not validate: {errors[0].message}")
     target = compatibility["target"]
     aw_version = target["product_version"]
     if compatibility["specgen_version"] != specgen_version:
         fail("compatibility metadata has the wrong SpecGen version")
     if target["name"] != "agent-workflow":
         fail("compatibility target is not Agent-Workflow")
+
+    releases = target.get("compatible_releases", [])
+    release_versions = {entry["application_version"] for entry in releases}
+    if aw_version not in release_versions:
+        fail(f"compatibility matrix does not contain current Agent-Workflow {aw_version}")
+    if len(release_versions) != len(releases):
+        fail("compatibility matrix contains duplicate application versions")
+    data_files = tomllib.loads(text(ROOT / "pyproject.toml"))["tool"]["setuptools"]["data-files"]
+    packaged_patterns = {pattern for patterns in data_files.values() for pattern in patterns}
+    packaged_versions = {
+        version for version in release_versions
+        if f"compat/agent-workflow/{version}/schemas/*.json" in packaged_patterns
+    }
+    if packaged_versions != release_versions:
+        fail(f"pyproject.toml does not package every compatibility fixture: {sorted(release_versions - packaged_versions)}")
+    for entry in releases:
+        fixture_root = ROOT / "compat" / "agent-workflow" / entry["application_version"]
+        if not fixture_root.is_dir():
+            fail(f"compatibility fixture is missing: {fixture_root.relative_to(ROOT)}")
+        for contract in entry["contracts"]:
+            relative = Path("compat/agent-workflow") / contract["file"]
+            if Path(contract["file"]).parts[:2] != (entry["application_version"], "schemas"):
+                fail(f"compatibility contract is outside its versioned schema directory: {relative}")
+            fixture = ROOT / relative
+            if not fixture.is_file() or sha256(fixture) != contract["sha256"]:
+                fail(f"compatibility contract drift: {relative}")
 
     snapshot_path = ROOT / "compat" / "agent-workflow" / aw_version / "SNAPSHOT.json"
     snapshot = json.loads(text(snapshot_path))
@@ -90,16 +129,17 @@ def main() -> int:
     source = config["source"]
     if source["expected_product_version"] != aw_version:
         fail("development config and compatibility metadata disagree on Agent-Workflow version")
-    live_root = Path(os.environ.get(source.get("env_override", "SPECGEN_AGENT_WORKFLOW_ROOT"), source["default_root"]))
-    if not live_root.is_absolute():
-        live_root = (ROOT / live_root).resolve()
-    live_version = text(live_root / source["version_file"]).strip()
-    if live_version != aw_version:
-        fail(f"Agent-Workflow app VERSION={live_version}, expected {aw_version}")
-    for relative, expected_digest in snapshot["schemas"].items():
-        path = live_root / relative
-        if not path.is_file() or __import__("hashlib").sha256(path.read_bytes()).hexdigest() != expected_digest:
-            fail(f"Agent-Workflow schema drift: {relative}")
+    if os.environ.get("SPECGEN_RELEASE_FIXTURE_ONLY") != "1":
+        live_root = Path(os.environ.get(source.get("env_override", "SPECGEN_AGENT_WORKFLOW_ROOT"), source["default_root"]))
+        if not live_root.is_absolute():
+            live_root = (ROOT / live_root).resolve()
+        live_version = text(live_root / source["version_file"]).strip()
+        if live_version != aw_version:
+            fail(f"Agent-Workflow app VERSION={live_version}, expected {aw_version}")
+        for relative, expected_digest in snapshot["schemas"].items():
+            path = live_root / relative
+            if not path.is_file() or sha256(path) != expected_digest:
+                fail(f"Agent-Workflow schema drift: {relative}")
 
     pip_check = subprocess.run(
         [sys.executable, "-m", "pip", "check"], capture_output=True, text=True
@@ -112,9 +152,10 @@ def main() -> int:
 
     if AW_VERSION != aw_version:
         fail(f"specgen.agent_workflow.AW_VERSION={AW_VERSION}, expected {aw_version}")
-    context = _agent_workflow_context()
-    if context["expected_version"] != aw_version or context["observed_version"] != aw_version or not context["version_matches"]:
-        fail(f"repository Agent-Workflow context is inconsistent: {context}")
+    if os.environ.get("SPECGEN_RELEASE_FIXTURE_ONLY") != "1":
+        context = _agent_workflow_context()
+        if context["expected_version"] != aw_version or context["observed_version"] != aw_version or not context["version_matches"]:
+            fail(f"repository Agent-Workflow context is inconsistent: {context}")
 
     print(f"version checks: SpecGen {specgen_version}; Agent-Workflow app/module {aw_version}; all consistent")
     return 0

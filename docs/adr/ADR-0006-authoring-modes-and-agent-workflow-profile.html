@@ -1,0 +1,29 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ADR-0006-authoring-modes-and-agent-workflow-profile</title><style>
+:root { color-scheme: light dark; --bg:#f6f8fa; --panel:#fff; --ink:#24292f; --muted:#57606a; --accent:#0969da; --line:#d0d7de; }
+@media (prefers-color-scheme: dark) { :root { --bg:#0d1117; --panel:#161b22; --ink:#e6edf3; --muted:#8b949e; --accent:#58a6ff; --line:#30363d; } }
+* { box-sizing:border-box; } body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.65 system-ui,-apple-system,Segoe UI,sans-serif; }
+main { max-width:1100px; margin:0 auto; padding:2rem 1.25rem 4rem; } article { background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:clamp(1.25rem,3vw,3rem); box-shadow:0 4px 18px #00000012; }
+h1,h2,h3 { line-height:1.25; margin-top:1.8em; } h1 { margin-top:0; font-size:2.35rem; } h2 { border-bottom:1px solid var(--line); padding-bottom:.35rem; } a { color:var(--accent); } code { padding:.15em .35em; border-radius:5px; background:color-mix(in srgb,var(--muted) 15%,transparent); } pre { overflow:auto; padding:1rem; border-radius:8px; background:#161b22; color:#e6edf3; } table { display:block; overflow:auto; border-collapse:collapse; } th,td { border:1px solid var(--line); padding:.55rem .75rem; text-align:left; } th { background:color-mix(in srgb,var(--accent) 12%,transparent); } blockquote { margin-left:0; padding:.5rem 1rem; border-left:4px solid var(--accent); color:var(--muted); } .mermaid { background:var(--panel); padding:1rem; border:1px solid var(--line); border-radius:8px; overflow:auto; }
+nav { margin-bottom:1rem; color:var(--muted); } nav a { margin-right:1rem; }
+</style></head><body><main><nav><a href="../../README.html">README</a><a href="../index.html">Documentation index</a></nav><article><h1 id="adr-0006-authoring-modes-are-policy-profiles-agent-workflow-is-an-opinionated-profile">ADR-0006 — Authoring modes are policy profiles; Agent-Workflow is an opinionated profile</h1>
+<blockquote>
+<p>Document version: 0.1.5 · Applies to SpecGen 0.1.5</p>
+</blockquote>
+<ul>
+<li>Status: accepted</li>
+<li>Date: 2026-08-27</li>
+</ul>
+<h2 id="decision">Decision</h2>
+<p>SpecGen authoring uses named policy profiles rather than separate canonical schemas. Initial modes are <code>express</code>, <code>guided</code>, <code>strict</code>, and <code>agent-workflow</code>.</p>
+<p><code>agent-workflow</code> is intentionally opinionated. It requires phased implementation structure, task-to-requirement coverage, structured task result contracts, requirement-level evaluation intent, and resolution of open ambiguity before finalization. It prepares a portable canonical snapshot for later lowering into pinned Agent-Workflow public contracts; it does not embed Agent-Workflow runtime state into the canonical spec.</p>
+<p>Mode output is versioned as <code>specgen/elicitation-plan/v1alpha1</code>.</p>
+<h2 id="rationale">Rationale</h2>
+<p>Authoring modes change how aggressively SpecGen asks questions and what completeness guardrails block finalization. They do not change specification meaning. Keeping policy outside <code>specgen/spec/v1alpha2</code> preserves portability and avoids an Agent-Workflow-shaped core model.</p>
+<p>The Agent-Workflow profile exists because prompt-pack/phased implementation handoff benefits from earlier, stricter shaping than generic specification authoring.</p>
+<h2 id="consequences">Consequences</h2>
+<ul>
+<li>A snapshot may be valid under the canonical schema but not ready under a strict authoring mode.</li>
+<li>Mode-specific guardrails must be deterministic and inspectable.</li>
+<li>Future Agent-Workflow adapter work must consume the canonical snapshot and pinned public contracts, not mode-private runtime state.</li>
+<li>Adding a mode is a public authoring-policy change and must update the elicitation-plan contract if its name is serialized.</li>
+</ul></article></main><script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs'; mermaid.initialize({startOnLoad:true,theme:'neutral'});</script></body></html>

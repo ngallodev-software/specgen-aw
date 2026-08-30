@@ -114,7 +114,10 @@ Code stays lean and architecture-backed. Tests protect critical seams rather tha
 
 See [Engineering Policy](docs/ENGINEERING_POLICY.md).
 
-## Reference
+## Documentation index
+
+Browse the rendered [HTML documentation index](docs/index.html) or use the
+authoritative Markdown links below.
 
 | Need | Go here |
 |---|---|
@@ -123,6 +126,7 @@ See [Engineering Policy](docs/ENGINEERING_POLICY.md).
 | Architecture and authority diagrams | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) |
 | Engineering/testing/docs policy | [docs/ENGINEERING_POLICY.md](docs/ENGINEERING_POLICY.md) |
 | Versioning/contracts | [docs/VERSIONING.md](docs/VERSIONING.md) |
+| Branching, CI, release, and promotion flow | [docs/DELIVERY_WORKFLOW.md](docs/DELIVERY_WORKFLOW.md) |
 | Agent-Workflow target boundary | [docs/AGENT_WORKFLOW_INTEGRATION.md](docs/AGENT_WORKFLOW_INTEGRATION.md) |
 | Roadmap | [docs/ROADMAP.md](docs/ROADMAP.md) |
 | ADR history | [docs/adr/README.md](docs/adr/README.md) |

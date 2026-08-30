@@ -1,0 +1,50 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ENGINEERING POLICY</title><style>
+:root { color-scheme: light dark; --bg:#f6f8fa; --panel:#fff; --ink:#24292f; --muted:#57606a; --accent:#0969da; --line:#d0d7de; }
+@media (prefers-color-scheme: dark) { :root { --bg:#0d1117; --panel:#161b22; --ink:#e6edf3; --muted:#8b949e; --accent:#58a6ff; --line:#30363d; } }
+* { box-sizing:border-box; } body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.65 system-ui,-apple-system,Segoe UI,sans-serif; }
+main { max-width:1100px; margin:0 auto; padding:2rem 1.25rem 4rem; } article { background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:clamp(1.25rem,3vw,3rem); box-shadow:0 4px 18px #00000012; }
+h1,h2,h3 { line-height:1.25; margin-top:1.8em; } h1 { margin-top:0; font-size:2.35rem; } h2 { border-bottom:1px solid var(--line); padding-bottom:.35rem; } a { color:var(--accent); } code { padding:.15em .35em; border-radius:5px; background:color-mix(in srgb,var(--muted) 15%,transparent); } pre { overflow:auto; padding:1rem; border-radius:8px; background:#161b22; color:#e6edf3; } table { display:block; overflow:auto; border-collapse:collapse; } th,td { border:1px solid var(--line); padding:.55rem .75rem; text-align:left; } th { background:color-mix(in srgb,var(--accent) 12%,transparent); } blockquote { margin-left:0; padding:.5rem 1rem; border-left:4px solid var(--accent); color:var(--muted); } .mermaid { background:var(--panel); padding:1rem; border:1px solid var(--line); border-radius:8px; overflow:auto; }
+nav { margin-bottom:1rem; color:var(--muted); } nav a { margin-right:1rem; }
+</style></head><body><main><nav><a href="../README.html">README</a><a href="index.html">Documentation index</a></nav><article><h1 id="engineering-policy">Engineering Policy</h1>
+<blockquote>
+<p>Document version: 0.2.0 · Applies to SpecGen 0.2.0</p>
+</blockquote>
+<p>Normative project policy. Keep this document concise; change it only when engineering policy changes.</p>
+<h2 id="source">Source</h2>
+<ul>
+<li>Keep production code lean, explicit, and architecture-backed.</li>
+<li>Rough out a component's responsibility, contract, and place in the architecture before implementing it.</li>
+<li>Do not add abstraction, extensibility, agents, hooks, services, or helpers without a concrete need.</li>
+<li>Prefer the smallest implementation that preserves correctness, compatibility, provenance, and maintainability.</li>
+</ul>
+<h2 id="testing">Testing</h2>
+<p>Tests exist to protect valuable behavior, not to increase a count.</p>
+<ul>
+<li>Prefer end-to-end tests and critical seam integration tests.</li>
+<li>Do not add unit tests by default. Add one only when the behavior is important, cannot be exercised economically at a higher-value seam, and the unit test materially improves fault isolation or safety.</li>
+<li>Do not expand the test surface for trivial getters, wrappers, schema plumbing, or implementation details.</li>
+<li>Do not run tests during ordinary implementation checkpoints unless explicitly requested.</li>
+<li>Run the relevant test set at the end of an implementation phase when that phase could have broken behavior, or when explicitly requested.</li>
+<li>Test count is not a project quality metric. Coverage of critical behavior and boundaries is.</li>
+</ul>
+<h2 id="documentation-and-help">Documentation and help</h2>
+<p>Documentation is a maintained interface, not an implementation by-product.</p>
+<ul>
+<li>Do not create documentation merely to record that work occurred.</li>
+<li>Keep documents focused and link to deeper material rather than duplicating it.</li>
+<li>README, help, man pages, and overview docs are concise entry points/reference indexes, not monoliths.</li>
+<li>Each implementation phase updates every existing document, help surface, or man page whose claims changed.</li>
+<li>Maintained reference documents carry an explicit document version and applicable project version; update them when their content changes.</li>
+<li>Accepted ADRs remain historical records; supersede rather than rewrite substantive decisions.</li>
+<li>A diagram has one authoritative source. Other documents link to it instead of copying it.</li>
+<li>Use diagrams only where structure or flow is materially clearer visually. Do not diagram for decoration.</li>
+<li>Diagram sources live inside the documentation that explains them (prefer Mermaid for repository-native diagrams), never as orphaned artifacts.</li>
+</ul>
+<h2 id="checkpoints-and-overlays">Checkpoints and overlays</h2>
+<ul>
+<li>Implementation checkpoints should be changes-only, self-applying overlays.</li>
+<li>Every overlay includes a deletion manifest, even when empty.</li>
+<li>The apply script validates repository context before mutation.</li>
+<li>Deletions are limited to explicit safe relative paths; absolute paths and <code>..</code> are rejected.</li>
+<li>Added/modified files are applied only after validation succeeds.</li>
+</ul></article></main><script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs'; mermaid.initialize({startOnLoad:true,theme:'neutral'});</script></body></html>

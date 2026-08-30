@@ -1,0 +1,30 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ADR-0008-agent-assisted-brownfield-analysis-is-separate-and-optional</title><style>
+:root { color-scheme: light dark; --bg:#f6f8fa; --panel:#fff; --ink:#24292f; --muted:#57606a; --accent:#0969da; --line:#d0d7de; }
+@media (prefers-color-scheme: dark) { :root { --bg:#0d1117; --panel:#161b22; --ink:#e6edf3; --muted:#8b949e; --accent:#58a6ff; --line:#30363d; } }
+* { box-sizing:border-box; } body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.65 system-ui,-apple-system,Segoe UI,sans-serif; }
+main { max-width:1100px; margin:0 auto; padding:2rem 1.25rem 4rem; } article { background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:clamp(1.25rem,3vw,3rem); box-shadow:0 4px 18px #00000012; }
+h1,h2,h3 { line-height:1.25; margin-top:1.8em; } h1 { margin-top:0; font-size:2.35rem; } h2 { border-bottom:1px solid var(--line); padding-bottom:.35rem; } a { color:var(--accent); } code { padding:.15em .35em; border-radius:5px; background:color-mix(in srgb,var(--muted) 15%,transparent); } pre { overflow:auto; padding:1rem; border-radius:8px; background:#161b22; color:#e6edf3; } table { display:block; overflow:auto; border-collapse:collapse; } th,td { border:1px solid var(--line); padding:.55rem .75rem; text-align:left; } th { background:color-mix(in srgb,var(--accent) 12%,transparent); } blockquote { margin-left:0; padding:.5rem 1rem; border-left:4px solid var(--accent); color:var(--muted); } .mermaid { background:var(--panel); padding:1rem; border:1px solid var(--line); border-radius:8px; overflow:auto; }
+nav { margin-bottom:1rem; color:var(--muted); } nav a { margin-right:1rem; }
+</style></head><body><main><nav><a href="../../README.html">README</a><a href="../index.html">Documentation index</a></nav><article><h1 id="adr-0008-agent-assisted-brownfield-analysis-stays-separate-and-optional">ADR-0008 — Agent-assisted brownfield analysis stays separate and optional</h1>
+<ul>
+<li>Status: accepted</li>
+<li>Date: 2026-08-27</li>
+<li>Applies after: SpecGen 0.2.0</li>
+</ul>
+<h2 id="context">Context</h2>
+<p>ADR-0007 deliberately limits deterministic repository analysis to revision-bound evidence, durable declarations, and explicit references. Brownfield specification authoring still benefits from semantic code understanding: locating behavior, tracing callers/callees, identifying preservation risks, and discovering tests or data-flow seams.</p>
+<p><code>codebase-memory-mcp</code> provides a local code knowledge graph and agent-facing structural tools that can answer many of those questions more efficiently than repository-wide grep/read exploration. Making it a required SpecGen dependency, however, would couple canonical authoring to a third-party indexing runtime and blur deterministic evidence with agent inference.</p>
+<h2 id="decision">Decision</h2>
+<p>SpecGen adds a separate optional brownfield research layer.</p>
+<ul>
+<li><code>specgen/repository-analysis/v1alpha1</code> remains unchanged and deterministic.</li>
+<li><code>specgen/brownfield-plan/v1alpha1</code> describes user decision questions, research focus, tool preferences, efficiency guardrails, and stop conditions.</li>
+<li><code>specgen/brownfield-analysis/v1alpha1</code> records agent-assisted semantic findings with evidence locators and explicit confidence.</li>
+<li>SpecGen may detect whether a <code>codebase-memory-mcp</code> executable is available and shape the plan accordingly, but it does not require the package and does not assume MCP registration.</li>
+<li>The agent/runtime chooses direct MCP tools when exposed and may use the tool's CLI fallback when available and permitted.</li>
+<li>Semantic findings may inform canonical provenance, requirements, preservation claims, risks, acceptance, and implementation structure, but only the canonical snapshot owns specification meaning.</li>
+<li>User decisions remain distinguishable from tool output and inference.</li>
+</ul>
+<p>The preferred research sequence is narrow-first: establish graph/project state, inspect graph schema once, obtain one architecture overview, search to a small candidate set, trace shallow call paths, read decisive snippets/tests/contracts, assess blast radius, and stop when remaining uncertainty requires a user decision.</p>
+<h2 id="consequences">Consequences</h2>
+<p>Brownfield agents can use high-leverage semantic code intelligence without turning SpecGen core into a source indexer. The application still works when <code>codebase-memory-mcp</code> is absent. Reviewers can distinguish reproducible repository evidence from agent interpretation, and a future code-intelligence provider can be added without redefining canonical specification authority.</p></article></main><script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs'; mermaid.initialize({startOnLoad:true,theme:'neutral'});</script></body></html>

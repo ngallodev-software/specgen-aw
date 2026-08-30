@@ -1,0 +1,162 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ARCHITECTURE</title><style>
+:root { color-scheme: light dark; --bg:#f6f8fa; --panel:#fff; --ink:#24292f; --muted:#57606a; --accent:#0969da; --line:#d0d7de; }
+@media (prefers-color-scheme: dark) { :root { --bg:#0d1117; --panel:#161b22; --ink:#e6edf3; --muted:#8b949e; --accent:#58a6ff; --line:#30363d; } }
+* { box-sizing:border-box; } body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.65 system-ui,-apple-system,Segoe UI,sans-serif; }
+main { max-width:1100px; margin:0 auto; padding:2rem 1.25rem 4rem; } article { background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:clamp(1.25rem,3vw,3rem); box-shadow:0 4px 18px #00000012; }
+h1,h2,h3 { line-height:1.25; margin-top:1.8em; } h1 { margin-top:0; font-size:2.35rem; } h2 { border-bottom:1px solid var(--line); padding-bottom:.35rem; } a { color:var(--accent); } code { padding:.15em .35em; border-radius:5px; background:color-mix(in srgb,var(--muted) 15%,transparent); } pre { overflow:auto; padding:1rem; border-radius:8px; background:#161b22; color:#e6edf3; } table { display:block; overflow:auto; border-collapse:collapse; } th,td { border:1px solid var(--line); padding:.55rem .75rem; text-align:left; } th { background:color-mix(in srgb,var(--accent) 12%,transparent); } blockquote { margin-left:0; padding:.5rem 1rem; border-left:4px solid var(--accent); color:var(--muted); } .mermaid { background:var(--panel); padding:1rem; border:1px solid var(--line); border-radius:8px; overflow:auto; }
+nav { margin-bottom:1rem; color:var(--muted); } nav a { margin-right:1rem; }
+</style></head><body><main><nav><a href="../README.html">README</a><a href="index.html">Documentation index</a></nav><article><h1 id="architecture">Architecture</h1>
+<blockquote>
+<p>Document version: 0.2.0 · Applies to SpecGen 0.2.0</p>
+</blockquote>
+<p>Working architecture. Significant changes require an ADR. Engineering constraints are in <a href="ENGINEERING_POLICY.html">ENGINEERING_POLICY.md</a>.</p>
+<h2 id="authority-and-flow">Authority and flow</h2>
+<div class="mermaid">flowchart TD
+    I[User intent + source evidence + explicit decisions] --&gt; P[Authoring policy profile]
+    P --&gt; E[Append-only authoring events]
+    E --&gt; C[Deterministic compiler]
+    C --&gt; S[Immutable canonical snapshot\nspecgen/spec/v1alpha2]
+    S --&gt; M[Markdown projection]
+    S --&gt; D[Semantic delta]
+    S --&gt; V[Validation / preservation / trace checks]
+    S --&gt; T[Target adapters]
+    T --&gt; AW[Agent-Workflow public contracts]
+    T --&gt; FT[Future targets]
+</div>
+<p>This diagram is the single source for the project authority flow. Only the canonical snapshot owns current specification meaning. Authoring events preserve why meaning changed. Deltas explain changes between snapshots. Target artifacts may add target-required execution metadata but may not redefine requirements.</p>
+<h2 id="authoring-history-and-snapshot-boundary">Authoring history and snapshot boundary</h2>
+<div class="mermaid">flowchart LR
+    A[Event 1] --&gt; B[Event 2] --&gt; C[Event N]
+    C --&gt; K[Compile]
+    K --&gt; S1[Snapshot N]
+    S0[Snapshot N-1] --&gt; X[Semantic compare]
+    S1 --&gt; X
+    X --&gt; D[Added / modified / removed delta]
+</div>
+<p><code>specgen/authoring-event/v1alpha1</code> is separate from <code>specgen/spec/v1alpha2</code>. Snapshot consumers do not replay history to discover current truth.</p>
+<h2 id="components">Components</h2>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Responsibility</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Canonical IR</td>
+<td>Specification meaning, IDs, scope, requirements, contracts, decisions, acceptance, evaluation intent, implementation decomposition, trace, provenance.</td>
+</tr>
+<tr>
+<td>Authoring events</td>
+<td>Validated append-only single-writer NDJSON history with stable IDs and contiguous sequencing.</td>
+</tr>
+<tr>
+<td>Elicitation</td>
+<td>Express/guided/strict/Agent-Workflow policy profiles producing typed questions and guardrails.</td>
+</tr>
+<tr>
+<td>Evidence analysis</td>
+<td>Revision-bound deterministic repository evidence and declared interface/data-contract discovery; no arbitrary source semantic claims.</td>
+</tr>
+<tr>
+<td>Brownfield research</td>
+<td>Targeted agent research plan plus separately typed semantic findings; may use optional codebase-memory-mcp without making it a core dependency or authority.</td>
+</tr>
+<tr>
+<td>Compiler</td>
+<td>Candidate readiness/finalization and digest-bound immutable canonical snapshots.</td>
+</tr>
+<tr>
+<td>Validators</td>
+<td>JSON Schema, IDs/refs, dependencies, trace, preservation, snapshot ancestry/digest checks.</td>
+</tr>
+<tr>
+<td>Semantic diff</td>
+<td>Stable-ID semantic comparison excluding snapshot bookkeeping.</td>
+</tr>
+<tr>
+<td>Renderers</td>
+<td>Deterministic human-readable projection from canonical state.</td>
+</tr>
+<tr>
+<td>Evaluation compiler</td>
+<td>Portable evaluation intent plus fail-closed target lowering where target semantics are sufficient.</td>
+</tr>
+<tr>
+<td>Agent-Workflow adapter</td>
+<td><strong>Implemented through 0.1.10:</strong> native prompt-pack resources, packaged result schemas, evaluation plan, Git source baseline, target checksums, and pinned-schema validation.</td>
+</tr>
+<tr>
+<td>CLI / skill / app</td>
+<td>Thin interaction surfaces over the same contracts; skill/plugin/app layers must not introduce another specification authority.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="canonical-contract-boundaries">Canonical contract boundaries</h2>
+<p><code>v1alpha2</code> carries stable lifecycle-aware IDs, an optional portable <code>target_application_id</code>, current/proposed state, immutable snapshot identity/ancestry, typed provenance, preservation claims, and invariant requirements. The application identifier is canonical snapshot data, validated as lowercase kebab-case, and is distinct from both the SpecGen <code>id</code> and target <code>pack_id</code>. Proposed state identifies <code>base_snapshot_id</code> and <code>change_id</code>. <code>v1alpha1</code> remains immutable.</p>
+<p>Canonical snapshot digests are SHA-256 over sorted compact UTF-8 JSON with <code>snapshot.content_digest</code> omitted before hashing, avoiding self-reference.</p>
+<h2 id="repository-evidence-flow">Repository evidence flow</h2>
+<div class="mermaid">flowchart LR
+    R[Repository checkout] --&gt; B[Revision / baseline binding]
+    R --&gt; E[Durable evidence discovery]
+    S[Valid canonical snapshot] --&gt; X[Explicit repository references]
+    X --&gt; E
+    E --&gt; A[repository-analysis/v1alpha1]
+    B --&gt; A
+    A --&gt; C[Evidence-backed contradictions]
+    A --&gt; D[Read-only drift comparison]
+    D --&gt; DR[repository-drift/v1alpha1]
+</div>
+<p>This is the canonical repository-analysis diagram. Semantic interpretation of arbitrary source remains outside the deterministic boundary.</p>
+<p>Agent-assisted brownfield analysis is a second, explicitly non-deterministic layer:</p>
+<pre><code class="language-text">canonical intent + repository-analysis/v1alpha1
+                  |
+                  v
+       brownfield-plan/v1alpha1
+          |                 |
+          |                 +--&gt; user decision questions
+          v
+ optional codebase-memory-mcp / targeted repository tools
+          |
+          v
+ brownfield-analysis/v1alpha1
+          |
+          +--&gt; selected provenance / requirements / preservation / risk updates
+</code></pre>
+<p>The plan may detect a local <code>codebase-memory-mcp</code> executable, but MCP registration is owned by the calling agent/runtime. The semantic artifact records evidence locators and confidence; it never upgrades inference into deterministic discovery. See <a href="BROWNFIELD_AUTHORING.html">BROWNFIELD_AUTHORING.md</a> and ADR-0008.</p>
+<h2 id="agent-workflow-target-lowering">Agent-Workflow target lowering</h2>
+<p>The target adapter is a deterministic projection, not an execution subsystem:</p>
+<pre><code class="language-text">canonical snapshot + optional bound repository analysis
+                    |
+                    v
+          Agent-Workflow adapter
+             |      |      |
+             |      |      +--&gt; source-baseline/v1
+             |      +---------&gt; evaluation-plan/v1
+             +----------------&gt; prompt-pack/v1 + pack-relative resources
+</code></pre>
+<p><code>0.1.10</code> requires Agent-Workflow authoring readiness before compilation. Result contracts become real JSON Schema files inside the prompt pack. Repository baseline emission requires an exact spec-bound Git analysis and live state agreement. Evaluation constructs that cannot be represented faithfully fail closed rather than being dropped or globally conflated.</p>
+<p>Source prompt packs carry <code>MANIFEST.sha256</code>; Agent-Workflow alone owns the reserved archive <code>MANIFEST.json</code> (<code>agent-workflow/pack-manifest/v1</code>).</p>
+<p>See <a href="AGENT_WORKFLOW_INTEGRATION.html">AGENT_WORKFLOW_INTEGRATION.md</a> for detailed lowering rules.</p>
+<h2 id="compatibility-boundary">Compatibility boundary</h2>
+<p>Agent-Workflow remains a versioned target, not a core dependency. Release compatibility authority lives under <code>compat/</code>; moving development source is configured through ignored <code>dev/agent-workflow.toml</code>. No private Agent-Workflow modules are imported into SpecGen core.</p>
+<h2 id="public-seams">Public seams</h2>
+<pre><code class="language-text">specgen render SNAPSHOT [--output SPEC.md]
+specgen events append EVENT_LOG EVENT
+specgen diff BEFORE AFTER
+specgen author assess SNAPSHOT --mode MODE
+specgen author finalize SNAPSHOT --mode MODE --output SNAPSHOT
+specgen repo analyze REPO [--spec SNAPSHOT] [--mode MODE]
+specgen repo drift ANALYSIS REPO
+specgen brownfield capabilities
+specgen brownfield plan REPO [--spec SNAPSHOT] [--mode MODE]
+specgen evals intent SNAPSHOT
+specgen agent-workflow compile SNAPSHOT --output DIR [--repository-analysis ANALYSIS] [--repository-root REPO]
+</code></pre>
+<p>The existing critical-seam test corpus remains intentionally small. No tests are added merely because Phase 6 gained more code; verification is run only under the project testing policy and is currently disabled by explicit instruction.</p>
+<h3 id="stable-application-facade">Stable application facade</h3>
+<p><code>specgen.api</code> is a narrow programmatic facade that re-exports existing authorities. It does not own state, persistence, orchestration, or an alternate schema. The CLI, skill, and optional Agent-Workflow plugin are adapters over the same core modules.</p>
+<p>The optional <code>agent-workflow-spec</code> adapter is loaded only through Agent-Workflow's public plugin API. Agent-Workflow remains an execution target/host; SpecGen core remains independently usable and must not import Agent-Workflow private implementation modules.</p>
+<h3 id="installed-runtime-assets">Installed runtime assets</h3>
+<p>The source-tree schema and compatibility files remain the only maintained copies. Packaging installs those exact files under <code>share/specgen</code>; <code>contracts.repo_root()</code> resolves either the source checkout or installed data location. This keeps normal package/plugin use functional without forking contract bytes into a second Python resource tree.</p></article></main><script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs'; mermaid.initialize({startOnLoad:true,theme:'neutral'});</script></body></html>

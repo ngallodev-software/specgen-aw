@@ -4,6 +4,8 @@
 
 ## Baseline
 
+Branch and promotion handling follows [the accepted delivery workflow](DELIVERY_WORKFLOW.md): synchronize production first, rebase QA and work branches, use isolated worktrees, gate QA through Jenkins, and tag only the promoted production commit.
+
 Release compatibility is pinned under `compat/agent-workflow/`; moving development source is observed separately through `dev/agent-workflow.toml`. The adapter targets Agent-Workflow `0.9.1` public contracts and never imports private Agent-Workflow Python implementation modules.
 
 ## Contract mapping

@@ -1,0 +1,169 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>DELIVERY WORKFLOW</title><style>
+:root { color-scheme: light dark; --bg:#f6f8fa; --panel:#fff; --ink:#24292f; --muted:#57606a; --accent:#0969da; --line:#d0d7de; }
+@media (prefers-color-scheme: dark) { :root { --bg:#0d1117; --panel:#161b22; --ink:#e6edf3; --muted:#8b949e; --accent:#58a6ff; --line:#30363d; } }
+* { box-sizing:border-box; } body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.65 system-ui,-apple-system,Segoe UI,sans-serif; }
+main { max-width:1100px; margin:0 auto; padding:2rem 1.25rem 4rem; } article { background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:clamp(1.25rem,3vw,3rem); box-shadow:0 4px 18px #00000012; }
+h1,h2,h3 { line-height:1.25; margin-top:1.8em; } h1 { margin-top:0; font-size:2.35rem; } h2 { border-bottom:1px solid var(--line); padding-bottom:.35rem; } a { color:var(--accent); } code { padding:.15em .35em; border-radius:5px; background:color-mix(in srgb,var(--muted) 15%,transparent); } pre { overflow:auto; padding:1rem; border-radius:8px; background:#161b22; color:#e6edf3; } table { display:block; overflow:auto; border-collapse:collapse; } th,td { border:1px solid var(--line); padding:.55rem .75rem; text-align:left; } th { background:color-mix(in srgb,var(--accent) 12%,transparent); } blockquote { margin-left:0; padding:.5rem 1rem; border-left:4px solid var(--accent); color:var(--muted); } .mermaid { background:var(--panel); padding:1rem; border:1px solid var(--line); border-radius:8px; overflow:auto; }
+nav { margin-bottom:1rem; color:var(--muted); } nav a { margin-right:1rem; }
+</style></head><body><main><nav><a href="../README.html">README</a><a href="index.html">Documentation index</a></nav><article><h1 id="branch-release-and-promotion-workflow">Branch, Release, and Promotion Workflow</h1>
+<blockquote>
+<p>Document version: 0.2.0 · Applies to SpecGen 0.2.0</p>
+</blockquote>
+<p>This is the required delivery strategy for SpecGen and Agent-Workflow changes.
+<code>master</code> is the production integration branch. <code>release-tooling</code> is the
+development and QA branch. A repository may substitute <code>main</code> or
+<code>production</code>, but the roles and ordering remain the same.</p>
+<h2 id="critical-review-of-the-proposed-flow">Critical review of the proposed flow</h2>
+<p>The proposal is sound: work starts from synchronized production, isolated work
+is based on QA, CI gates release, and promotion happens only after artifact and
+live smoke evidence. The accepted changes are:</p>
+<ol>
+<li>Use <code>git fetch</code> followed by fast-forward-only updates. A blind <code>pull</code> can
+   create an accidental merge; pushing is a publication step, not sync.</li>
+<li>Before work, fetch remotes, fast-forward <code>master</code>, then rebase
+   <code>release-tooling</code> onto <code>master</code>. Coordinate first if QA is shared.</li>
+<li>Create worktrees from the working branch and record their base commit and
+   source provenance. Completion, evaluation, review, and acceptance remain
+   separate gates.</li>
+<li>Before merging a PR into QA, rebase it onto current <code>release-tooling</code>.
+   Before production promotion, reconcile QA with current <code>master</code>.</li>
+<li>After promoting QA into production, explicitly fast-forward the
+   <code>release-tooling</code> pointer to <code>master</code>. A rebase alone can leave QA at its
+   old ancestor because it already is an ancestor of <code>master</code>.</li>
+<li>Jenkins must publish evidence for build, version gates, wheel freshness,
+   tests, install, and live smoke checks. Local green is insufficient.</li>
+<li>Create the version tag only on the promoted production commit. GitHub
+   Actions builds and archives that exact tagged commit.</li>
+</ol>
+<h2 id="accepted-flow">Accepted flow</h2>
+<div class="mermaid">flowchart TD
+    A[Fetch remotes] --&gt; B[Fast-forward master]
+    B --&gt; C[Rebase release-tooling onto master]
+    C --&gt; D[Create working branch and worktrees]
+    D --&gt; E[Implement and collect evidence]
+    E --&gt; F[Evaluate, independently review, accept]
+    F --&gt; G[Rebase work branch onto latest release-tooling]
+    G --&gt; H[PR into release-tooling]
+    H --&gt; I[Jenkins build and release gates]
+    I --&gt; J[Push release-tooling]
+    J --&gt; K[Reconcile with latest master]
+    K --&gt; L[Merge or fast-forward into master]
+    L --&gt; M[Fast-forward release-tooling to master]
+    M --&gt; N[Tag promoted master commit]
+    N --&gt; O[GitHub Actions builds and archives tag]
+    classDef sync fill:#e8f1ff,stroke:#2563eb,color:#172554,stroke-width:1.5px;
+    classDef work fill:#ecfdf5,stroke:#059669,color:#064e3b,stroke-width:1.5px;
+    classDef gate fill:#fff7ed,stroke:#ea580c,color:#7c2d12,stroke-width:1.5px;
+    classDef release fill:#f5f3ff,stroke:#7c3aed,color:#3b0764,stroke-width:1.5px;
+    class A,B,C sync;
+    class D,E,G,H work;
+    class F,I,K gate;
+    class J,L,M,N,O release;
+</div>
+<h2 id="step-by-step-operating-procedure">Step-by-step operating procedure</h2>
+<h3 id="1-establish-the-synchronized-base">1. Establish the synchronized base</h3>
+<p>Run <code>git fetch origin --prune</code>, verify the remote branch and working tree, and
+fast-forward <code>master</code> only. Why: every task must have an unambiguous production
+base. Risk: local-only commits or an accidental merge can make later rebases
+look green while omitting production changes. Stop on divergence, dirty
+overlap, or a changed remote head that cannot be fast-forwarded.</p>
+<h3 id="2-align-the-qa-branch">2. Align the QA branch</h3>
+<p>Rebase <code>release-tooling</code> onto the current <code>master</code>, resolving conflicts with
+review and preserving provenance. Why: QA must test the production line plus
+the new work. Risk: rebasing a shared branch can disrupt another worker. Use a
+coordination lock or pause and escalate rather than rewriting someone else's
+published work.</p>
+<h3 id="3-create-the-implementation-branch-and-worktrees">3. Create the implementation branch and worktrees</h3>
+<p>Create a named working branch from aligned <code>release-tooling</code>; create isolated
+worktrees from that branch for delegated tasks. Record base commit, branch,
+worktree path, and Agent-Workflow run identity. Why: isolation prevents agents
+from overwriting one another and makes recovery possible. Risk: indexing or
+editing the wrong checkout invalidates evidence. Run the worktree preflight and
+verify its Git root before structural discovery.</p>
+<h3 id="4-implement-and-preserve-traceability">4. Implement and preserve traceability</h3>
+<p>Implement only the accepted specification, keeping requirements linked to
+acceptance, evaluation, tasks, and result contracts. Record source evidence,
+schema versions, compatibility decisions, and changed files. Why: a passing
+implementation without provenance is not release evidence. Risk: generated
+artifacts or historical schemas may be overwritten. Keep schemas immutable and
+retain versioned fixtures.</p>
+<h3 id="5-complete-the-agent-workflow-gates">5. Complete the Agent-Workflow gates</h3>
+<p>Treat worker exit, task completion, evaluation, independent review, and
+acceptance as separate gates. Verify the declared commands and sealed evidence;
+acknowledge durable messages by correlation ID. Why: process exit only proves a
+process stopped. Risk: self-reported success can hide missing review or stale
+evidence. Stop if any gate is absent, contradictory, or based on an external
+host claim without host-supplied evidence.</p>
+<h3 id="6-rebase-and-submit-the-qa-pr">6. Rebase and submit the QA PR</h3>
+<p>Fetch again, rebase the working branch onto the latest <code>release-tooling</code>, rerun
+the affected checks, and open a PR targeting <code>release-tooling</code>. Why: the PR
+must be evaluated against the branch it will change. Risk: a stale PR can
+silently reintroduce removed code or conflict with another accepted change.</p>
+<h3 id="7-run-jenkins-qa-and-release-gates">7. Run Jenkins QA and release gates</h3>
+<p>Require Jenkins evidence for version policy, schema/compatibility matrix,
+deterministic wheel freshness, build artifacts, critical seams, install, and
+live smoke functionality. Why: CI is the shared reproducibility boundary.
+Risk: local environments can mask dependency, packaging, or installation
+failures. A failed or incomplete gate blocks merge; do not waive it by copying
+local output.</p>
+<h3 id="8-publish-qa-and-promote-to-production">8. Publish QA and promote to production</h3>
+<p>After approval and green Jenkins evidence, push <code>release-tooling</code>. Before
+promotion, fetch again and reconcile it with the latest <code>master</code>; merge or
+fast-forward it into <code>master</code> according to repository policy. Why: production
+must include the latest base and only reviewed QA work. Risk: production may
+advance during CI. Reconcile and rerun required gates if the resulting commit
+changed materially.</p>
+<h3 id="9-synchronize-qa-after-promotion">9. Synchronize QA after promotion</h3>
+<p>Fast-forward the local and remote <code>release-tooling</code> branch to the promoted
+<code>master</code> commit. Why: the next task must start from the actual production head.
+Risk: assuming that a rebase moved an already-ancestor branch leaves QA stale.
+Verify both branch tips and remote tracking refs explicitly.</p>
+<h3 id="10-tag-and-build-the-release-archive">10. Tag and build the release archive</h3>
+<p>Create the version tag on the promoted <code>master</code> commit only, then push the tag.
+GitHub Actions checks that the tag equals <code>VERSION</code>, builds wheel and sdist,
+verifies source freshness, and archives executables/package metadata, all
+versioned schemas and compatibility fixtures, docs, manifests, and checksums.
+Why: consumers receive artifacts from the exact production commit. Risk: a tag
+created before promotion or a mutable build input produces an unreproducible
+release. Reject tag/version mismatch and retain the archive as release evidence.</p>
+<h3 id="11-close-out-and-recover-safely">11. Close out and recover safely</h3>
+<p>Record commit IDs, tag, CI run, archive checksums, install path, smoke results,
+and compatibility status; then remove only explicitly identified worktrees and
+temporary processes. Why: durable evidence supports historical packs and
+executions. Risk: cleanup commands can remove unrelated user work. Prefer
+targeted, recoverable cleanup and leave unresolved findings visible.</p>
+<h2 id="version-and-compatibility-gates">Version and compatibility gates</h2>
+<ul>
+<li>Patch releases contain compatible fixes and documentation/tooling changes.</li>
+<li>Minor releases may add backward-compatible capabilities or schemas.</li>
+<li>Breaking application/API or machine-contract changes require documented
+  review and a major-version decision while pre-1.0.</li>
+<li>A breaking schema meaning gets a new immutable schema identifier and retained
+  versioned fixture; an application release alone does not require a new schema.</li>
+<li>Every release updates and verifies the durable compatibility matrix, hashes,
+  package inclusion, and historical fixture availability.</li>
+<li>Never infer dependent-application compatibility from parsing alone.</li>
+</ul>
+<h2 id="prompt-pack-and-specification-requirement">Prompt-pack and specification requirement</h2>
+<p>New specifications and prompt packs must name the base and QA branches, branch
+and rebase points, version gates, required CI evidence, promotion target, and
+tag/archive step. A pack must not instruct direct production merging while QA
+or release gates are incomplete.</p>
+<h2 id="references-and-rationale">References and rationale</h2>
+<p>These references explain the mechanics and rationale behind the accepted flow:</p>
+<ul>
+<li><a href="https://git-scm.com/book/en/v2/Git-Branching-Branching-Workflows">Git branching and merging</a>
+  — why isolated topic branches reduce concurrent-change interference.</li>
+<li><a href="https://git-scm.com/docs/git-rebase">Git rebase</a> — the authoritative behavior
+  and caveats for replaying work onto a newer base.</li>
+<li><a href="https://git-scm.com/docs/git-merge">Git merge</a> — fast-forward and merge
+  semantics used when promoting QA to production.</li>
+<li><a href="https://git-scm.com/docs/git-worktree">Git worktree</a> — separate checkouts
+  for concurrent work without copying repositories.</li>
+<li><a href="https://docs.github.com/en/get-started/learning-to-code/getting-started-with-git">GitHub pull request workflow</a>
+  — review and branch collaboration conventions.</li>
+<li><a href="https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches">GitHub protected branches</a>
+  — required reviews and status checks as repository-enforced gates.</li>
+<li><a href="https://semver.org/">Semantic Versioning</a> — version signal and compatibility
+  expectations for application and API changes.</li>
+</ul></article></main><script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs'; mermaid.initialize({startOnLoad:true,theme:'neutral'});</script></body></html>

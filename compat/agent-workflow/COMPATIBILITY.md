@@ -31,6 +31,8 @@ Recognized contracts:
 - `agent-workflow/agent-role/v1` — optional logical target hint vocabulary.
 - `agent-workflow/task-result/v1` — generic result schema that SpecGen can package as a task-local contract resource.
 
+The durable compatibility matrix is `compatibility.json` under `target.compatible_releases`. It retains one entry per assessed Agent-Workflow application release, with immutable fixture paths and SHA-256 digests. The `0.9.0` and `0.9.1` entries intentionally reference the same public schema IDs and bytes; the application version changed without a public contract change. Do not delete an older fixture when a newer application release is added.
+
 Agent-Workflow also publishes a trusted plugin API and stable integration surfaces. SpecGen uses those public seams rather than private modules.
 
 ## Adapter policy

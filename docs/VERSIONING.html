@@ -1,0 +1,43 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>VERSIONING</title><style>
+:root { color-scheme: light dark; --bg:#f6f8fa; --panel:#fff; --ink:#24292f; --muted:#57606a; --accent:#0969da; --line:#d0d7de; }
+@media (prefers-color-scheme: dark) { :root { --bg:#0d1117; --panel:#161b22; --ink:#e6edf3; --muted:#8b949e; --accent:#58a6ff; --line:#30363d; } }
+* { box-sizing:border-box; } body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.65 system-ui,-apple-system,Segoe UI,sans-serif; }
+main { max-width:1100px; margin:0 auto; padding:2rem 1.25rem 4rem; } article { background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:clamp(1.25rem,3vw,3rem); box-shadow:0 4px 18px #00000012; }
+h1,h2,h3 { line-height:1.25; margin-top:1.8em; } h1 { margin-top:0; font-size:2.35rem; } h2 { border-bottom:1px solid var(--line); padding-bottom:.35rem; } a { color:var(--accent); } code { padding:.15em .35em; border-radius:5px; background:color-mix(in srgb,var(--muted) 15%,transparent); } pre { overflow:auto; padding:1rem; border-radius:8px; background:#161b22; color:#e6edf3; } table { display:block; overflow:auto; border-collapse:collapse; } th,td { border:1px solid var(--line); padding:.55rem .75rem; text-align:left; } th { background:color-mix(in srgb,var(--accent) 12%,transparent); } blockquote { margin-left:0; padding:.5rem 1rem; border-left:4px solid var(--accent); color:var(--muted); } .mermaid { background:var(--panel); padding:1rem; border:1px solid var(--line); border-radius:8px; overflow:auto; }
+nav { margin-bottom:1rem; color:var(--muted); } nav a { margin-right:1rem; }
+</style></head><body><main><nav><a href="../README.html">README</a><a href="index.html">Documentation index</a></nav><article><h1 id="versioning-and-compatibility-policy">Versioning and Compatibility Policy</h1>
+<blockquote>
+<p>Document version: 0.2.0 · Applies to SpecGen 0.2.0</p>
+</blockquote>
+<h2 id="project-releases">Project releases</h2>
+<p>SpecGen uses Semantic Versioning. Pre-1.0 releases may make breaking product/API changes, but every breaking change is recorded in the changelog and machine contracts retain explicit immutable identifiers.</p>
+<p>Current release: <code>0.2.0</code>.</p>
+<h2 id="machine-readable-contracts">Machine-readable contracts</h2>
+<p>Current canonical contract: <code>specgen/spec/v1alpha2</code>.</p>
+<p>Retained compatibility contract: <code>specgen/spec/v1alpha1</code> (immutable).</p>
+<p>Current authoring-event contract: <code>specgen/authoring-event/v1alpha1</code>.
+Current derived semantic-delta contract: <code>specgen/semantic-delta/v1alpha1</code>.
+Current elicitation-plan contract: <code>specgen/elicitation-plan/v1alpha1</code>.
+Current repository-analysis contract: <code>specgen/repository-analysis/v1alpha1</code>.
+Current repository-drift contract: <code>specgen/repository-drift/v1alpha1</code>.
+Current brownfield research-plan contract: <code>specgen/brownfield-plan/v1alpha1</code>.
+Current agent-assisted brownfield-analysis contract: <code>specgen/brownfield-analysis/v1alpha1</code>.
+Current evaluation-intent contract: <code>specgen/evaluation-intent/v1alpha1</code>.</p>
+<p>Rules:</p>
+<ol>
+<li>Every persisted canonical/event/derived contract contains <code>schema</code>.</li>
+<li>Breaking field or semantic changes require a new contract identifier and a new schema file.</li>
+<li>Existing published schema files are not rewritten to mean something new.</li>
+<li>Additive changes stay within an identifier only when the contract explicitly permits unknown fields and old consumers remain safe.</li>
+<li>Alpha/beta transitions require migration notes.</li>
+<li>Stable <code>v1</code> waits for corpus/eval evidence that recurring structural breaks have stopped.</li>
+</ol>
+<p><code>v1alpha2</code> is the first deliberate canonical revision. It adds snapshot/state/provenance/preservation semantics and therefore advances the contract rather than mutating <code>v1alpha1</code>.</p>
+<h2 id="documentreference-versions">Document/reference versions</h2>
+<p>Maintained architecture, help, development, compatibility, research, and reference documents carry the current project release marker. Historical accepted ADR bodies retain their historical version context and are superseded rather than rewritten for routine release alignment.</p>
+<h2 id="external-target-compatibility">External target compatibility</h2>
+<p>External target support pins product/version range, exact schema/API identifiers, compatibility status, assessment source, and vendored fixture digest where applicable. Unknown breaking versions fail closed.</p>
+<p>Agent-Workflow <code>0.9.1</code> is the current first-class target. Target adapters may add target-required execution metadata, but a software release does not change the canonical contract unless canonical meaning itself changes.</p>
+<p>Compatibility is recorded per application release in <code>compat/agent-workflow/compatibility.json</code>. Each retained release points to immutable, versioned fixture schemas and their digests. A new application release may reuse the same schema IDs when the public contract bytes are unchanged; a breaking schema change requires a new schema ID and fixture directory. Historical fixtures remain packaged so old packs and execution results can still be inspected and validated.</p>
+<h2 id="programmatic-and-host-compatibility">Programmatic and host compatibility</h2>
+<p><code>specgen.api</code> is the supported Python integration facade for the current pre-1.0 release line. Pre-1.0 API changes remain possible and must be recorded in the changelog. The optional <code>agent-workflow-spec</code> host adapter is pinned to Agent-Workflow <code>0.9.1</code>; a different host version requires explicit compatibility review rather than optimistic loading.</p></article></main><script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs'; mermaid.initialize({startOnLoad:true,theme:'neutral'});</script></body></html>

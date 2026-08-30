@@ -1,0 +1,142 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>USAGE</title><style>
+:root { color-scheme: light dark; --bg:#f6f8fa; --panel:#fff; --ink:#24292f; --muted:#57606a; --accent:#0969da; --line:#d0d7de; }
+@media (prefers-color-scheme: dark) { :root { --bg:#0d1117; --panel:#161b22; --ink:#e6edf3; --muted:#8b949e; --accent:#58a6ff; --line:#30363d; } }
+* { box-sizing:border-box; } body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.65 system-ui,-apple-system,Segoe UI,sans-serif; }
+main { max-width:1100px; margin:0 auto; padding:2rem 1.25rem 4rem; } article { background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:clamp(1.25rem,3vw,3rem); box-shadow:0 4px 18px #00000012; }
+h1,h2,h3 { line-height:1.25; margin-top:1.8em; } h1 { margin-top:0; font-size:2.35rem; } h2 { border-bottom:1px solid var(--line); padding-bottom:.35rem; } a { color:var(--accent); } code { padding:.15em .35em; border-radius:5px; background:color-mix(in srgb,var(--muted) 15%,transparent); } pre { overflow:auto; padding:1rem; border-radius:8px; background:#161b22; color:#e6edf3; } table { display:block; overflow:auto; border-collapse:collapse; } th,td { border:1px solid var(--line); padding:.55rem .75rem; text-align:left; } th { background:color-mix(in srgb,var(--accent) 12%,transparent); } blockquote { margin-left:0; padding:.5rem 1rem; border-left:4px solid var(--accent); color:var(--muted); } .mermaid { background:var(--panel); padding:1rem; border:1px solid var(--line); border-radius:8px; overflow:auto; }
+nav { margin-bottom:1rem; color:var(--muted); } nav a { margin-right:1rem; }
+</style></head><body><main><nav><a href="../README.html">README</a><a href="index.html">Documentation index</a></nav><article><h1 id="using-specgen">Using SpecGen</h1>
+<blockquote>
+<p>Document version: 0.2.0 · Applies to SpecGen 0.2.0 plus post-release development additions described here</p>
+</blockquote>
+<p>SpecGen turns engineering intent into a canonical JSON specification that can be validated, reviewed as Markdown, compared across snapshots, grounded in repository evidence, and compiled for supported execution targets.</p>
+<p>The canonical JSON snapshot is the authority. Markdown, elicitation plans, repository reports, brownfield research artifacts, evaluation intent, and Agent-Workflow prompt packs are projections or evidence; they do not replace the canonical specification.</p>
+<h2 id="1-install-and-inspect-the-application">1. Install and inspect the application</h2>
+<p>From a source checkout:</p>
+<pre><code class="language-bash">python -m pip install -e .
+specgen version
+specgen contracts
+specgen modes
+</code></pre>
+<p>The normal authoring modes are:</p>
+<ul>
+<li><code>express</code> — minimum ceremony for a narrow, already-understood request;</li>
+<li><code>guided</code> — default; surfaces important gaps without making every gap a blocker;</li>
+<li><code>strict</code> — unresolved questions and missing verification intent block finalization;</li>
+<li><code>agent-workflow</code> — strict phased implementation authoring for later Agent-Workflow compilation.</li>
+</ul>
+<h2 id="2-create-or-obtain-a-candidate-specification">2. Create or obtain a candidate specification</h2>
+<p>A candidate is a <code>specgen/spec/v1alpha2</code> JSON document. Start from <code>examples/minimal.spec.json</code>, an existing snapshot, or the Python API:</p>
+<pre><code class="language-python">from specgen.api import create_candidate, write_document
+
+candidate = create_candidate(
+    &quot;billing-refund-change&quot;,
+    &quot;Billing refund behavior&quot;,
+    created_at=&quot;2026-08-27T20:00:00Z&quot;,
+    problem=&quot;Refund handling is inconsistent across the current flows.&quot;,
+)
+write_document(&quot;candidate.json&quot;, candidate)
+</code></pre>
+<p>Do not invent missing product decisions simply to fill fields. Keep unknowns explicit and let readiness assessment identify what still matters.</p>
+<h2 id="3-assess-what-the-specification-still-needs">3. Assess what the specification still needs</h2>
+<pre><code class="language-bash">specgen author assess candidate.json --mode guided
+</code></pre>
+<p>The command emits a machine-readable <code>specgen/elicitation-plan/v1alpha1</code>. Resolve useful questions by one of three routes:</p>
+<ol>
+<li>ask the user when the answer is a product, policy, priority, or acceptance decision;</li>
+<li>collect repository/document evidence when the answer already exists in the system;</li>
+<li>leave the item unresolved when neither route can establish it safely.</li>
+</ol>
+<p>For an implementation handoff to Agent-Workflow, assess with:</p>
+<pre><code class="language-bash">specgen author assess candidate.json --mode agent-workflow
+</code></pre>
+<p>That profile requires phased tasks, requirement/task coverage, result contracts, and evaluation intent.</p>
+<h2 id="4-brownfield-work-establish-the-current-system-before-specifying-the-change">4. Brownfield work: establish the current system before specifying the change</h2>
+<p>For an existing codebase, first create deterministic repository evidence:</p>
+<pre><code class="language-bash">specgen repo analyze /path/to/repo --spec candidate.json --mode guided \
+  &gt; repository-analysis.json
+</code></pre>
+<p>This report is deliberately conservative. It binds evidence to a repository baseline, hashes observed files, recognizes durable declarations/contracts, includes explicitly referenced files, and reports evidence-backed contradictions. It does not claim semantic understanding of arbitrary source code.</p>
+<p>Then generate a targeted research plan:</p>
+<pre><code class="language-bash">specgen brownfield capabilities
+specgen brownfield plan /path/to/repo --spec candidate.json --mode guided \
+  &gt; brownfield-plan.json
+</code></pre>
+<p><code>brownfield plan</code> separates:</p>
+<ul>
+<li>questions that should be asked of the user;</li>
+<li>codebase research the agent should perform itself;</li>
+<li>focus areas derived from the specification and deterministic repository evidence;</li>
+<li>stop conditions that prevent unnecessary codebase exploration.</li>
+</ul>
+<h3 id="optional-codebase-memory-mcp-enhancement">Optional <code>codebase-memory-mcp</code> enhancement</h3>
+<p>If the <code>codebase-memory-mcp</code> executable is on <code>PATH</code>, <code>brownfield plan</code> selects the <code>codebase-memory-assisted</code> strategy and emits research tasks optimized for graph-based code intelligence. SpecGen does not require the dependency and does not assume that the MCP server is registered with the current agent; <code>specgen brownfield capabilities</code> reports binary availability while MCP registration remains an agent/runtime concern.</p>
+<p>The dedicated skill at <code>skills/specgen-brownfield/SKILL.md</code> tells an agent how to use the available MCP tools efficiently. Its preferred sequence is:</p>
+<pre><code class="language-text">index/status -&gt; graph schema -&gt; one architecture overview -&gt; narrow structural search
+-&gt; shallow call-path tracing -&gt; decisive snippets/tests/contracts -&gt; blast-radius check
+-&gt; concise brownfield analysis
+</code></pre>
+<p>The agent records semantic findings separately as <code>specgen/brownfield-analysis/v1alpha1</code>, binding the exact deterministic repository-analysis digest and distinguishing observed facts from strong or tentative inference. That artifact can then be cited from canonical provenance as <code>tool_output</code>/<code>inference</code>; it never replaces the deterministic <code>repository-analysis/v1alpha1</code> report.</p>
+<p>If <code>codebase-memory-mcp</code> is unavailable, the plan falls back to the evidence-first repository workflow and targeted file/search tools.</p>
+<h2 id="5-update-the-canonical-specification">5. Update the canonical specification</h2>
+<p>Use the collected user decisions and evidence to update the candidate. Preserve stable IDs for requirements, interfaces, acceptance criteria, tasks, and other semantic objects that survive a revision.</p>
+<p>Important provenance should be represented in <code>provenance.sources</code>. For brownfield work, useful sources commonly include:</p>
+<ul>
+<li>the repository baseline or an explicitly referenced repository file;</li>
+<li>deterministic <code>repository-analysis.json</code>;</li>
+<li>agent-assisted <code>brownfield-analysis.json</code> as tool output/inference;</li>
+<li>user decisions authorizing desired behavior or preservation boundaries.</li>
+</ul>
+<p>Authoring-history events can preserve why an important change was made:</p>
+<pre><code class="language-bash">specgen events append events.ndjson event.json
+</code></pre>
+<h2 id="6-validate-and-finalize">6. Validate and finalize</h2>
+<p>Validate at any point:</p>
+<pre><code class="language-bash">specgen validate candidate.json
+specgen validate candidate.json --json
+</code></pre>
+<p>When readiness passes for the chosen mode:</p>
+<pre><code class="language-bash">specgen author finalize candidate.json --mode guided --output spec.json
+</code></pre>
+<p>Finalization binds the canonical content digest. Do not manually patch a finalized digest after editing; revise the candidate and finalize again.</p>
+<h2 id="7-produce-human-review-and-change-artifacts">7. Produce human review and change artifacts</h2>
+<pre><code class="language-bash">specgen render spec.json --output SPEC.md
+specgen diff prior-spec.json spec.json &gt; semantic-delta.json
+specgen evals intent spec.json &gt; evaluation-intent.json
+</code></pre>
+<p><code>SPEC.md</code> is for human review. <code>spec.json</code> remains the specification authority.</p>
+<h2 id="8-check-repository-drift-before-reusing-brownfield-evidence">8. Check repository drift before reusing brownfield evidence</h2>
+<p>If time has passed or the repository changed:</p>
+<pre><code class="language-bash">specgen repo drift repository-analysis.json /path/to/repo
+</code></pre>
+<p>Regenerate repository analysis—and any semantic brownfield conclusions affected by the drift—when the report shows material change.</p>
+<h2 id="9-compile-an-agent-workflow-implementation-pack">9. Compile an Agent-Workflow implementation pack</h2>
+<p>Use <code>agent-workflow</code> authoring mode before compilation. When the spec contains repository provenance, bind the finalized snapshot to a fresh repository analysis and provide the live repository root:</p>
+<pre><code class="language-bash">specgen repo analyze /path/to/repo --spec spec.json --mode agent-workflow \
+  &gt; repository-analysis.json
+
+specgen agent-workflow compile spec.json \
+  --repository-analysis repository-analysis.json \
+  --repository-root /path/to/repo \
+  --output targets/agent-workflow
+</code></pre>
+<p>The output directory must be empty. Compilation fails closed when required result/evaluation/source semantics cannot be represented faithfully.</p>
+<p>Without repository provenance:</p>
+<pre><code class="language-bash">specgen agent-workflow compile spec.json --output targets/agent-workflow
+</code></pre>
+<h2 id="10-programmatic-use">10. Programmatic use</h2>
+<p>The supported Python facade is <code>specgen.api</code>:</p>
+<pre><code class="language-python">from specgen.api import (
+    assess,
+    analyze_repository,
+    brownfield_plan,
+    codebase_memory_capability,
+    evaluation_intent,
+    finalize_candidate,
+    render_markdown,
+    validate,
+)
+</code></pre>
+<p>Use the API for integrations that need SpecGen behavior in-process. Do not create a second schema, persistence authority, or orchestration lifecycle around it unless a concrete requirement justifies a new architecture boundary.</p>
+<h2 id="practical-authoring-rule">Practical authoring rule</h2>
+<p>For greenfield work, ask questions until intended behavior is explicit. For brownfield work, ask fewer implementation questions: investigate the existing code first, then ask the user only for decisions the code cannot legitimately make.</p></article></main><script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs'; mermaid.initialize({startOnLoad:true,theme:'neutral'});</script></body></html>

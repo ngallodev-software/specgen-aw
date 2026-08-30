@@ -44,6 +44,8 @@ External target support pins product/version range, exact schema/API identifiers
 
 Agent-Workflow `0.9.1` is the current first-class target. Target adapters may add target-required execution metadata, but a software release does not change the canonical contract unless canonical meaning itself changes.
 
+Compatibility is recorded per application release in `compat/agent-workflow/compatibility.json`. Each retained release points to immutable, versioned fixture schemas and their digests. A new application release may reuse the same schema IDs when the public contract bytes are unchanged; a breaking schema change requires a new schema ID and fixture directory. Historical fixtures remain packaged so old packs and execution results can still be inspected and validated.
+
 ## Programmatic and host compatibility
 
 `specgen.api` is the supported Python integration facade for the current pre-1.0 release line. Pre-1.0 API changes remain possible and must be recorded in the changelog. The optional `agent-workflow-spec` host adapter is pinned to Agent-Workflow `0.9.1`; a different host version requires explicit compatibility review rather than optimistic loading.
