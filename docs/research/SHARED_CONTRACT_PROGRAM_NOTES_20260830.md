@@ -47,6 +47,8 @@ provenance-linked derivatives and never rewrite sealed historical artifacts.
 | Agent-Workflow's new rollback/watcher tests initially violated the repository test-authority manifest. | implementation process weakness | Added explicit authority records, bounded rationale, and the one additional subprocess budget; full release gate then passed. |
 | The installed-product plugin journey assumed its fixture was the first discovered entry point. Installing SpecGen made its valid optional plugin sort first. | combined-install weakness | Fixed the test to select the named fixture candidate. The test now proves disabled candidates are not imported while allowing unrelated installed plugins. |
 | Three stale tmux sessions and one merged clean Agent-Workflow worktree remained from old runs. | cleanup gap | Removed exactly those named sessions and the ancestor worktree after provenance/status checks. |
+| The shared installer found existing non-symlink `/home/nate/.local/bin/specgen` and `agent-workflow` launchers. | host-installation boundary | The committed apps installed successfully into the supported shared venv and its `pip check` passes, but the installer correctly refused to overwrite the host wrappers or continue its link-refresh step. Replace only with explicit operator approval. |
+| Agent-Workflow retains an untracked `implementation-output/` tree from the prior prompt-pack execution. | clean-gate blocker | Preserve it as user-owned evidence; do not commit it because repository policy excludes one-off execution output. A clean start requires an explicit archive/delete/ignore decision. |
 
 ## Strengths to retain
 
