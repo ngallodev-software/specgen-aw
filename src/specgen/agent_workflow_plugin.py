@@ -1,4 +1,4 @@
-"""Optional Agent-Workflow 0.9.0 plugin adapter for SpecGen.
+"""Optional Agent-Workflow 0.9.1 plugin adapter for SpecGen.
 
 This module is loaded only through Agent-Workflow's public trusted plugin API.
 SpecGen core has no runtime dependency on Agent-Workflow.

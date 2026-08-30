@@ -1,4 +1,4 @@
-# Phase 3 master prompt
+# Phase 3 verification prompt
 
-Run `P3-01` against the complete evidence set. Do not claim acceptance from
-worker completion or technical-green results alone.
+Run the smallest high-value verification set after implementation is complete.
+Do not broaden the test surface merely because this plan was implemented.

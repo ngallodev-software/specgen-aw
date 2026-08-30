@@ -1,4 +1,4 @@
-# Phase 3 — Verification and acceptance
+# Phase 3 — Focused verification and documentation reconciliation
 
-Perform the independent technical, review, acceptance, and release gate
-sequence. A blocking finding requires a valid waiver or remediation.
+Verify only the seams changed by Phases 1–2 and reconcile maintained docs/skills
+with implemented behavior.

@@ -1,69 +1,44 @@
 schema: agent-workflow/prompt-pack/v1
-pack_id: specgen-aw-cavekit-integration-v1
+pack_id: specgen-aw-cavekit-selective-adoption-v2
 workflow:
   name: agent-workflow
   minimum_version: 0.9.0
   requires:
     - isolated_worktree
-    - durable_agent_run
-    - persistent_log
     - source_baseline
     - completion_report
-    - independent_phase_gate
 phases:
-  - id: "0"
-    name: baseline-and-contract
-    directory: phase-0
-    mandatory_order: [P0-00]
-    tasks:
-      - id: P0-00
-        tier: C
-        agent_run_id: specgen-aw-cavekit-p0-00-baseline
-        prompt: phase-0/tickets/P0-00-baseline.md
   - id: "1"
-    name: typed-authority
+    name: readiness-refinement
     directory: phase-1
-    mandatory_order: [P1-01, P1-02, P1-03]
+    mandatory_order: [P1-01]
     tasks:
       - id: P1-01
         tier: B
-        agent_run_id: specgen-aw-cavekit-p1-01-coverage
-        prompt: phase-1/tickets/P1-01-coverage-authority.md
-        dependencies: [P0-00]
-      - id: P1-02
-        tier: B
-        agent_run_id: specgen-aw-cavekit-p1-02-brownfield
-        prompt: phase-1/tickets/P1-02-brownfield-evidence.md
-        dependencies: [P0-00]
-      - id: P1-03
-        tier: B
-        agent_run_id: specgen-aw-cavekit-p1-03-reviews
-        prompt: phase-1/tickets/P1-03-review-receipts.md
-        dependencies: [P0-00]
+        agent_run_id: specgen-cavekit-v2-p1-01-readiness
+        prompt: phase-1/tickets/P1-01-readiness-coverage.md
+        backlog_id: cavekit-selective-adoption
   - id: "2"
-    name: integration-and-projections
+    name: brownfield-authoring-refinement
     directory: phase-2
-    mandatory_order: [P2-01, P2-02]
+    mandatory_order: [P2-01]
     tasks:
       - id: P2-01
-        tier: A
-        agent_run_id: specgen-aw-cavekit-p2-01-api-cli
-        prompt: phase-2/tickets/P2-01-api-cli-integration.md
-        dependencies: [P1-01, P1-02, P1-03]
-      - id: P2-02
-        tier: A
-        agent_run_id: specgen-aw-cavekit-p2-02-projections
-        prompt: phase-2/tickets/P2-02-projections-and-docs.md
-        dependencies: [P2-01]
+        tier: B
+        agent_run_id: specgen-cavekit-v2-p2-01-brownfield
+        prompt: phase-2/tickets/P2-01-brownfield-preserve-change.md
+        dependencies: [P1-01]
+        backlog_id: cavekit-selective-adoption
   - id: "3"
-    name: verification-and-acceptance
+    name: focused-verification
     directory: phase-3
     mandatory_order: [P3-01]
     tasks:
       - id: P3-01
         tier: A
-        agent_run_id: specgen-aw-cavekit-p3-01-gate
-        prompt: phase-3/tickets/P3-01-independent-gate.md
-        dependencies: [P2-02]
+        agent_run_id: specgen-cavekit-v2-p3-01-verify
+        prompt: phase-3/tickets/P3-01-focused-verification.md
+        dependencies: [P2-01]
+        backlog_id: cavekit-selective-adoption
 backlog_items:
-  - cavekit-integration
+  - cavekit-selective-adoption

@@ -165,7 +165,7 @@ def main() -> int:
         kinds = {item["kind"] for item in analysis["interfaces"]}
         require({"openapi", "python-console-script"}.issubset(kinds), f"repo analyze: interface discovery missing: {sorted(kinds)}")
         require(any(item["kind"] == "json-schema" for item in analysis["data_contracts"]), "repo analyze: json-schema discovery missing")
-        require(analysis["target_context"]["expected_version"] == "0.9.0", "repo analyze: Agent-Workflow context missing")
+        require(analysis["target_context"]["expected_version"] == "0.9.1", "repo analyze: Agent-Workflow context missing")
         analysis_path = Path(tmp) / "analysis.json"
         analysis_path.write_text(analysis_result.stdout, encoding="utf-8")
         validation = run("validate", str(analysis_path), "--json")

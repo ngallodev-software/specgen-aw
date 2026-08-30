@@ -1,4 +1,4 @@
-# Phase 2 — Integration and projections
+# Phase 2 — Brownfield authoring refinement
 
-Expose the typed authority through the existing SpecGen API/CLI and render
-deterministic views. Do not introduce a second specification model.
+Refine the existing brownfield authoring workflow; do not build another
+repository analyzer, parity database, or execution review system.

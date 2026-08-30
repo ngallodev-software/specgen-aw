@@ -48,7 +48,7 @@ def main(argv: list[str] | None = None) -> int:
     aw_sub = aw_parser.add_subparsers(dest="aw_command", required=True)
     aw_compile = aw_sub.add_parser(
         "compile",
-        help="compile an Agent-Workflow 0.9.0 prompt pack and target resources",
+        help="compile an Agent-Workflow 0.9.1 prompt pack and target resources",
     )
     aw_compile.add_argument("path", help="canonical specgen/spec/v1alpha2 snapshot")
     aw_compile.add_argument("--output", required=True, help="empty destination directory")

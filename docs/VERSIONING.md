@@ -42,8 +42,8 @@ Maintained architecture, help, development, compatibility, research, and referen
 
 External target support pins product/version range, exact schema/API identifiers, compatibility status, assessment source, and vendored fixture digest where applicable. Unknown breaking versions fail closed.
 
-Agent-Workflow `0.9.0` is the current first-class target. Target adapters may add target-required execution metadata, but a software release does not change the canonical contract unless canonical meaning itself changes.
+Agent-Workflow `0.9.1` is the current first-class target. Target adapters may add target-required execution metadata, but a software release does not change the canonical contract unless canonical meaning itself changes.
 
 ## Programmatic and host compatibility
 
-`specgen.api` is the supported Python integration facade for the current pre-1.0 release line. Pre-1.0 API changes remain possible and must be recorded in the changelog. The optional `agent-workflow-spec` host adapter is pinned to Agent-Workflow `0.9.0`; a different host version requires explicit compatibility review rather than optimistic loading.
+`specgen.api` is the supported Python integration facade for the current pre-1.0 release line. Pre-1.0 API changes remain possible and must be recorded in the changelog. The optional `agent-workflow-spec` host adapter is pinned to Agent-Workflow `0.9.1`; a different host version requires explicit compatibility review rather than optimistic loading.

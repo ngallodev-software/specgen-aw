@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>spec-gen</title>
+            <style>
+/* From extension vscode.github */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.vscode-dark img[src$=\#gh-light-mode-only],
+.vscode-light img[src$=\#gh-dark-mode-only],
+.vscode-high-contrast:not(.vscode-high-contrast-light) img[src$=\#gh-light-mode-only],
+.vscode-high-contrast-light img[src$=\#gh-dark-mode-only] {
+	display: none;
+}
+
+</style>
+
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+<style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        <style>
+.task-list-item {
+    list-style-type: none;
+}
+
+.task-list-item-checkbox {
+    margin-left: -20px;
+    vertical-align: middle;
+    pointer-events: none;
+}
+</style>
+<style>
+:root {
+  --color-note: #0969da;
+  --color-tip: #1a7f37;
+  --color-warning: #9a6700;
+  --color-severe: #bc4c00;
+  --color-caution: #d1242f;
+  --color-important: #8250df;
+}
+
+</style>
+<style>
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-note: #2f81f7;
+    --color-tip: #3fb950;
+    --color-warning: #d29922;
+    --color-severe: #db6d28;
+    --color-caution: #f85149;
+    --color-important: #a371f7;
+  }
+}
+
+</style>
+<style>
+.markdown-alert {
+  padding: 0.5rem 1rem;
+  margin-bottom: 16px;
+  color: inherit;
+  border-left: .25em solid #888;
+}
+
+.markdown-alert>:first-child {
+  margin-top: 0
+}
+
+.markdown-alert>:last-child {
+  margin-bottom: 0
+}
+
+.markdown-alert .markdown-alert-title {
+  display: flex;
+  font-weight: 500;
+  align-items: center;
+  line-height: 1
+}
+
+.markdown-alert .markdown-alert-title .octicon {
+  margin-right: 0.5rem;
+  display: inline-block;
+  overflow: visible !important;
+  vertical-align: text-bottom;
+  fill: currentColor;
+}
+
+.markdown-alert.markdown-alert-note {
+  border-left-color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-note .markdown-alert-title {
+  color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-important {
+  border-left-color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-important .markdown-alert-title {
+  color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-warning {
+  border-left-color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-warning .markdown-alert-title {
+  color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-tip {
+  border-left-color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-tip .markdown-alert-title {
+  color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-caution {
+  border-left-color: var(--color-caution);
+}
+
+.markdown-alert.markdown-alert-caution .markdown-alert-title {
+  color: var(--color-caution);
+}
+
+</style>
+
+        </head>
+        <body class="vscode-body vscode-dark">
+            <span id="markdown-mermaid" aria-hidden="true" data-config="{&quot;darkModeTheme&quot;:&quot;vscode&quot;,&quot;lightModeTheme&quot;:&quot;vscode&quot;,&quot;maxTextSize&quot;:50000,&quot;clickDrag&quot;:&quot;alt&quot;,&quot;showControls&quot;:&quot;onHoverOrFocus&quot;,&quot;resizable&quot;:true,&quot;maxHeight&quot;:&quot;&quot;}"></span>
+				<!-- document-version: 0.2.0; applies-to: SpecGen 0.2.0 -->
+<div align="center">
+<h1 id="spec-gen">spec-gen</h1>
+<h3 id="an-agent-workflow-joint"><em>an agent-workflow joint</em></h3>
+<p><strong>Turn ambiguous engineering intent into versioned specifications humans can review and agents can execute — without a 47-page manifesto.</strong></p>
+<p><img src="https://img.shields.io/badge/version-0.2.0-blue" alt="Version">
+<img src="https://img.shields.io/badge/spec%20schema-v1alpha2-purple" alt="Spec Schema">
+<img src="https://img.shields.io/badge/Agent--Workflow-0.9.0%20target-2ea44f" alt="Agent--Workflow">
+<img src="https://img.shields.io/badge/status-alpha-orange" alt="Status"></p>
+<p><strong>Canonical JSON · append-only decisions · immutable snapshots · traceability · repository evidence · targeted brownfield intelligence · evaluation intent · target compilation · agent skills</strong></p>
+</div>
+<p>SpecGen is a machine-first specification authoring/compiler project. It keeps user decisions, source evidence, requirements, acceptance, evaluation intent, implementation structure, provenance, and unresolved questions explicit enough to validate and hand off without relying on chat memory.</p>
+<blockquote>
+<p><strong>SpecGen owns specification meaning. Execution targets own execution meaning.</strong></p>
+</blockquote>
+<p>Agent-Workflow is the first-class compilation target, not a runtime dependency. Canonical repository: <a href="https://github.com/ngallodev-software/specgen-aw">ngallodev-software/specgen-aw</a> (<code>master</code>).</p>
+<h2 id="current-contracts">Current contracts</h2>
+<ul>
+<li>project <code>0.2.0</code>;</li>
+<li>canonical snapshot <code>specgen/spec/v1alpha2</code>;</li>
+<li>retained snapshot <code>specgen/spec/v1alpha1</code>;</li>
+<li>authoring event <code>specgen/authoring-event/v1alpha1</code>;</li>
+<li>semantic delta <code>specgen/semantic-delta/v1alpha1</code>;</li>
+<li>elicitation plan <code>specgen/elicitation-plan/v1alpha1</code>;</li>
+<li>repository analysis <code>specgen/repository-analysis/v1alpha1</code>;</li>
+<li>repository drift <code>specgen/repository-drift/v1alpha1</code>;</li>
+<li>brownfield research plan <code>specgen/brownfield-plan/v1alpha1</code>;</li>
+<li>agent-assisted brownfield analysis <code>specgen/brownfield-analysis/v1alpha1</code>;</li>
+<li>evaluation intent <code>specgen/evaluation-intent/v1alpha1</code>;</li>
+<li>Agent-Workflow target <code>0.9.0</code>.</li>
+</ul>
+<p>Published contract identifiers are versioned independently from the software release. <code>v1alpha1</code> remains immutable; <code>v1alpha2</code> is the current canonical contract.</p>
+<h2 id="quick-start">Quick start</h2>
+<pre><code class="language-bash">specgen contracts
+specgen validate spec.json
+specgen author assess spec.json --mode agent-workflow
+specgen render spec.json --output SPEC.md
+specgen repo analyze /path/to/repo --spec spec.json --mode agent-workflow &gt; repository-analysis.json
+specgen brownfield plan /path/to/repo --spec spec.json --mode agent-workflow &gt; brownfield-plan.json
+specgen evals intent spec.json
+specgen agent-workflow compile spec.json \
+  --repository-analysis repository-analysis.json \
+  --repository-root /path/to/repo \
+  --output targets/agent-workflow
+</code></pre>
+<p>If the canonical spec contains repository provenance, Agent-Workflow compilation requires a repository analysis bound to the exact canonical snapshot. The live Git state is rechecked before <code>source-baseline.json</code> is emitted; stale or directory-only baselines fail closed.</p>
+<p>The Agent-Workflow target directory is a native prompt-pack source tree. It includes phase/ticket resources, packaged result-contract JSON Schemas, <code>evaluation-plan.json</code> when representable, <code>source-baseline.json</code> when repository analysis is supplied, and <code>MANIFEST.sha256</code>. <code>MANIFEST.json</code> is intentionally not generated because Agent-Workflow reserves that filename for its own deterministic archive-integrity manifest.</p>
+<p>SpecGen also ships a general agent skill at <code>skills/specgen/SKILL.md</code>, a targeted brownfield skill at <code>skills/specgen-brownfield/SKILL.md</code>, and an optional Agent-Workflow 0.9.0 plugin entry point, <code>agent-workflow-spec</code>. The plugin delegates to the same SpecGen API/CLI authorities; it does not create another specification model or make Agent-Workflow a SpecGen runtime dependency.</p>
+<h2 id="authoring-modes">Authoring modes</h2>
+<p><code>express</code>, <code>guided</code>, <code>strict</code>, and <code>agent-workflow</code> are policy profiles over one canonical schema. <code>agent-workflow</code> is intentionally stricter: active requirements must be carried by implementation tasks and evaluation intent; tasks need structured result contracts; blockers must be resolved before target compilation.</p>
+<p>Repository analysis is evidence-first and read-only. It recognizes durable declarations and explicitly referenced evidence; it does not pretend to semantically parse arbitrary source code. For existing systems, <code>specgen brownfield plan</code> adds a targeted research layer and automatically selects a graph-assisted strategy when the optional <code>codebase-memory-mcp</code> executable is available. Semantic agent findings remain a separate <code>specgen/brownfield-analysis/v1alpha1</code> artifact rather than contaminating deterministic repository evidence.</p>
+<h2 id="cli-surface">CLI surface</h2>
+<pre><code class="language-text">specgen version
+specgen compatibility
+specgen contracts
+specgen modes
+specgen validate SPEC [--json]
+specgen digest SPEC
+specgen render SPEC [--output SPEC.md]
+specgen diff BEFORE AFTER
+specgen events append LOG EVENT
+specgen author assess SPEC --mode MODE
+specgen author finalize SPEC --mode MODE --output SPEC
+specgen repo analyze REPO [--spec SPEC] [--mode MODE]
+specgen repo drift ANALYSIS REPO
+specgen brownfield capabilities
+specgen brownfield plan REPO [--spec SPEC] [--mode MODE]
+specgen evals intent SPEC
+specgen agent-workflow compile SPEC --output DIR
+    [--repository-analysis ANALYSIS] [--repository-root REPO]
+</code></pre>
+<h2 id="architecture-boundaries">Architecture boundaries</h2>
+<p>Authoring events explain <strong>why</strong> state changed. The immutable canonical snapshot defines <strong>what the specification means</strong>. Markdown and semantic deltas are derived projections. Agent-Workflow prompt packs/evaluation/source-baseline resources are derived target artifacts and may not redefine canonical requirements.</p>
+<p>See the canonical diagrams and responsibility table in <a href="docs/ARCHITECTURE.html">Architecture</a>, and the exact Agent-Workflow lowering rules in <a href="docs/AGENT_WORKFLOW_INTEGRATION.html">Agent-Workflow Integration</a>.</p>
+<p>For programmatic integrations, <code>specgen.api</code> is the stable application facade over validation, authoring readiness/finalization, repository analysis/drift, brownfield planning/capability inspection, history, rendering/diffing, evaluation intent, compatibility inspection, and Agent-Workflow compilation.
+It also provides small deterministic create/load/write/event conveniences; timestamps remain caller-supplied so the library does not hide provenance in wall-clock side effects.</p>
+<h2 id="engineering-policy">Engineering policy</h2>
+<p>Code stays lean and architecture-backed. Tests protect critical seams rather than a scorecard; E2E/integration coverage is preferred and unit tests are exceptional. Documentation is a maintained interface, diagrams have one authoritative source, and checkpoint overlays are self-applying and deletion-aware.</p>
+<p>See <a href="docs/ENGINEERING_POLICY.html">Engineering Policy</a>.</p>
+<h2 id="reference">Reference</h2>
+<table>
+<thead>
+<tr>
+<th>Need</th>
+<th>Go here</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Application usage</td>
+<td><a href="docs/USAGE.html">docs/USAGE.md</a></td>
+</tr>
+<tr>
+<td>Brownfield authoring</td>
+<td><a href="docs/BROWNFIELD_AUTHORING.html">docs/BROWNFIELD_AUTHORING.md</a></td>
+</tr>
+<tr>
+<td>Architecture and authority diagrams</td>
+<td><a href="docs/ARCHITECTURE.html">docs/ARCHITECTURE.md</a></td>
+</tr>
+<tr>
+<td>Engineering/testing/docs policy</td>
+<td><a href="docs/ENGINEERING_POLICY.html">docs/ENGINEERING_POLICY.md</a></td>
+</tr>
+<tr>
+<td>Versioning/contracts</td>
+<td><a href="docs/VERSIONING.html">docs/VERSIONING.md</a></td>
+</tr>
+<tr>
+<td>Agent-Workflow target boundary</td>
+<td><a href="docs/AGENT_WORKFLOW_INTEGRATION.html">docs/AGENT_WORKFLOW_INTEGRATION.md</a></td>
+</tr>
+<tr>
+<td>Roadmap</td>
+<td><a href="docs/ROADMAP.html">docs/ROADMAP.md</a></td>
+</tr>
+<tr>
+<td>ADR history</td>
+<td><a href="docs/adr/README.html">docs/adr/README.md</a></td>
+</tr>
+<tr>
+<td>Prior-art assessment</td>
+<td><a href="docs/research/PRIOR_ART_DEEP_REVIEW_01.html">docs/research/PRIOR_ART_DEEP_REVIEW_01.md</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="credits--influences">Credits &amp; influences</h2>
+<p>SpecGen openly credits the work that informed its architecture and integrations: Agent-Workflow, codebase-memory-mcp, specBuilder, GitHub Spec Kit, OpenSpec, BMAD/bmad-spec, Cavekit, JSON Schema, ADR practice, semantic-versioning concepts, and cryptographic provenance patterns. Substantial adaptations are classified as retain/adapt/reject/defer in the research notes; architectural inspiration is kept distinct from direct code reuse and license obligations.</p>
+<p>The subtitle <em>“an agent-workflow joint”</em> is a deliberate nod to Spike Lee's “A Spike Lee Joint” credit. No association or endorsement is implied.</p>
+<div align="center">
+<p><strong>Do the right spec. Trace the decisions. Compile with confidence.</strong></p>
+</div>
+
+
+
+        </body>
+        </html>

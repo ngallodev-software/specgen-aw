@@ -1,4 +1,5 @@
-# Phase 2 master prompt
+# Phase 2 implementation prompt
 
-Run `P2-01` before `P2-02`. Preserve existing CLI semantics and update skills and
-documentation only for behavior demonstrated by tests.
+Use the existing repository-analysis, brownfield-plan, brownfield-analysis,
+preservation, provenance, and authoring-event boundaries. Implement only the
+preserve/change/unresolved authoring refinement described in the ticket.

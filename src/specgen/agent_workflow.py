@@ -15,7 +15,7 @@ from .elicitation import assess
 from .evals import evaluation_intent
 from .validate import validate
 
-AW_VERSION = "0.9.0"
+AW_VERSION = "0.9.1"
 AW_STANDARD_REQUIRES = (
     "completion_report",
     "durable_agent_run",
@@ -335,7 +335,7 @@ def _root_pack_resources(document: dict[str, Any], has_source_baseline: bool) ->
         "EXECUTION_PROTOCOL.md": (
             "# Execution protocol\n\n"
             "Agent-Workflow owns execution state, worktrees, completion collection, review, and acceptance.\n\n"
-            "1. Validate the prompt pack with the Agent-Workflow 0.9.0 public pack interface.\n"
+            "1. Validate the prompt pack with the Agent-Workflow 0.9.1 public pack interface.\n"
             "2. Honor task dependencies and task-local writable/acceptance/test/stop guardrails.\n"
             "3. Treat result-contract schemas as required structured handoff contracts.\n"
             "4. Treat hidden/external oracle material as opaque and use only the digest-bound target reference.\n"
@@ -606,7 +606,7 @@ def compile_evaluation_plan(document: dict[str, Any]) -> dict[str, Any] | None:
         item_scorers.append(str(scorer) if scorer is not None else None)
         if scorer is not None and scorer not in AW_SCORERS:
             raise ValueError(
-                f"Agent-Workflow 0.9.0 does not support scorer {scorer!r} requested by {item['id']}"
+                f"Agent-Workflow 0.9.1 does not support scorer {scorer!r} requested by {item['id']}"
             )
         command = item.get("command")
         if item.get("timeout_seconds") is not None and not command:

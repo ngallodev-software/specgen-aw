@@ -1,4 +1,5 @@
-# Phase 1 master prompt
+# Phase 1 implementation prompt
 
-Run `P1-01`, `P1-02`, and `P1-03` after `P0-00`. They may run in parallel only
-within their declared writable scopes. Do not promote proposals implicitly.
+Implement only the bounded readiness refinements in `SPEC.md` and the phase
+ ticket. Preserve the current canonical schema and execution boundary unless a
+new ADR/version decision is explicitly authorized.

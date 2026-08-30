@@ -4,7 +4,7 @@
 
 SpecGen is independently installable. This directory records the Agent-Workflow contracts an adapter is allowed to understand. Vendored schemas are compatibility fixtures, not imported runtime authority.
 
-`0.9.0/SNAPSHOT.json` is the deterministic compatibility capture. It records
+`0.9.1/SNAPSHOT.json` is the deterministic compatibility capture. It records
 the source revision, all Agent-Workflow schema digests, and the Python
 requirements for both projects as installed in the shared environment. Refresh
 it only through the capture command after an explicit compatibility review:
@@ -12,7 +12,7 @@ it only through the capture command after an explicit compatibility review:
 ```bash
 python scripts/capture-agent-workflow-compat.py \\
   --source /path/to/agent-workflow \\
-  --output compat/agent-workflow/0.9.0
+  --output compat/agent-workflow/0.9.1
 ```
 
 The live source may be dirty during development, but schema drift and
@@ -20,8 +20,8 @@ inconsistent shared-environment requirements fail release verification.
 
 ## Initial target
 
-- Agent-Workflow product version: `0.9.0`
-- pinned snapshot label: `agent-workflow-0.9.0-phases8-9-dev-source-20260827`
+- Agent-Workflow product version: `0.9.1`
+- pinned snapshot label: `agent-workflow-0.9.1-release-tooling-b5e73c9`
 
 Recognized contracts:
 
@@ -44,4 +44,4 @@ Agent-Workflow also publishes a trusted plugin API and stable integration surfac
 
 ## Plugin adapter
 
-SpecGen `0.1.10` optionally registers `agent-workflow-spec` in the public `agent_workflow.plugins` entry-point group. The adapter imports only `agent_workflow.plugin_api`, requires host version `0.9.0`, and delegates to SpecGen's stable programmatic facade. Canonical schemas are not duplicated as plugin package resources.
+SpecGen `0.1.10` optionally registers `agent-workflow-spec` in the public `agent_workflow.plugins` entry-point group. The adapter imports only `agent_workflow.plugin_api`, requires host version `0.9.1`, and delegates to SpecGen's stable programmatic facade. Canonical schemas are not duplicated as plugin package resources.

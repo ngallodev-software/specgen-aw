@@ -1,0 +1,58 @@
+{
+  "acceptance_commands": [
+    {
+      "argv": [
+        "python3",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/invariants/test_orchestrator_inbox.py",
+        "-k",
+        "two_child or single_writer"
+      ],
+      "id": "EVAL-001",
+      "result_format": "exit-code",
+      "timeout_seconds": 300
+    },
+    {
+      "argv": [
+        "python3",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/invariants/test_orchestrator_inbox.py",
+        "-k",
+        "notification_adapter or notification_ordering"
+      ],
+      "id": "EVAL-002",
+      "result_format": "exit-code",
+      "timeout_seconds": 300
+    },
+    {
+      "argv": [
+        "python3",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/invariants/test_orchestrator_inbox.py",
+        "-k",
+        "notification_failure or notification_duplicate or notification_restart"
+      ],
+      "id": "EVAL-003",
+      "result_format": "exit-code",
+      "timeout_seconds": 300
+    }
+  ],
+  "dataset_split": "validation",
+  "repetitions": 1,
+  "sandbox": "docker",
+  "schema": "agent-workflow/evaluation-plan/v1",
+  "scorers": [
+    "acceptance_commands"
+  ],
+  "task_ids": [
+    "TASK-001",
+    "TASK-002"
+  ],
+  "timeout_seconds": 300
+}

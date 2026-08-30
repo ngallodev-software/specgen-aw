@@ -4,11 +4,11 @@
 
 ## Baseline
 
-Release compatibility is pinned under `compat/agent-workflow/`; moving development source is observed separately through `dev/agent-workflow.toml`. The adapter targets Agent-Workflow `0.9.0` public contracts and never imports private Agent-Workflow Python implementation modules.
+Release compatibility is pinned under `compat/agent-workflow/`; moving development source is observed separately through `dev/agent-workflow.toml`. The adapter targets Agent-Workflow `0.9.1` public contracts and never imports private Agent-Workflow Python implementation modules.
 
 ## Contract mapping
 
-| SpecGen concern | Agent-Workflow 0.9.0 contract | Relationship |
+| SpecGen concern | Agent-Workflow 0.9.1 contract | Relationship |
 |---|---|---|
 | implementation phases/tasks/dependencies | `agent-workflow/prompt-pack/v1` | compile target |
 | executable evaluation plan | `agent-workflow/evaluation-plan/v1` | compile target where faithfully representable |
@@ -58,7 +58,7 @@ TARGET_DIR/
 
 `pack.yaml` is emitted as deterministic JSON text, which is valid YAML and avoids adding a YAML dependency to SpecGen core.
 
-The optional canonical `target_application_id` identifies the portable application being changed. It is a lowercase kebab-case identifier (1–63 characters), with one value per canonical snapshot; it is not derived from a path and does not replace the SpecGen `id` or Agent-Workflow `pack_id`. Agent-Workflow 0.9.0 has no application field in `prompt-pack/v1`, so the adapter preserves the identifier in generated README/task prompts while leaving `pack.yaml` and its legacy `pack_id` meaning unchanged. If it is absent, the target is intentionally unspecified; this supports a new or not-yet-existing application and does not imply that a repository baseline exists.
+The optional canonical `target_application_id` identifies the portable application being changed. It is a lowercase kebab-case identifier (1–63 characters), with one value per canonical snapshot; it is not derived from a path and does not replace the SpecGen `id` or Agent-Workflow `pack_id`. Agent-Workflow 0.9.1 has no application field in `prompt-pack/v1`, so the adapter preserves the identifier in generated README/task prompts while leaving `pack.yaml` and its legacy `pack_id` meaning unchanged. If it is absent, the target is intentionally unspecified; this supports a new or not-yet-existing application and does not imply that a repository baseline exists.
 
 `MANIFEST.json` is intentionally absent from source prompt packs. Agent-Workflow reserves that filename for the canonical `agent-workflow/pack-manifest/v1` archive-integrity artifact created by its own `pack archive` operation. SpecGen emits the supported source checksum sidecar `MANIFEST.sha256` instead.
 
@@ -83,7 +83,7 @@ A directory-digest baseline cannot be faithfully expressed as Agent-Workflow's G
 
 ### Evaluation lowering
 
-Portable evaluation commands lower to Agent-Workflow acceptance commands. Command-based evaluation uses the target `acceptance_commands` scorer. Explicit scorer names must be supported by Agent-Workflow `0.9.0`; multiple distinct per-evaluation scorer assignments are rejected because Agent-Workflow carries scorers globally.
+Portable evaluation commands lower to Agent-Workflow acceptance commands. Command-based evaluation uses the target `acceptance_commands` scorer. Explicit scorer names must be supported by Agent-Workflow `0.9.1`; multiple distinct per-evaluation scorer assignments are rejected because Agent-Workflow carries scorers globally.
 
 Hidden/external oracles require digest-bound `metadata.oracle_ref = {id, sha256}`. SpecGen maps the evaluation through requirement/acceptance relationships to the implementation task IDs required by Agent-Workflow `oracle_refs`. If multiple incompatible oracles would target the same task, compilation fails.
 
@@ -107,6 +107,6 @@ Agent-Workflow's public trusted plugin API is a suitable Phase 7 host seam. The 
 
 SpecGen registers the optional `agent-workflow-spec` entry point in the public `agent_workflow.plugins` group. Agent-Workflow must explicitly enable it; normal SpecGen CLI/library use never imports Agent-Workflow. The adapter imports only `agent_workflow.plugin_api` inside `plugin()` and exposes one host command, `spec`, with compatibility, assess, analyze, finalize, and compile subcommands.
 
-The host version must exactly match the pinned `0.9.0` compatibility target. A mismatch fails closed. The plugin is a trusted in-process adapter, not a security boundary or a second execution authority. No private `agent_workflow.*` modules are imported.
+The host version must exactly match the pinned `0.9.1` compatibility target. A mismatch fails closed. The plugin is a trusted in-process adapter, not a security boundary or a second execution authority. No private `agent_workflow.*` modules are imported.
 
 `PluginPackageResource` is intentionally not used for the initial integration because the plugin does not need Agent-Workflow to activate duplicate copies of SpecGen's canonical schemas/assets. If a future Agent-Workflow capability requires packaged activation, resources must be digest-bound to the SpecGen-owned bytes rather than forked.

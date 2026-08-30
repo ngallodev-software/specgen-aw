@@ -1,34 +1,42 @@
-# SpecGen-AW Cavekit Integration
+# SpecGen — Selective CaveKit-derived Refinements
 
-This pack defines a bounded integration of high-value Cavekit methodology into
-SpecGen-AW. It is a plan, not evidence that the work has been implemented.
+This prompt pack is a deliberately narrow plan for harvesting a few useful ideas
+from CaveKit without turning SpecGen into CaveKit, an execution engine, or a
+second Agent-Workflow.
 
-The canonical authority remains `specgen/spec/v1alpha2`: Cavekit findings are
-read-only evidence and proposed inputs until an explicit user-approved action
-promotes them. Markdown is rendered output, not a parser ABI. Agent-Workflow
-durable runs, receipts, review, acceptance, and release boundaries remain in
-force.
+The authoritative product boundary remains:
 
-## Research basis
+> **SpecGen owns specification meaning. Execution targets own execution meaning.**
 
-- Comparison: `/home/nate/.cavekit/SPECGEN_AW_COMPARISON.md`
-- Coverage: `/home/nate/.cavekit/agents/architect.md`, `commands/map.md`,
-  `internal/site/frontier.go`, `internal/site/parser.go`,
-  `internal/site/tracking.go`
-- Brownfield: `/home/nate/.cavekit/skills/brownfield-adoption/SKILL.md`,
-  `commands/sketch.md`, `agents/drafter.md`, `agents/surveyor.md`,
-  `commands/scan.md`
-- Review: `/home/nate/.cavekit/scripts/codex-design-challenge.sh`,
-  `scripts/codex-review.sh`, `scripts/codex-gate.sh`,
-  `scripts/codex-findings.sh`, `references/validation-gates.md`,
-  `commands/revise.md`
-- SpecGen targets: `skills/specgen/SKILL.md`,
-  `skills/specgen-brownfield/SKILL.md`, `src/specgen/elicitation.py`,
-  `src/specgen/repository.py`, `src/specgen/agent_workflow.py`,
-  `schemas/spec/v1alpha2.schema.json`, and `tests/critical-seams/run.py`
+The current SpecGen 0.2.0 source already implements most of the foundations the
+original CaveKit plan proposed: requirement/task/evaluation readiness checks,
+task dependency-cycle validation, deterministic repository analysis,
+`specgen/brownfield-plan/v1alpha1`, `specgen/brownfield-analysis/v1alpha1`,
+authoring history, immutable snapshots, and Agent-Workflow target lowering.
+This plan therefore does **not** reimplement those capabilities.
 
-## Execution
+## What remains worth adopting
 
-Validate this pack with the installed Agent-Workflow `0.9.0` tool. Execute
-tasks through durable Agent Runs in isolated worktrees. Each phase requires an
-independent gate before the next phase is accepted.
+1. Strengthen implementation-readiness diagnostics around observable acceptance
+   using the existing canonical requirements, acceptance criteria, evaluations,
+   tasks, and dependency graph.
+2. Make brownfield authoring more explicit about **preserve / intentionally
+   change / unresolved** decisions while continuing to use the existing
+   repository and brownfield contracts.
+3. Keep external review feedback as an input to normal SpecGen authoring events,
+   rather than creating a review/gate/waiver lifecycle inside SpecGen.
+
+## Explicitly rejected from the earlier plan
+
+- a second `criterion` record alongside `acceptance_criteria`;
+- SpecGen-owned ready-frontier, completion, worker, review, gate, receipt, or
+  waiver state;
+- a second evidence model beside repository-analysis and brownfield evidence;
+- a mandatory CaveKit or Codebase Memory runtime dependency;
+- broad new CLI/API/report surfaces without a demonstrated authoring need;
+- copied Agent-Workflow delegation/runbook/completion machinery;
+- default unit-test expansion.
+
+CaveKit remains credited prior art and methodology reference only. Agent-Workflow
+0.9.0 remains the execution target and owns durable execution/review/acceptance
+state.

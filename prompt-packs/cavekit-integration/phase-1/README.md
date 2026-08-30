@@ -1,4 +1,4 @@
-# Phase 1 — Typed authority
+# Phase 1 — Readiness refinement
 
-Implement criteria, DAG, brownfield evidence/parity, and review/receipt
-contracts in disjoint ticket worktrees. Run the independent gate before Phase 2.
+Close only demonstrated specification-readiness gaps. Reuse the existing
+canonical acceptance, evaluation, task, and dependency model.

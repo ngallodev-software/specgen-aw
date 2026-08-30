@@ -1,24 +1,29 @@
-# Cavekit research evidence
+# CaveKit methodology reference
 
-The comparison was read from `/home/nate/.cavekit/SPECGEN_AW_COMPARISON.md`.
-Codebase Memory project `home-nate-.cavekit` was ready with 2,801 nodes and
-4,624 edges.
+CaveKit is treated as prior art, not as a dependency or authority.
 
-High-value evidence:
+The original comparison identified three useful idea clusters:
 
-- Coverage/DAG: `internal/site/frontier.go:ReadyTasks,FrontierSummary`,
-  `internal/site/parser.go:Task,parseTableRow,parseBlockedBy`,
-  `internal/site/tracking.go`, `internal/site/frontier_test.go`,
-  `agents/architect.md`, `commands/map.md`.
-- Brownfield: `skills/brownfield-adoption/SKILL.md`, `commands/sketch.md`,
-  `agents/drafter.md`, `agents/surveyor.md`, `commands/scan.md`,
-  `REPO_DISSECTION.md`.
-- Review/validation/revision: `scripts/codex-design-challenge.sh`,
-  `scripts/codex-review.sh`, `scripts/codex-gate.sh`,
-  `scripts/codex-findings.sh`, `scripts/codex-speculative.sh`,
-  `references/validation-gates.md`, `commands/revise.md`.
+- coverage/dependency visibility;
+- brownfield discovery and preservation awareness;
+- explicit handling of review/revision findings.
 
-Important negative evidence: Cavekit has no typed waiver contract, no standalone
-brownfield extractor, and no durable structured receipt authority. Its parser,
-shell ledgers, mutable findings, and speculative PID state are reference
-material only.
+The current SpecGen 0.2.0 source already implements substantial equivalents for
+all three clusters through canonical acceptance/evaluation/task relationships,
+dependency validation, repository/brownfield analysis, authoring events, and
+Agent-Workflow lowering.
+
+Accordingly, this plan retains only the residual methodology:
+
+1. make missing observable acceptance obvious before implementation handoff;
+2. make preserve/change/unresolved decisions explicit during brownfield
+   authoring;
+3. ensure external findings become explicit authoring decisions when accepted.
+
+Rejected CaveKit mechanisms include Markdown/parser authority, mutable tracking
+ledgers, runtime frontier/completion state, shell/PID state, implicit continue
+behavior, and any attempt to make CaveKit itself part of SpecGen's runtime.
+
+Original local research paths may still be useful for attribution or a future
+fresh comparison, but implementation must not depend on those paths being
+present or on a pre-existing Codebase Memory index.

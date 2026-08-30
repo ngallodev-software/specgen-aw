@@ -1,0 +1,12 @@
+{
+  "components": {
+    "primary": {
+      "branch": "release-tooling",
+      "dirty": true,
+      "head": "c0f0a9451ee28d21c6722bf9de8fe8f7b7eece7e",
+      "path": "."
+    }
+  },
+  "generated_at": "2026-08-29T00:00:00Z",
+  "schema": "agent-workflow/source-baseline/v1"
+}
