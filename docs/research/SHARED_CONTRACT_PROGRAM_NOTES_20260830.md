@@ -93,3 +93,11 @@ as a false success. On 2026-08-30 the user explicitly authorized advancing to
 the next phase after review of this mismatch; the bundle foundation remains
 subject to its own independent completion, evaluation, review, and acceptance
 gates.
+
+## Parallel Agent-Workflow reliability gate
+
+The completion-handoff and external-name-lease incident is not a shared-bundle
+concern, but it directly affects safe consumption of generated prompt packs.
+`COMP-001` and `LEASE-001` therefore run in parallel with bundle work and must
+be reviewed before Agent-Workflow consumer integration/acceptance. They do not
+change the bundle's schema, migration, or ownership surface.
