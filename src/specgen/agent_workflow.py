@@ -10,7 +10,8 @@ from typing import Any
 from jsonschema import Draft202012Validator, exceptions as jsonschema_exceptions
 
 from .canonical import snapshot_digest
-from .contracts import repo_root
+from .contract_bundle import require as bundle_requirement
+from .contract_bundle import validate as bundle_validate
 from .elicitation import assess
 from .evals import evaluation_intent
 from .validate import validate
@@ -44,21 +45,32 @@ _ALLOWED_EVALUATION_METADATA = frozenset(
 
 
 def _schema(name: str) -> dict[str, Any]:
-    return json.loads(
-        (repo_root() / "compat" / "agent-workflow" / AW_VERSION / "schemas" / name).read_text(
-            encoding="utf-8"
-        )
-    )
+    schema_id = {
+        "pack.schema.json": "agent-workflow/prompt-pack/v1",
+        "evaluation-plan.schema.json": "agent-workflow/evaluation-plan/v1",
+        "source-baseline.schema.json": "agent-workflow/source-baseline/v1",
+        "agent-role-v1.schema.json": "agent-workflow/agent-role/v1",
+        "task-result.schema.json": "agent-workflow/task-result/v1",
+    }.get(name)
+    if schema_id is None:
+        raise ValueError(f"unsupported Agent-Workflow schema: {name}")
+    from specgen_contracts.bundle import schema
+
+    return schema(schema_id)
 
 
 def _check(schema_name: str, value: dict[str, Any]) -> None:
-    errors = sorted(
-        Draft202012Validator(_schema(schema_name)).iter_errors(value),
-        key=lambda error: list(error.path),
-    )
+    schema_id = {
+        "pack.schema.json": "agent-workflow/prompt-pack/v1",
+        "evaluation-plan.schema.json": "agent-workflow/evaluation-plan/v1",
+        "source-baseline.schema.json": "agent-workflow/source-baseline/v1",
+        "agent-role-v1.schema.json": "agent-workflow/agent-role/v1",
+        "task-result.schema.json": "agent-workflow/task-result/v1",
+    }[schema_name]
+    errors = bundle_validate(schema_id, value)
     if errors:
         raise ValueError(
-            f"generated Agent-Workflow artifact violates {schema_name}: {errors[0].message}"
+            f"generated Agent-Workflow artifact violates {schema_name}: {errors[0]['message']}"
         )
 
 
@@ -469,7 +481,20 @@ def compile_prompt_pack(
         "workflow": {
             "name": "agent-workflow",
             "minimum_version": AW_VERSION,
-            "requires": list(AW_STANDARD_REQUIRES),
+            "requires": [
+                *AW_STANDARD_REQUIRES,
+                f"contract-bundle=={bundle_requirement('agent-workflow/prompt-pack/v1')[0]}",
+                *(
+                    f"contract-schema-digest:{schema_id}={bundle_requirement(schema_id)[1]}"
+                    for schema_id in (
+                        "agent-workflow/prompt-pack/v1",
+                        "agent-workflow/evaluation-plan/v1",
+                        "agent-workflow/source-baseline/v1",
+                        "agent-workflow/agent-role/v1",
+                        "agent-workflow/task-result/v1",
+                    )
+                ),
+            ],
         },
         "phases": phases,
     }

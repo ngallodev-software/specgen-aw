@@ -6,7 +6,7 @@
 
 Branch and promotion handling follows [the accepted delivery workflow](DELIVERY_WORKFLOW.md): synchronize production first, rebase QA and work branches, use isolated worktrees, gate QA through Jenkins, and tag only the promoted production commit.
 
-Release compatibility is pinned under `compat/agent-workflow/`; moving development source is observed separately through `dev/agent-workflow.toml`. The adapter targets Agent-Workflow `0.9.1` public contracts and never imports private Agent-Workflow Python implementation modules.
+Release compatibility is pinned under `compat/agent-workflow/`; moving development source is observed separately through `dev/agent-workflow.toml`. Native target schema ownership is provided by the separately released `specgen-agent-workflow-contracts` bundle. SpecGen consumes it through `src/specgen/contract_bundle.py`, and generated packs declare the exact bundle version and schema digests in `workflow.requires`. The adapter targets Agent-Workflow `0.9.1` public contracts and never imports private Agent-Workflow Python implementation modules.
 
 ## Contract mapping
 
