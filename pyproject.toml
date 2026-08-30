@@ -7,7 +7,7 @@ name = "specgen"
 version = "0.2.0"
 description = "Versioned specification authoring and compilation core"
 requires-python = ">=3.11"
-dependencies = ["jsonschema>=4.23,<5", "specgen-agent-workflow-contracts>=0.1.0,<0.2"]
+dependencies = ["jsonschema>=4.23,<5", "specgen-agent-workflow-contracts==0.1.0"]
 
 [project.scripts]
 specgen = "specgen.cli:main"
