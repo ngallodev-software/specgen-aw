@@ -10,6 +10,7 @@ import sys
 import tempfile
 
 from specgen.cli import main as cli_main
+from specgen.agent_workflow import write_target
 
 ROOT = Path(__file__).resolve().parents[2]
 FIXTURES = Path(__file__).resolve().parent / "fixtures"
@@ -202,6 +203,19 @@ def main() -> int:
         require(result.returncode == 1, f"repo missing evidence: expected blocker; got {result.stderr or result.stdout}")
         report = json.loads(result.stdout)
         require(any(item["kind"] == "missing_evidence" and item["path"] == "missing.txt" for item in report["contradictions"]), "repo missing evidence: contradiction missing")
+    checks += 1
+
+    with tempfile.TemporaryDirectory() as tmp:
+        target = Path(tmp) / "target"
+        target.mkdir()
+        output = Path(tmp) / "output"
+        output.symlink_to(target, target_is_directory=True)
+        try:
+            write_target(output, {"pack.yaml": "{}\n"})
+        except ValueError as exc:
+            require("real directory" in str(exc), f"pack output symlink: wrong error: {exc}")
+        else:
+            raise AssertionError("pack output symlink: expected rejection")
     checks += 1
 
     with tempfile.TemporaryDirectory() as tmp:

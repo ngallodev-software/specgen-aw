@@ -712,6 +712,8 @@ def compile_target(
 
 def write_target(output: str | Path, files: dict[str, str]) -> Path:
     root = Path(output)
+    if root.is_symlink():
+        raise ValueError(f"Agent-Workflow output root must be a real directory: {root}")
     if root.exists() and not root.is_dir():
         raise ValueError(f"Agent-Workflow output is not a directory: {root}")
     if root.exists() and any(root.iterdir()):

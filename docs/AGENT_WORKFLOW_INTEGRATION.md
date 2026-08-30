@@ -35,7 +35,7 @@ specgen agent-workflow compile SPEC \
   [--repository-root REPO]
 ```
 
-Compilation requires an `agent-workflow`-ready canonical snapshot and an empty output directory. This avoids stale resources surviving a later deterministic compile.
+Compilation requires an `agent-workflow`-ready canonical snapshot and an empty real output directory. This avoids stale resources surviving a later deterministic compile and prevents a symlink from redirecting generated pack files outside the selected root.
 
 The output is an Agent-Workflow-native prompt-pack source tree:
 
