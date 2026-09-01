@@ -119,6 +119,11 @@ specgen author assess candidate.json --mode agent-workflow
 specgen author finalize candidate.json --mode agent-workflow --output spec.json
 ```
 
+When handing the result to Agent-Workflow, keep the finalized specification,
+repository analysis, evaluation contract, and prompt source in durable files,
+then pass the prompt-file path or validated pack to `agent-workflow delegate`.
+Its positional prompt argument is a file path, not inline text.
+
 If the specification contains repository provenance, create a repository analysis bound to the finalized snapshot and compile with the live repository root:
 
 ```bash

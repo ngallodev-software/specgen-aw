@@ -138,6 +138,10 @@ Validate the artifact:
 specgen validate brownfield-analysis.json
 ```
 
+For an Agent-Workflow handoff, keep the canonical spec, brownfield analysis,
+and evaluation artifacts in durable files, then pass a prompt-file path or
+validated pack to `agent-workflow delegate`; do not pass inline prompt text.
+
 ## Feed findings into the canonical spec carefully
 
 Use semantic analysis to update only material specification meaning. Typical translations are:
