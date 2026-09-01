@@ -48,6 +48,11 @@ compatible version is installed into the same environment. Set
 
 Published contract identifiers are versioned independently from the software release. `v1alpha1` remains immutable; `v1alpha2` is the current canonical contract.
 
+The pinned `specgen-agent-workflow-contracts` dependency is published to the
+GitHub Packages Python registry. For installs outside authenticated CI, set
+`PIP_EXTRA_INDEX_URL` to `https://USERNAME:TOKEN@pypi.pkg.github.com/ngallodev-software/simple/`
+with a token that has `read:packages`.
+
 ## Quick start
 
 ```bash
