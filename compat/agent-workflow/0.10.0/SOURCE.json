@@ -1,0 +1,8 @@
+{
+  "product": "agent-workflow",
+  "version": "0.10.0",
+  "snapshot": "agent-workflow-0.10.0-release-tooling-d07211f",
+  "archive_sha256": "19a8a81207214d42d0c84e521edead90ad95a010de0fa671a8913d0e3992726e",
+  "captured_on": "2026-09-08",
+  "purpose": "compatibility baseline; not a runtime dependency"
+}

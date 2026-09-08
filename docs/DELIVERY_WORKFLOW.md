@@ -1,6 +1,6 @@
 # Branch, Release, and Promotion Workflow
 
-> Document version: 0.2.0 · Applies to SpecGen 0.2.0
+> Document version: 0.2.1 · Applies to SpecGen 0.2.1
 
 This is the required delivery strategy for SpecGen and Agent-Workflow changes.
 `master` is the production integration branch. `release-tooling` is the

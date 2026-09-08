@@ -1,6 +1,6 @@
 # Using SpecGen
 
-> Document version: 0.2.0 · Applies to SpecGen 0.2.0 plus post-release development additions described here
+> Document version: 0.2.1 · Applies to SpecGen 0.2.1 plus post-release development additions described here
 
 SpecGen turns engineering intent into a canonical JSON specification that can be validated, reviewed as Markdown, compared across snapshots, grounded in repository evidence, and compiled for supported execution targets.
 

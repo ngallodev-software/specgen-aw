@@ -1,6 +1,6 @@
 # Roadmap
 
-> Document version: 0.2.0 · Applies to SpecGen 0.2.0
+> Document version: 0.2.1 · Applies to SpecGen 0.2.1
 
 Mutable plan; completed architecture decisions remain in ADRs. Testing follows [ENGINEERING_POLICY.md](ENGINEERING_POLICY.md) and is currently disabled by explicit release instruction.
 
@@ -77,9 +77,9 @@ No standalone HTTP service is justified for the initial release. Do not add auth
 
 ## Initial public release closeout
 
-**Complete in `0.2.0`; testing follows overlay delivery.**
+**Complete in `0.2.1`; testing follows overlay delivery.**
 
-- release/package/reference surfaces reconciled to `0.2.0`;
+- release/package/reference surfaces reconciled to `0.2.1`;
 - release manifest regeneration remains part of the self-applying overlay;
 - README/changelog/roadmap claims reconciled to implemented behavior;
 - immutable old schema versions retained with unchanged meanings;

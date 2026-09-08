@@ -8,7 +8,7 @@ The authoritative product boundary remains:
 
 > **SpecGen owns specification meaning. Execution targets own execution meaning.**
 
-The current SpecGen 0.2.0 source already implements most of the foundations the
+The current SpecGen 0.2.1 source already implements most of the foundations the
 original CaveKit plan proposed: requirement/task/evaluation readiness checks,
 task dependency-cycle validation, deterministic repository analysis,
 `specgen/brownfield-plan/v1alpha1`, `specgen/brownfield-analysis/v1alpha1`,

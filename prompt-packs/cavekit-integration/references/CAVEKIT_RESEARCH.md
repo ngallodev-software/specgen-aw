@@ -8,7 +8,7 @@ The original comparison identified three useful idea clusters:
 - brownfield discovery and preservation awareness;
 - explicit handling of review/revision findings.
 
-The current SpecGen 0.2.0 source already implements substantial equivalents for
+The current SpecGen 0.2.1 source already implements substantial equivalents for
 all three clusters through canonical acceptance/evaluation/task relationships,
 dependency validation, repository/brownfield analysis, authoring events, and
 Agent-Workflow lowering.

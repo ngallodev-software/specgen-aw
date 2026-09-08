@@ -1,6 +1,6 @@
 # Brownfield Specification Authoring
 
-> Document version: 0.2.0 · Applies to SpecGen 0.2.0 plus post-release development additions described here
+> Document version: 0.2.1 · Applies to SpecGen 0.2.1 plus post-release development additions described here
 
 Brownfield authoring has two distinct evidence layers:
 

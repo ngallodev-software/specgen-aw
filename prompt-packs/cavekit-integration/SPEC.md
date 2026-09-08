@@ -14,7 +14,7 @@ Agent-Workflow lifecycle authority.
 
 ## Existing authorities to reuse
 
-The following current SpecGen 0.2.0 concepts remain authoritative and should be
+The following current SpecGen 0.2.1 concepts remain authoritative and should be
 extended only when a concrete gap is demonstrated:
 
 - `specgen/spec/v1alpha2` for canonical specification meaning;
@@ -135,7 +135,7 @@ execution target may own those records in its own lifecycle.
 - a generic source-code semantic indexer;
 - a generic plugin/hook framework;
 - new HTTP/database/background-service architecture;
-- reimplementation of capabilities already present in SpecGen 0.2.0.
+- reimplementation of capabilities already present in SpecGen 0.2.1.
 
 ## Success criteria
 

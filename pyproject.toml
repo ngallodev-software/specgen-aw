@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "specgen"
-version = "0.2.0"
+version = "0.2.1"
 description = "Versioned specification authoring and compilation core"
 requires-python = ">=3.11"
 dependencies = ["jsonschema>=4.23,<5", "specgen-agent-workflow-contracts @ https://github.com/ngallodev-software/agent-workflow-spec-contracts/releases/download/v0.2.1/specgen_agent_workflow_contracts-0.2.1-py3-none-any.whl#sha256=d254a0b13f2fd1de732dab2abd33da35db9ea365b50b3214e92308fea79d85c2"]
@@ -32,5 +32,6 @@ where = ["src"]
 "share/specgen/compat/agent-workflow/0.9.0/schemas" = ["compat/agent-workflow/0.9.0/schemas/*.json"]
 "share/specgen/compat/agent-workflow/0.9.1/schemas" = ["compat/agent-workflow/0.9.1/schemas/*.json"]
 "share/specgen/compat/agent-workflow/0.9.2/schemas" = ["compat/agent-workflow/0.9.2/schemas/*.json"]
+"share/specgen/compat/agent-workflow/0.10.0/schemas" = ["compat/agent-workflow/0.10.0/schemas/*.json"]
 "share/specgen/skills/specgen" = ["skills/specgen/SKILL.md"]
 "share/specgen/skills/specgen-brownfield" = ["skills/specgen-brownfield/SKILL.md"]
