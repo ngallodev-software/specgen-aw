@@ -21,7 +21,7 @@ inconsistent shared-environment requirements fail release verification.
 ## Initial target
 
 - Agent-Workflow product version: `0.10.0`
-- pinned snapshot label: `agent-workflow-0.10.0-release-tooling-d07211f`
+- pinned snapshot label: `agent-workflow-0.10.0-release-tooling-7ce0077`
 
 Recognized contracts:
 
