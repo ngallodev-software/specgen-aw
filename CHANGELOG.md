@@ -10,6 +10,12 @@
 - Record ADR-0008 preserving the deterministic/agent-assisted evidence boundary.
 - No tests added or run during this implementation checkpoint.
 
+## 0.2.1 — 2026-09-08
+
+- Add immutable compatibility fixtures and support for Agent-Workflow 0.10.0.
+- Keep the five shared contract schemas and pinned shared-contract wheel unchanged.
+- Align package, plugin, documentation, and release metadata with the supported target.
+
 
 ## 0.2.0 — 2026-08-27
 
