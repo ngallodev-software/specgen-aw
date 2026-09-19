@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Refresh the Agent-Workflow compatibility target to 0.10.1 at commit `24873c822eea6a9566dd9abedcdd27aae9131e3b`, preserving the byte-identical public contract schemas and retaining 0.10.0 fixtures.
 - Add an end-to-end application usage guide and focused brownfield authoring guide.
 - Add `specgen brownfield capabilities` and `specgen brownfield plan` over the existing deterministic repository-analysis boundary.
 - Add optional `codebase-memory-mcp` detection; ordinary SpecGen use remains dependency-free and MCP registration remains owned by the invoking agent/runtime.
