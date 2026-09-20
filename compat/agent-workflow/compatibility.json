@@ -4,12 +4,12 @@
   "target": {
     "name": "agent-workflow",
     "product_version": "0.11.0",
-    "source_snapshot": "08e2275",
+    "source_snapshot": "08e227512be64c88e992bedad8619c94dae2d017",
     "compatible_releases": [
       {
         "application": "agent-workflow",
         "application_version": "0.11.0",
-        "source_snapshot": "08e2275",
+        "source_snapshot": "08e227512be64c88e992bedad8619c94dae2d017",
         "status": "verified",
         "contracts": [
           {"schema_id": "agent-workflow/prompt-pack/v1", "file": "0.11.0/schemas/pack.schema.json", "sha256": "b005325c6ac14f04be201ab5f56462237195c8f4f4a9130500cbb5e7fbb73c29", "status": "verified"},
