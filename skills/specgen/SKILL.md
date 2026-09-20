@@ -101,6 +101,9 @@ A broken reference is a specification defect, not something to patch in rendered
 
 ## Evaluation intent
 
+When optional TypeSafe semantic assessment or its sidecar is relevant, read `references/typesafe-semantic-assessment.md`. Keep semantic evidence advisory and separate from canonical SpecGen authority.
+
+
 Every important active requirement should say how correctness will be assessed. Keep public, hidden, and external oracle semantics distinct. For Agent-Workflow compilation, hidden/external oracle intent needs a digest-bound `metadata.oracle_ref` and must map through requirement/acceptance coverage to implementation tasks.
 
 Do not add tests or evaluations merely to increase a count. Verification should protect important externally observable behavior and target seams.

@@ -109,6 +109,9 @@ Stop once the direct preservation risks and implementation boundaries needed by 
 
 ## Question policy during research
 
+When optional TypeSafe assessment is enabled for bounded brownfield evidence/authority questions, read `references/typesafe-brownfield-evidence.md`; do not use it as a replacement for deterministic repository investigation.
+
+
 Before asking the user a question, classify it:
 
 - **Code-answerable:** investigate first.
