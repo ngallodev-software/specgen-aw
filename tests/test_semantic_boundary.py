@@ -75,23 +75,43 @@ def test_typesafe_adapter_lowers_questions_and_normalizes_answers(monkeypatch):
     from specgen.semantic import QUESTION_SETS
     from specgen.typesafe_adapter import TypeSafeSemanticDecisionClient
 
+    class Primitive:
+        def __init__(self, **kwargs): self.kwargs = kwargs
     class Answer:
         score = 0.75
         confidence = 0.8
         probabilities = {0.0: 0.1, 1.0: 0.9}
-
     class Response:
         answers = {"specificity": Answer()}
-
     class Client:
+        def __enter__(self): return self
+        def __exit__(self, *args): return None
         def system_one(self, *, state, questions, model=None):
-            assert questions["specificity"]["type"] == "score"
+            assert isinstance(questions["specificity"], Primitive)
+            assert questions["specificity"].kwargs["criteria"]
             assert model == "test-model"
             return Response()
 
-    module = types.SimpleNamespace(TypeSafeClient=Client)
+    module = types.SimpleNamespace(Choice=Primitive, Noul=Primitive, Score=Primitive, TypeSafeClient=Client)
     monkeypatch.setitem(sys.modules, "typesafe_sdk", module)
     client = TypeSafeSemanticDecisionClient(model="test-model")
     answers = client.evaluate(state={"x": 1}, questions=QUESTION_SETS["requirement.quality/v1"][:1])
     assert answers["specificity"]["type"] == "score"
     assert answers["specificity"]["score"] == 0.75
+
+
+def test_semantic_config_defaults_disabled(tmp_path):
+    from specgen.semantic_config import load_semantic_config
+    cfg = load_semantic_config(tmp_path / "missing.toml")
+    assert cfg.enabled is False
+    assert cfg.provider == "typesafe"
+    assert cfg.mode == "shadow"
+
+
+def test_semantic_config_loads_typesafe_shadow(tmp_path):
+    from specgen.semantic_config import load_semantic_config
+    path = tmp_path / "config.toml"
+    path.write_text('[semantic]\nenabled=true\nprovider="typesafe"\nmode="shadow"\n[semantic.typesafe]\nmodel="jev-latest"\n')
+    cfg = load_semantic_config(path)
+    assert cfg.enabled is True
+    assert cfg.model == "jev-latest"

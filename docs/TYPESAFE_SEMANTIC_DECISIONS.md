@@ -33,3 +33,27 @@ specgen-semantic canonical-spec.json --output semantic-assessment.json [--model 
 The command validates the canonical snapshot first, invokes only the bounded question sets, and writes `specgen/semantic-assessment/v1alpha1`. The sidecar contains digest-bound `specgen/semantic-decision-receipt/v1alpha1` entries and is not consumed by validation or finalization. Provider failure therefore cannot change canonical behavior; the explicit shadow command fails rather than silently inventing semantic evidence.
 
 This slice intentionally does not auto-run TypeSafe during ordinary `specgen author`, repository analysis, or target compilation. Automatic shadow collection should be added only behind explicit configuration after live SDK evidence confirms the request/response mapping and operational failure behavior.
+
+## Configuration and live qualification
+
+TypeSafe is an optional feature. Install it with `pip install -e '.[typesafe]'`; ordinary SpecGen paths do not import the SDK. Configure shadow collection in `config.toml` (or set `SPECGEN_CONFIG`):
+
+```toml
+[semantic]
+enabled = true
+provider = "typesafe"
+mode = "shadow"
+
+[semantic.typesafe]
+# model = "jev-latest" # optional; omit to use the SDK/service default
+```
+
+Credentials are never stored in this file. The official SDK uses `TYPESAFE_API_KEY`.
+
+Run the live SDK qualification harness from the repository root after intentionally setting the key:
+
+```bash
+python scripts/test-typesafe-live.py --config config.toml --output typesafe-live-receipt.json
+```
+
+The harness makes real hosted calls for all four SpecGen question sets, checks Choice/Noul/Score normalization, exercises the composed semantic-assessment sidecar, verifies advisory-only and digest-binding invariants, and writes a sanitized JSON qualification receipt. It does not print the API key.

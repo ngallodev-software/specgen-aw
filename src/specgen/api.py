@@ -31,6 +31,7 @@ from .semantic import (
     shadow_assessment,
 )
 from .typesafe_adapter import TypeSafeSemanticDecisionClient
+from .semantic_config import SemanticConfig, configured_semantic_client, load_semantic_config
 from .validate import validate
 
 __all__ = (
@@ -66,4 +67,7 @@ __all__ = (
     "project_unresolved_issue",
     "shadow_assessment",
     "TypeSafeSemanticDecisionClient",
+    "SemanticConfig",
+    "configured_semantic_client",
+    "load_semantic_config",
 )

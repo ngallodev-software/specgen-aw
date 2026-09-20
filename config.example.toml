@@ -1,0 +1,10 @@
+# Copy to config.toml, ~/.config/specgen/config.toml, or point SPECGEN_CONFIG at it.
+# Credentials are intentionally NOT stored here. The TypeSafe SDK reads TYPESAFE_API_KEY.
+[semantic]
+enabled = true
+provider = "typesafe"
+mode = "shadow"
+
+[semantic.typesafe]
+# Omit to use the SDK/service default.
+# model = "jev-latest"
