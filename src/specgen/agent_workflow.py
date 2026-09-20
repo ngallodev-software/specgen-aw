@@ -16,7 +16,7 @@ from .elicitation import assess
 from .evals import evaluation_intent
 from .validate import validate
 
-AW_VERSION = "0.11.0"
+AW_VERSION = "0.11.1"
 AW_STANDARD_REQUIRES = (
     "completion_report",
     "durable_agent_run",
