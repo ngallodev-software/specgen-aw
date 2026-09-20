@@ -176,3 +176,13 @@ exit status without becoming a second drifting command reference.
 **Done when:** `specgen(1)` is installed by the supported package/install path,
 documents the released CLI accurately, and a release check detects divergence
 between its command synopsis and `specgen --help`.
+
+### TYPE-001 — Calibrate and activate bounded semantic assessment
+
+**Status:** foundation implemented; shadow evaluation required
+
+The application-owned semantic harness now defines four bounded question sets (`evidence.relevance/v1`, `unresolved_issue.authority/v1`, `requirement.quality/v1`, and `requirement.relationship/v1`) without giving a provider canonical authority. Add the official TypeSafe adapter as an optional integration, collect shadow receipts over representative brownfield/spec-authoring cases, and calibrate uncertainty/fallback policy before any behavior changes.
+
+Future expansion candidates, in priority order: brownfield focus ranking after deterministic narrowing; semantic duplicate/conflict prefiltering at scale; claim/evidence support diagnostics; evaluation-intent family selection from a code-discovered finite set; pre-finalization semantic quality review as advisory evidence. Do not add TypeSafe to canonical mutation, schema/reference/digest validation, provenance authority, or product decisions.
+
+**Done when:** shadow evaluation demonstrates useful lift over existing heuristics or supplies additive semantic evidence with measured uncertainty; receipts are provenance-bound and redact/bound projected state; provider failure preserves current deterministic behavior; any advisory/guarded policy has explicit calibrated thresholds and tests.

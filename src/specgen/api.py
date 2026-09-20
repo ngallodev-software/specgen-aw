@@ -19,6 +19,16 @@ from .history import append_event
 from .modes import mode_descriptions, mode_names
 from .render import render_markdown
 from .repository import analyze_repository
+from .semantic import (
+    QUESTION_SETS,
+    SemanticDecisionClient,
+    SemanticQuestion,
+    evaluate_shadow,
+    project_evidence_relevance,
+    project_requirement_quality,
+    project_requirement_relationship,
+    project_unresolved_issue,
+)
 from .validate import validate
 
 __all__ = (
@@ -44,4 +54,12 @@ __all__ = (
     "load_document",
     "record_event",
     "write_document",
+    "QUESTION_SETS",
+    "SemanticDecisionClient",
+    "SemanticQuestion",
+    "evaluate_shadow",
+    "project_evidence_relevance",
+    "project_requirement_quality",
+    "project_requirement_relationship",
+    "project_unresolved_issue",
 )
