@@ -28,7 +28,9 @@ from .semantic import (
     project_requirement_quality,
     project_requirement_relationship,
     project_unresolved_issue,
+    shadow_assessment,
 )
+from .typesafe_adapter import TypeSafeSemanticDecisionClient
 from .validate import validate
 
 __all__ = (
@@ -62,4 +64,6 @@ __all__ = (
     "project_requirement_quality",
     "project_requirement_relationship",
     "project_unresolved_issue",
+    "shadow_assessment",
+    "TypeSafeSemanticDecisionClient",
 )

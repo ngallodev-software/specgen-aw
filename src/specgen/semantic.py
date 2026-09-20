@@ -130,3 +130,55 @@ def evaluate_shadow(
         "advisory_only": True,
         "answers": response,
     }
+
+
+def shadow_assessment(
+    document: dict[str, Any],
+    client: SemanticDecisionClient,
+) -> dict[str, Any]:
+    """Evaluate the initial bounded question sets for a canonical document.
+
+    The returned sidecar is derived advisory evidence. It is never read by
+    validation/finalization and therefore cannot change canonical authority.
+    """
+    receipts: list[dict[str, Any]] = []
+    requirements = [
+        item for item in document.get("requirements", [])
+        if item.get("lifecycle", "active") == "active"
+    ]
+    protected_scope = list(document.get("scope", {}).get("protected", []))
+
+    for requirement in requirements:
+        receipts.append(evaluate_shadow(
+            client,
+            decision_id="requirement.quality/v1",
+            state=project_requirement_quality(document, requirement),
+        ))
+
+    for index, left in enumerate(requirements):
+        for right in requirements[index + 1:]:
+            receipts.append(evaluate_shadow(
+                client,
+                decision_id="requirement.relationship/v1",
+                state=project_requirement_relationship(left, right, protected_scope=protected_scope),
+            ))
+
+    for issue in document.get("unresolved_questions", []):
+        if issue.get("lifecycle", "active") == "active":
+            receipts.append(evaluate_shadow(
+                client,
+                decision_id="unresolved_issue.authority/v1",
+                state=project_unresolved_issue(issue),
+            ))
+
+    return {
+        "schema": "specgen/semantic-assessment/v1alpha1",
+        "spec": {
+            "id": document["id"],
+            "snapshot_id": document["snapshot"]["id"],
+            "digest": _canonical_hash(document),
+        },
+        "mode": "shadow",
+        "advisory_only": True,
+        "receipts": receipts,
+    }
