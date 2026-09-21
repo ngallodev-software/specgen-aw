@@ -3,9 +3,47 @@
   "specgen_version": "0.2.1",
   "target": {
     "name": "agent-workflow",
-    "product_version": "0.11.1",
-    "source_snapshot": "bff6d0e0292cacebd44be87457b065dbe03c773c",
+    "product_version": "0.11.2",
+    "source_snapshot": "568557cf6bf2827f7dd604eab4cfb8b92fa59e6c",
     "compatible_releases": [
+      {
+        "application": "agent-workflow",
+        "application_version": "0.11.2",
+        "source_snapshot": "568557cf6bf2827f7dd604eab4cfb8b92fa59e6c",
+        "status": "verified",
+        "contracts": [
+          {
+            "schema_id": "agent-workflow/prompt-pack/v1",
+            "file": "0.11.2/schemas/pack.schema.json",
+            "sha256": "b005325c6ac14f04be201ab5f56462237195c8f4f4a9130500cbb5e7fbb73c29",
+            "status": "verified"
+          },
+          {
+            "schema_id": "agent-workflow/evaluation-plan/v1",
+            "file": "0.11.2/schemas/evaluation-plan.schema.json",
+            "sha256": "571edfaadfb078bbeb11fae00422d89366887036bec23460884fc23e84a0ddee",
+            "status": "verified"
+          },
+          {
+            "schema_id": "agent-workflow/source-baseline/v1",
+            "file": "0.11.2/schemas/source-baseline.schema.json",
+            "sha256": "da835fd07fae196f8d9dac396413e1c435725d0e1db0cb378ebab195b6609134",
+            "status": "verified"
+          },
+          {
+            "schema_id": "agent-workflow/agent-role/v1",
+            "file": "0.11.2/schemas/agent-role-v1.schema.json",
+            "sha256": "93aa44ceb71597e1a99a89e66135449a436673248749799d7ef25b6659c22de4",
+            "status": "verified"
+          },
+          {
+            "schema_id": "agent-workflow/task-result/v1",
+            "file": "0.11.2/schemas/task-result.schema.json",
+            "sha256": "f7ae2d01e8638c1d057e772befebc465e1501d1ddc49f0c03a54bf1b09b59810",
+            "status": "verified"
+          }
+        ]
+      },
       {
         "application": "agent-workflow",
         "application_version": "0.11.1",
@@ -277,31 +315,31 @@
   "contracts": [
     {
       "schema_id": "agent-workflow/prompt-pack/v1",
-      "file": "0.11.1/schemas/pack.schema.json",
+      "file": "0.11.2/schemas/pack.schema.json",
       "sha256": "b005325c6ac14f04be201ab5f56462237195c8f4f4a9130500cbb5e7fbb73c29",
       "status": "verified"
     },
     {
       "schema_id": "agent-workflow/evaluation-plan/v1",
-      "file": "0.11.1/schemas/evaluation-plan.schema.json",
+      "file": "0.11.2/schemas/evaluation-plan.schema.json",
       "sha256": "571edfaadfb078bbeb11fae00422d89366887036bec23460884fc23e84a0ddee",
       "status": "verified"
     },
     {
       "schema_id": "agent-workflow/source-baseline/v1",
-      "file": "0.11.1/schemas/source-baseline.schema.json",
+      "file": "0.11.2/schemas/source-baseline.schema.json",
       "sha256": "da835fd07fae196f8d9dac396413e1c435725d0e1db0cb378ebab195b6609134",
       "status": "verified"
     },
     {
       "schema_id": "agent-workflow/agent-role/v1",
-      "file": "0.11.1/schemas/agent-role-v1.schema.json",
+      "file": "0.11.2/schemas/agent-role-v1.schema.json",
       "sha256": "93aa44ceb71597e1a99a89e66135449a436673248749799d7ef25b6659c22de4",
       "status": "verified"
     },
     {
       "schema_id": "agent-workflow/task-result/v1",
-      "file": "0.11.1/schemas/task-result.schema.json",
+      "file": "0.11.2/schemas/task-result.schema.json",
       "sha256": "f7ae2d01e8638c1d057e772befebc465e1501d1ddc49f0c03a54bf1b09b59810",
       "status": "verified"
     }
