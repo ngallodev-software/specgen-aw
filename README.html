@@ -15,7 +15,7 @@ nav { margin-bottom:1rem; color:var(--muted); } nav a { margin-right:1rem; }
 
 ![Version](https://img.shields.io/badge/version-0.2.1-blue)
 ![Spec Schema](https://img.shields.io/badge/spec%20schema-v1alpha2-purple)
-![Agent--Workflow](https://img.shields.io/badge/Agent--Workflow-0.11.1%20target-2ea44f)
+![Agent--Workflow](https://img.shields.io/badge/Agent--Workflow-0.11.2%20target-2ea44f)
 ![Status](https://img.shields.io/badge/status-alpha-orange)
 
 **Canonical JSON · append-only decisions · immutable snapshots · traceability · repository evidence · targeted brownfield intelligence · evaluation intent · target compilation · agent skills**
@@ -40,7 +40,7 @@ nav { margin-bottom:1rem; color:var(--muted); } nav a { margin-right:1rem; }
 <li>brownfield research plan <code>specgen/brownfield-plan/v1alpha1</code>;</li>
 <li>agent-assisted brownfield analysis <code>specgen/brownfield-analysis/v1alpha1</code>;</li>
 <li>evaluation intent <code>specgen/evaluation-intent/v1alpha1</code>;</li>
-<li>Agent-Workflow target <code>0.11.1</code>.</li>
+<li>Agent-Workflow target <code>0.11.2</code>.</li>
 </ul>
 <h2 id="installation">Installation</h2>
 <p>Run <code>scripts/install.sh</code> from a checkout to create or reuse the per-user shared
@@ -68,7 +68,7 @@ specgen agent-workflow compile spec.json \
 </code></pre>
 <p>If the canonical spec contains repository provenance, Agent-Workflow compilation requires a repository analysis bound to the exact canonical snapshot. The live Git state is rechecked before <code>source-baseline.json</code> is emitted; stale or directory-only baselines fail closed.</p>
 <p>The Agent-Workflow target directory is a native prompt-pack source tree. It includes phase/ticket resources, packaged result-contract JSON Schemas, <code>evaluation-plan.json</code> when representable, <code>source-baseline.json</code> when repository analysis is supplied, and <code>MANIFEST.sha256</code>. <code>MANIFEST.json</code> is intentionally not generated because Agent-Workflow reserves that filename for its own deterministic archive-integrity manifest.</p>
-<p>SpecGen also ships a general agent skill at <code>skills/specgen/SKILL.md</code>, a targeted brownfield skill at <code>skills/specgen-brownfield/SKILL.md</code>, and an optional Agent-Workflow 0.11.1 plugin entry point, <code>agent-workflow-spec</code>. The plugin delegates to the same SpecGen API/CLI authorities; it does not create another specification model or make Agent-Workflow a SpecGen runtime dependency.</p>
+<p>SpecGen also ships a general agent skill at <code>skills/specgen/SKILL.md</code>, a targeted brownfield skill at <code>skills/specgen-brownfield/SKILL.md</code>, and an optional Agent-Workflow 0.11.2 plugin entry point, <code>agent-workflow-spec</code>. The plugin delegates to the same SpecGen API/CLI authorities; it does not create another specification model or make Agent-Workflow a SpecGen runtime dependency.</p>
 <h2 id="authoring-modes">Authoring modes</h2>
 <p><code>express</code>, <code>guided</code>, <code>strict</code>, and <code>agent-workflow</code> are policy profiles over one canonical schema. <code>agent-workflow</code> is intentionally stricter: active requirements must be carried by implementation tasks and evaluation intent; tasks need structured result contracts; blockers must be resolved before target compilation.</p>
 <p>Repository analysis is evidence-first and read-only. It recognizes durable declarations and explicitly referenced evidence; it does not pretend to semantically parse arbitrary source code. For existing systems, <code>specgen brownfield plan</code> adds a targeted research layer and automatically selects a graph-assisted strategy when the optional <code>codebase-memory-mcp</code> executable is available. Semantic agent findings remain a separate <code>specgen/brownfield-analysis/v1alpha1</code> artifact rather than contaminating deterministic repository evidence.</p>
