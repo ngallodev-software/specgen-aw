@@ -4,7 +4,7 @@
 
 SpecGen is independently installable. This directory records the Agent-Workflow contracts an adapter is allowed to understand. Vendored schemas are compatibility fixtures, not imported runtime authority.
 
-`0.11.1/SNAPSHOT.json` is the current deterministic compatibility capture. It records
+`0.11.2/SNAPSHOT.json` is the current deterministic compatibility capture. It records
 the source revision, all Agent-Workflow schema digests, and the Python
 requirements for both projects as installed in the shared environment. Refresh
 it only through the capture command after an explicit compatibility review:
@@ -12,7 +12,7 @@ it only through the capture command after an explicit compatibility review:
 ```bash
 python scripts/capture-agent-workflow-compat.py \\
   --source /path/to/agent-workflow \\
-  --output compat/agent-workflow/0.11.1
+  --output compat/agent-workflow/0.11.2
 ```
 
 The live source may be dirty during development, but schema drift and
@@ -20,8 +20,8 @@ inconsistent shared-environment requirements fail release verification.
 
 ## Initial target
 
-- Agent-Workflow product version: `0.11.1`
-- pinned snapshot label: the exact verified Agent-Workflow 0.11.1 source commit recorded in `compatibility.json` and `0.11.1/SNAPSHOT.json`
+- Agent-Workflow product version: `0.11.2`
+- pinned snapshot label: the exact verified Agent-Workflow 0.11.2 source commit recorded in `compatibility.json` and `0.11.2/SNAPSHOT.json`
 
 Recognized contracts:
 
@@ -46,4 +46,4 @@ Agent-Workflow also publishes a trusted plugin API and stable integration surfac
 
 ## Plugin adapter
 
-SpecGen `0.2.1` optionally registers `agent-workflow-spec` in the public `agent_workflow.plugins` entry-point group. The adapter imports only `agent_workflow.plugin_api`, requires host version `0.11.1`, and delegates to SpecGen's stable programmatic facade. Canonical schemas are not duplicated as plugin package resources.
+SpecGen `0.2.1` optionally registers `agent-workflow-spec` in the public `agent_workflow.plugins` entry-point group. The adapter imports only `agent_workflow.plugin_api`, requires host version `0.11.2`, and delegates to SpecGen's stable programmatic facade. Canonical schemas are not duplicated as plugin package resources.
