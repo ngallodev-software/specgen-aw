@@ -1,6 +1,6 @@
 # Agent-Workflow Compatibility
 
-> Document version: 0.2.1 · Applies to SpecGen 0.2.1
+> Document version: 0.2.2 · Applies to SpecGen 0.2.2
 
 SpecGen is independently installable. This directory records the Agent-Workflow contracts an adapter is allowed to understand. Vendored schemas are compatibility fixtures, not imported runtime authority.
 
@@ -46,4 +46,4 @@ Agent-Workflow also publishes a trusted plugin API and stable integration surfac
 
 ## Plugin adapter
 
-SpecGen `0.2.1` optionally registers `agent-workflow-spec` in the public `agent_workflow.plugins` entry-point group. The adapter imports only `agent_workflow.plugin_api`, requires host version `0.11.2`, and delegates to SpecGen's stable programmatic facade. Canonical schemas are not duplicated as plugin package resources.
+SpecGen `0.2.2` optionally registers `agent-workflow-spec` in the public `agent_workflow.plugins` entry-point group. The adapter imports only `agent_workflow.plugin_api`, requires host version `0.11.2`, and delegates to SpecGen's stable programmatic facade. Canonical schemas are not duplicated as plugin package resources.
