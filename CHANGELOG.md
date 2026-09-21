@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.2.2 — 2026-09-20
+
 - Refresh the Agent-Workflow compatibility target to 0.11.2 at commit `568557cf6bf2827f7dd604eab4cfb8b92fa59e6c`, preserving the byte-identical public contract schemas and retaining 0.11.1 and earlier fixtures.
 - Add an end-to-end application usage guide and focused brownfield authoring guide.
 - Add `specgen brownfield capabilities` and `specgen brownfield plan` over the existing deterministic repository-analysis boundary.
