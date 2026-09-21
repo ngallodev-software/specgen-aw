@@ -1,4 +1,4 @@
-<!-- document-version: 0.2.1; applies-to: SpecGen 0.2.1 -->
+<!-- document-version: 0.2.2; applies-to: SpecGen 0.2.2 -->
 <div align="center">
 
 # spec-gen
@@ -6,7 +6,7 @@
 
 **Turn ambiguous engineering intent into versioned specifications humans can review and agents can execute — without a 47-page manifesto.**
 
-![Version](https://img.shields.io/badge/version-0.2.1-blue)
+![Version](https://img.shields.io/badge/version-0.2.2-blue)
 ![Spec Schema](https://img.shields.io/badge/spec%20schema-v1alpha2-purple)
 ![Agent--Workflow](https://img.shields.io/badge/Agent--Workflow-0.11.2%20target-2ea44f)
 ![Status](https://img.shields.io/badge/status-alpha-orange)
@@ -23,7 +23,7 @@ Agent-Workflow is the first-class compilation target, not a runtime dependency. 
 
 ## Current contracts
 
-- project `0.2.1`;
+- project `0.2.2`;
 - canonical snapshot `specgen/spec/v1alpha2`;
 - retained snapshot `specgen/spec/v1alpha1`;
 - authoring event `specgen/authoring-event/v1alpha1`;
