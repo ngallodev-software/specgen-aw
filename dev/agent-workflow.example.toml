@@ -11,7 +11,7 @@ default_root = "../agent-workflow"
 env_override = "SPECGEN_AGENT_WORKFLOW_ROOT"
 version_file = "VERSION"
 expected_product_version = "0.11.5"
-expected_snapshot = "6a889199c4a500f6fdf03845f001c95be090fd51"
+expected_snapshot = "9ce90ea7857642af70bde32fab1f07292a7873f6"
 
 [link]
 root = ".dev/agent-workflow/current"
