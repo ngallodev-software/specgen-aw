@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.5 - 2026-09-22
+
+- Add verified Agent-Workflow 0.11.6 compatibility pinned to source `919a02ed07c81debd12dc804d234d9844a8a4281`.
+- Preserve the byte-identical public prompt-pack, evaluation-plan, source-baseline, agent-role, and task-result contract fixtures because Agent-Workflow 0.11.6 changes timing/documentation/install behavior rather than those target contracts.
+- Keep the `agent-workflow-spec` plugin adapter fail-closed on the verified 0.11.6 host version.
+
 ## 0.2.4 - 2026-09-21
 
 - Add verified Agent-Workflow 0.11.5 compatibility fixtures pinned to merged source `9ce90ea7857642af70bde32fab1f07292a7873f6`.
