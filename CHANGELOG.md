@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.4 - 2026-09-21
+
+- Add verified Agent-Workflow 0.11.5 compatibility fixtures pinned to merged source `9ce90ea7857642af70bde32fab1f07292a7873f6`.
+- Keep the Agent-Workflow plugin adapter fail-closed on the verified 0.11.5 host version.
+- Package the 0.11.5 public compatibility schemas alongside retained historical fixtures.
+
 ## Unreleased
 
 ## 0.2.2 — 2026-09-20
