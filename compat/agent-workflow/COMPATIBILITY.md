@@ -20,8 +20,8 @@ inconsistent shared-environment requirements fail release verification.
 
 ## Initial target
 
-- Agent-Workflow product version: `0.11.4`
-- pinned snapshot label: the exact verified Agent-Workflow 0.11.4 source commit recorded in `compatibility.json` and `0.11.4/SNAPSHOT.json`
+- Agent-Workflow product version: `0.11.5`
+- pinned snapshot label: the exact verified Agent-Workflow 0.11.5 source commit recorded in `compatibility.json` and `0.11.4/SNAPSHOT.json`
 
 Recognized contracts:
 
@@ -31,7 +31,7 @@ Recognized contracts:
 - `agent-workflow/agent-role/v1` — optional logical target hint vocabulary.
 - `agent-workflow/task-result/v1` — generic result schema that SpecGen can package as a task-local contract resource.
 
-The durable compatibility matrix is `compatibility.json` under `target.compatible_releases`. It retains one entry per assessed Agent-Workflow application release, with immutable fixture paths and SHA-256 digests. The retained `0.9.x`, `0.10.x`, `0.11.0`, `0.11.1`, and `0.11.2`, `0.11.3`, and `0.11.4` entries preserve the public contract bytes assessed for each application release; patch compatibility is recorded explicitly rather than inferred from semver. Do not delete an older fixture when a newer application release is added.
+The durable compatibility matrix is `compatibility.json` under `target.compatible_releases`. It retains one entry per assessed Agent-Workflow application release, with immutable fixture paths and SHA-256 digests. The retained `0.9.x`, `0.10.x`, `0.11.0`, `0.11.1`, and `0.11.2`, `0.11.3`, and `0.11.5` entries preserve the public contract bytes assessed for each application release; patch compatibility is recorded explicitly rather than inferred from semver. Do not delete an older fixture when a newer application release is added.
 
 Agent-Workflow also publishes a trusted plugin API and stable integration surfaces. SpecGen uses those public seams rather than private modules.
 
@@ -46,4 +46,4 @@ Agent-Workflow also publishes a trusted plugin API and stable integration surfac
 
 ## Plugin adapter
 
-SpecGen `0.2.3` optionally registers `agent-workflow-spec` in the public `agent_workflow.plugins` entry-point group. The adapter imports only `agent_workflow.plugin_api`, requires host version `0.11.4`, and delegates to SpecGen's stable programmatic facade. Canonical schemas are not duplicated as plugin package resources.
+SpecGen `0.2.3` optionally registers `agent-workflow-spec` in the public `agent_workflow.plugins` entry-point group. The adapter imports only `agent_workflow.plugin_api`, requires host version `0.11.5`, and delegates to SpecGen's stable programmatic facade. Canonical schemas are not duplicated as plugin package resources.
