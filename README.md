@@ -1,4 +1,4 @@
-<!-- document-version: 0.2.3; applies-to: SpecGen 0.2.3 -->
+<!-- document-version: 0.2.4; applies-to: SpecGen 0.2.4 -->
 <div align="center">
 
 # spec-gen
