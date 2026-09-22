@@ -1,6 +1,6 @@
 # Sources Needed for Deep Assessment
 
-> Document version: 0.2.3 · Applies to SpecGen 0.2.3
+> Document version: 0.2.4 · Applies to SpecGen 0.2.4
 
 ## Already available — no reattachment required
 
