@@ -1,6 +1,6 @@
 # Roadmap
 
-> Document version: 0.2.4 · Applies to SpecGen 0.2.4
+> Document version: 0.2.5 · Applies to SpecGen 0.2.5
 
 Mutable plan; completed architecture decisions remain in ADRs. Testing follows [ENGINEERING_POLICY.md](ENGINEERING_POLICY.md) and is currently disabled by explicit release instruction.
 
