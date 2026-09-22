@@ -1,4 +1,4 @@
-<!-- document-version: 0.2.4; applies-to: SpecGen 0.2.4 -->
+<!-- document-version: 0.2.5; applies-to: SpecGen 0.2.5 -->
 <div align="center">
 
 # spec-gen
@@ -23,7 +23,7 @@ Agent-Workflow is the first-class compilation target, not a runtime dependency. 
 
 ## Current contracts
 
-- project `0.2.3`;
+- project `0.2.5`;
 - canonical snapshot `specgen/spec/v1alpha2`;
 - retained snapshot `specgen/spec/v1alpha1`;
 - authoring event `specgen/authoring-event/v1alpha1`;
@@ -34,7 +34,7 @@ Agent-Workflow is the first-class compilation target, not a runtime dependency. 
 - brownfield research plan `specgen/brownfield-plan/v1alpha1`;
 - agent-assisted brownfield analysis `specgen/brownfield-analysis/v1alpha1`;
 - evaluation intent `specgen/evaluation-intent/v1alpha1`;
-- Agent-Workflow target `0.11.2`.
+- Agent-Workflow target `0.11.6`.
 
 ## Installation
 
@@ -71,7 +71,7 @@ If the canonical spec contains repository provenance, Agent-Workflow compilation
 
 The Agent-Workflow target directory is a native prompt-pack source tree. It includes phase/ticket resources, packaged result-contract JSON Schemas, `evaluation-plan.json` when representable, `source-baseline.json` when repository analysis is supplied, and `MANIFEST.sha256`. `MANIFEST.json` is intentionally not generated because Agent-Workflow reserves that filename for its own deterministic archive-integrity manifest.
 
-SpecGen also ships a general agent skill at `skills/specgen/SKILL.md`, a targeted brownfield skill at `skills/specgen-brownfield/SKILL.md`, and an optional Agent-Workflow 0.11.4 plugin entry point, `agent-workflow-spec`. The plugin delegates to the same SpecGen API/CLI authorities; it does not create another specification model or make Agent-Workflow a SpecGen runtime dependency.
+SpecGen also ships a general agent skill at `skills/specgen/SKILL.md`, a targeted brownfield skill at `skills/specgen-brownfield/SKILL.md`, and an optional Agent-Workflow 0.11.6 plugin entry point, `agent-workflow-spec`. The plugin delegates to the same SpecGen API/CLI authorities; it does not create another specification model or make Agent-Workflow a SpecGen runtime dependency.
 
 ## Authoring modes
 
