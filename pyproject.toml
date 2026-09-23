@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "specgen"
-version = "0.2.7"
+version = "0.2.8"
 description = "Versioned specification authoring and compilation core"
 license = "Apache-2.0"
 requires-python = ">=3.11"
@@ -47,6 +47,6 @@ where = ["src"]
 "share/specgen/compat/agent-workflow/0.11.5/schemas" = ["compat/agent-workflow/0.11.5/schemas/*.json"]
 "share/specgen/compat/agent-workflow/0.11.6/schemas" = ["compat/agent-workflow/0.11.6/schemas/*.json"]
 "share/specgen/compat/agent-workflow/0.11.7/schemas" = ["compat/agent-workflow/0.11.7/schemas/*.json"]
-"share/specgen/compat/agent-workflow/0.11.8/schemas" = ["compat/agent-workflow/0.11.8/schemas/*.json"]
+"share/specgen/compat/agent-workflow/0.11.9/schemas" = ["compat/agent-workflow/0.11.9/schemas/*.json"]
 "share/specgen/skills/specgen" = ["skills/specgen/SKILL.md"]
 "share/specgen/skills/specgen-brownfield" = ["skills/specgen-brownfield/SKILL.md"]
