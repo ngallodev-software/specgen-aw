@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.2.7 - 2026-09-22
+
+- Promote the first-class Agent-Workflow target to 0.11.8 at merged source `0ce21d068590e4d5a0822d91860d74e884c4e3f5`.
+- Add a new immutable 0.11.8 compatibility fixture/snapshot while retaining the 0.11.7 and earlier compatibility history.
+- Verify that the five SpecGen-owned target contract fixtures are byte-identical between Agent-Workflow 0.11.7 and 0.11.8; no canonical SpecGen schema change is required.
+- Align the optional `agent-workflow-spec` host adapter, development source link, package data, docs, and shared-stack installer expectations with Agent-Workflow 0.11.8.
+
 ## 0.2.5 - 2026-09-22
 
 - Add verified Agent-Workflow 0.11.6 compatibility pinned to source `919a02ed07c81debd12dc804d234d9844a8a4281`.

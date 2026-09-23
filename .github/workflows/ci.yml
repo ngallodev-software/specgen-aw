@@ -1,0 +1,44 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      SPECGEN_AGENT_WORKFLOW_ROOT: ${{ github.workspace }}/.agent-workflow
+      AGENT_WORKFLOW_SOURCE_ROOT: ${{ github.workspace }}/.agent-workflow
+      SPECGEN_VENV: ${{ github.workspace }}/.venv
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Clone pinned Agent-Workflow
+        shell: bash
+        run: |
+          set -euo pipefail
+          ref="$(sed -n 's/^expected_snapshot = "\(.*\)"/\1/p' dev/agent-workflow.example.toml)"
+          test -n "$ref"
+          git clone --quiet https://github.com/ngallodev-software/agent-workflow.git .agent-workflow
+          git -C .agent-workflow checkout --quiet --detach "$ref"
+      - name: Install
+        run: ./scripts/install.sh
+      - name: Verify release metadata
+        run: timeout 60s .venv/bin/python tests/release/verify_versions.py
+      - name: Run critical seams
+        run: timeout 60s env PYTHONPATH=src .venv/bin/python tests/critical-seams/run.py
+      - name: Run pytest
+        run: |
+          .venv/bin/python -m pip install 'pytest>=8,<10'
+          .venv/bin/python -m pytest -q
+      - name: Build wheel
+        run: |
+          .venv/bin/python -m pip install build
+          .venv/bin/python -m build --sdist --wheel
+          .venv/bin/python scripts/verify-wheel-sources.py dist/*.whl
