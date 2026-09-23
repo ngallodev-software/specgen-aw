@@ -1,6 +1,6 @@
 {
   "schema": "specgen/agent-workflow-compatibility/v1alpha1",
-  "specgen_version": "0.2.8",
+  "specgen_version": "0.2.9",
   "target": {
     "name": "agent-workflow",
     "product_version": "0.11.9",
