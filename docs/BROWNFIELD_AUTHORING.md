@@ -34,9 +34,9 @@ Investigate only enough of the codebase to establish:
 
 Connectivity is evidence, not scope authorization. A highly connected symbol may identify risk without making every consumer part of the requested change.
 
-## Efficient `codebase-memory-mcp` use
+## Efficient `codebase-memory-cli` use
 
-When the agent exposes `codebase-memory-mcp`, prefer graph queries over broad file enumeration. Current public tooling includes project indexing/status, structured graph search, call-path tracing, Git-diff impact mapping, read-only graph queries, graph schema inspection, source snippets, architecture summaries, and indexed code search. The tool's own guidance recommends discovering exact symbols before tracing them. See the upstream project documentation at <https://github.com/DeusData/codebase-memory-mcp> for the current tool surface.
+When `codebase-memory-cli` is available, prefer targeted graph-backed queries over broad file enumeration. The supported product surface is the local CLI; it does not require or expose a third-party MCP server. Current capabilities include indexing/status, graph-backed search, call tracing, impact analysis, source snippets, coverage checks, and architecture-oriented queries. Discover exact symbols before tracing them, and verify material graph claims against source and index coverage. See <https://github.com/ngallodev/codebase-memory-cli> for the current CLI surface.
 
 Use this progression:
 
