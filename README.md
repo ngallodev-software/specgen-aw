@@ -6,9 +6,9 @@
 
 **Turn ambiguous engineering intent into versioned specifications humans can review and agents can execute — without a 47-page manifesto.**
 
-![Version](https://img.shields.io/badge/version-0.2.3-blue)
+![Version](https://img.shields.io/badge/version-0.2.6-blue)
 ![Spec Schema](https://img.shields.io/badge/spec%20schema-v1alpha2-purple)
-![Agent--Workflow](https://img.shields.io/badge/Agent--Workflow-0.11.2%20target-2ea44f)
+![Agent--Workflow](https://img.shields.io/badge/Agent--Workflow-0.11.7%20target-2ea44f)
 ![Status](https://img.shields.io/badge/status-alpha-orange)
 
 **Canonical JSON · append-only decisions · immutable snapshots · traceability · repository evidence · targeted brownfield intelligence · evaluation intent · target compilation · agent skills**
