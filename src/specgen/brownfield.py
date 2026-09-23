@@ -12,9 +12,14 @@ from .validate import validate
 
 
 def codebase_memory_capability() -> dict[str, Any]:
-    """Describe optional codebase-memory-mcp availability without requiring it."""
+    """Describe optional Codebase Memory CLI availability without requiring it.
 
-    executable = shutil.which("codebase-memory-mcp")
+    The v1alpha1 brownfield-plan contract retains legacy `mcp_registration` and
+    `cli_fallback` field names for schema stability. They do not imply that an
+    MCP server is present or supported.
+    """
+
+    executable = shutil.which("codebase-memory-cli")
     if executable is None:
         return {
             "available": False,
