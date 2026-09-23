@@ -81,7 +81,7 @@ SpecGen also ships a general agent skill at `skills/specgen/SKILL.md`, a targete
 
 `express`, `guided`, `strict`, and `agent-workflow` are policy profiles over one canonical schema. `agent-workflow` is intentionally stricter: active requirements must be carried by implementation tasks and evaluation intent; tasks need structured result contracts; blockers must be resolved before target compilation.
 
-Repository analysis is evidence-first and read-only. It recognizes durable declarations and explicitly referenced evidence; it does not pretend to semantically parse arbitrary source code. For existing systems, `specgen brownfield plan` adds a targeted research layer and automatically selects a graph-assisted strategy when the optional `codebase-memory-mcp` executable is available. Semantic agent findings remain a separate `specgen/brownfield-analysis/v1alpha1` artifact rather than contaminating deterministic repository evidence.
+Repository analysis is evidence-first and read-only. It recognizes durable declarations and explicitly referenced evidence; it does not pretend to semantically parse arbitrary source code. For existing systems, `specgen brownfield plan` adds a targeted research layer and automatically selects a graph-assisted strategy when the optional `codebase-memory-cli` executable is available. Semantic agent findings remain a separate `specgen/brownfield-analysis/v1alpha1` artifact rather than contaminating deterministic repository evidence.
 
 ## CLI surface
 
