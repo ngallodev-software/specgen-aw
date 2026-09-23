@@ -6,6 +6,9 @@ build-backend = "setuptools.build_meta"
 name = "specgen"
 version = "0.2.8"
 description = "Versioned specification authoring and compilation core"
+readme = "README.md"
+authors = [{name = "ngallodev-software"}]
+keywords = ["agentic-ai", "specification", "requirements-engineering", "brownfield", "json-schema", "coding-agents"]
 license = "Apache-2.0"
 requires-python = ">=3.11"
 dependencies = ["jsonschema>=4.23,<5", "specgen-agent-workflow-contracts @ https://github.com/ngallodev-software/agent-workflow-spec-contracts/releases/download/v0.2.1/specgen_agent_workflow_contracts-0.2.1-py3-none-any.whl#sha256=d254a0b13f2fd1de732dab2abd33da35db9ea365b50b3214e92308fea79d85c2"]
@@ -21,6 +24,7 @@ specgen-semantic = "specgen.semantic_cli:main"
 agent-workflow-spec = "specgen.agent_workflow_plugin:plugin"
 
 [project.urls]
+Homepage = "https://ngallodev-software.uk/projects/specgen-aw"
 Repository = "https://github.com/ngallodev-software/specgen-aw"
 
 [tool.pytest.ini_options]
