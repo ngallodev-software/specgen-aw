@@ -1,6 +1,6 @@
 # Engineering Policy
 
-> Document version: 0.2.8 · Applies to SpecGen 0.2.8
+> Document version: 0.2.9 · Applies to SpecGen 0.2.9
 
 Normative project policy. Keep this document concise; change it only when engineering policy changes.
 
