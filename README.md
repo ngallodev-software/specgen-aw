@@ -1,11 +1,11 @@
-<!-- document-version: 0.2.8; applies-to: SpecGen 0.2.8 -->
+<!-- document-version: 0.2.9; applies-to: SpecGen 0.2.9 -->
 <div align="center">
 
 # SpecGen-AW
 
 **Versioned specification authoring and compilation for reviewable human intent and executable agent workflows.**
 
-![Version](https://img.shields.io/badge/version-0.2.8-blue)
+![Version](https://img.shields.io/badge/version-0.2.9-blue)
 ![Spec Schema](https://img.shields.io/badge/spec%20schema-v1alpha2-purple)
 ![Agent--Workflow](https://img.shields.io/badge/Agent--Workflow-0.11.9%20target-2ea44f)
 ![Status](https://img.shields.io/badge/status-alpha-orange)
@@ -27,7 +27,7 @@ when execution is required.
 
 ## Current contracts
 
-- project `0.2.8`;
+- project `0.2.9`;
 - canonical snapshot `specgen/spec/v1alpha2`;
 - retained snapshot `specgen/spec/v1alpha1`;
 - authoring event `specgen/authoring-event/v1alpha1`;
@@ -141,5 +141,5 @@ authoritative Markdown links below.
 
 ## Credits & influences
 
-SpecGen openly credits the work that informed its architecture and integrations: Agent-Workflow, codebase-memory-mcp, specBuilder, GitHub Spec Kit, OpenSpec, BMAD/bmad-spec, Cavekit, JSON Schema, ADR practice, semantic-versioning concepts, and cryptographic provenance patterns. Substantial adaptations are classified as retain/adapt/reject/defer in the research notes; architectural inspiration is kept distinct from direct code reuse and license obligations.
+SpecGen openly credits the work that informed its architecture and integrations: Agent-Workflow, Codebase Memory CLI, specBuilder, GitHub Spec Kit, OpenSpec, BMAD/bmad-spec, Cavekit, JSON Schema, ADR practice, semantic-versioning concepts, and cryptographic provenance patterns. Substantial adaptations are classified as retain/adapt/reject/defer in the research notes; architectural inspiration is kept distinct from direct code reuse and license obligations.
 
