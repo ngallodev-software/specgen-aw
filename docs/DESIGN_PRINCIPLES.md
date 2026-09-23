@@ -1,6 +1,6 @@
 # Design Principles
 
-> Document version: 0.2.5 · Applies to SpecGen 0.2.5
+> Document version: 0.2.7 · Applies to SpecGen 0.2.7
 
 Normative unless superseded by an accepted ADR. Execution policy is in [ENGINEERING_POLICY.md](ENGINEERING_POLICY.md).
 
