@@ -34,7 +34,9 @@ jobs:
       - name: Run critical seams
         run: timeout 60s env PYTHONPATH=src .venv/bin/python tests/critical-seams/run.py
       - name: Run pytest
-        run: .venv/bin/python -m pytest -q
+        run: |
+          .venv/bin/python -m pip install 'pytest>=8,<10'
+          .venv/bin/python -m pytest -q
       - name: Build wheel
         run: |
           .venv/bin/python -m pip install build
