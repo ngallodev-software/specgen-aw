@@ -44,7 +44,7 @@ flowchart LR
 | Authoring events | Validated append-only single-writer NDJSON history with stable IDs and contiguous sequencing. |
 | Elicitation | Express/guided/strict/Agent-Workflow policy profiles producing typed questions and guardrails. |
 | Evidence analysis | Revision-bound deterministic repository evidence and declared interface/data-contract discovery; no arbitrary source semantic claims. |
-| Brownfield research | Targeted agent research plan plus separately typed semantic findings; may use optional codebase-memory-mcp without making it a core dependency or authority. |
+| Brownfield research | Targeted agent research plan plus separately typed semantic findings; may use optional codebase-memory-cli without making it a core dependency or authority. |
 | Compiler | Candidate readiness/finalization and digest-bound immutable canonical snapshots. |
 | Validators | JSON Schema, IDs/refs, dependencies, trace, preservation, snapshot ancestry/digest checks. |
 | Semantic diff | Stable-ID semantic comparison excluding snapshot bookkeeping. |
@@ -86,7 +86,7 @@ canonical intent + repository-analysis/v1alpha1
           |                 |
           |                 +--> user decision questions
           v
- optional codebase-memory-mcp / targeted repository tools
+ optional codebase-memory-cli / targeted repository tools
           |
           v
  brownfield-analysis/v1alpha1
@@ -94,7 +94,7 @@ canonical intent + repository-analysis/v1alpha1
           +--> selected provenance / requirements / preservation / risk updates
 ```
 
-The plan may detect a local `codebase-memory-mcp` executable, but MCP registration is owned by the calling agent/runtime. The semantic artifact records evidence locators and confidence; it never upgrades inference into deterministic discovery. See [BROWNFIELD_AUTHORING.md](BROWNFIELD_AUTHORING.md) and ADR-0008.
+The plan may detect a local `codebase-memory-cli` executable, as a local CLI capability. The v1alpha1 plan schema retains the legacy `mcp_registration` field name for contract stability; it does not imply an MCP server. The semantic artifact records evidence locators and confidence; it never upgrades inference into deterministic discovery. See [BROWNFIELD_AUTHORING.md](BROWNFIELD_AUTHORING.md) and ADR-0008.
 
 ## Agent-Workflow target lowering
 
