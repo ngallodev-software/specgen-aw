@@ -1,6 +1,6 @@
 # Prior-Art Mechanism Assessment Matrix
 
-> Document version: 0.2.7 · Applies to SpecGen 0.2.7
+> Document version: 0.2.8 · Applies to SpecGen 0.2.8
 
 This is the comparison frame for the deep review. Statuses are hypotheses until source-level assessment is complete.
 

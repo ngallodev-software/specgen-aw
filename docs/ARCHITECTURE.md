@@ -1,6 +1,6 @@
 # Architecture
 
-> Document version: 0.2.7 · Applies to SpecGen 0.2.7
+> Document version: 0.2.8 · Applies to SpecGen 0.2.8
 
 Working architecture. Significant changes require an ADR. Engineering constraints are in [ENGINEERING_POLICY.md](ENGINEERING_POLICY.md).
 
