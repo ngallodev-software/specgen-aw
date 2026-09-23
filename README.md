@@ -1,25 +1,29 @@
 <!-- document-version: 0.2.8; applies-to: SpecGen 0.2.8 -->
 <div align="center">
 
-# spec-gen
-### *an agent-workflow joint*
+# SpecGen-AW
 
-**Turn ambiguous engineering intent into versioned specifications humans can review and agents can execute — without a 47-page manifesto.**
+**Versioned specification authoring and compilation for reviewable human intent and executable agent workflows.**
 
 ![Version](https://img.shields.io/badge/version-0.2.8-blue)
 ![Spec Schema](https://img.shields.io/badge/spec%20schema-v1alpha2-purple)
 ![Agent--Workflow](https://img.shields.io/badge/Agent--Workflow-0.11.9%20target-2ea44f)
 ![Status](https://img.shields.io/badge/status-alpha-orange)
-
-**Canonical JSON · append-only decisions · immutable snapshots · traceability · repository evidence · targeted brownfield intelligence · evaluation intent · target compilation · agent skills**
+![License](https://img.shields.io/badge/license-Apache--2.0-green)
 
 </div>
 
-SpecGen is a machine-first specification authoring/compiler project. It keeps user decisions, source evidence, requirements, acceptance, evaluation intent, implementation structure, provenance, and unresolved questions explicit enough to validate and hand off without relying on chat memory.
+SpecGen is a machine-first specification authoring and compilation project. It
+keeps user decisions, source evidence, requirements, acceptance criteria,
+evaluation intent, implementation structure, provenance, and unresolved questions
+explicit enough to validate, review, and hand off without relying on chat memory.
 
 > **SpecGen owns specification meaning. Execution targets own execution meaning.**
 
-Agent-Workflow is the first-class compilation target, not a runtime dependency. Canonical repository: [ngallodev-software/specgen-aw](https://github.com/ngallodev-software/specgen-aw) (`master`).
+Agent-Workflow is the first-class compilation target, not a runtime dependency.
+SpecGen can therefore be used to author and validate specifications independently,
+then compile a validated snapshot into Agent-Workflow-native prompt-pack resources
+when execution is required.
 
 ## Current contracts
 
@@ -139,10 +143,3 @@ authoritative Markdown links below.
 
 SpecGen openly credits the work that informed its architecture and integrations: Agent-Workflow, codebase-memory-mcp, specBuilder, GitHub Spec Kit, OpenSpec, BMAD/bmad-spec, Cavekit, JSON Schema, ADR practice, semantic-versioning concepts, and cryptographic provenance patterns. Substantial adaptations are classified as retain/adapt/reject/defer in the research notes; architectural inspiration is kept distinct from direct code reuse and license obligations.
 
-The subtitle *“an agent-workflow joint”* is a deliberate nod to Spike Lee's “A Spike Lee Joint” credit. No association or endorsement is implied.
-
-<div align="center">
-
-**Do the right spec. Trace the decisions. Compile with confidence.**
-
-</div>
