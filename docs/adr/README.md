@@ -1,6 +1,6 @@
 # Architecture Decision Records
 
-> Document version: 0.2.5 · Applies to SpecGen 0.2.5
+> Document version: 0.2.7 · Applies to SpecGen 0.2.7
 
 ADRs capture significant decisions that would otherwise disappear as the working design changes.
 
