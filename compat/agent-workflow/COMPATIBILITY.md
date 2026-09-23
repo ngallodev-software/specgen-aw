@@ -1,6 +1,6 @@
 # Agent-Workflow Compatibility
 
-> Document version: 0.2.8 · Applies to SpecGen 0.2.8
+> Document version: 0.2.9 · Applies to SpecGen 0.2.9
 
 SpecGen is independently installable. This directory records the Agent-Workflow contracts an adapter is allowed to understand. Vendored schemas are compatibility fixtures, not imported runtime authority.
 
