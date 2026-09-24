@@ -84,7 +84,7 @@ SpecGen also ships a general agent skill at `skills/specgen/SKILL.md`, a targete
 
 `express`, `guided`, `strict`, and `agent-workflow` are policy profiles over one canonical schema. `agent-workflow` is intentionally stricter: active requirements must be carried by implementation tasks and evaluation intent; tasks need structured result contracts; blockers must be resolved before target compilation.
 
-Repository analysis is evidence-first and read-only. It recognizes durable declarations and explicitly referenced evidence; it does not pretend to semantically parse arbitrary source code. For existing systems, `specgen brownfield plan` adds a targeted research layer and automatically selects a graph-assisted strategy when the optional `codebase-memory-cli` executable is available. Semantic agent findings remain a separate `specgen/brownfield-analysis/v1alpha1` artifact rather than contaminating deterministic repository evidence.
+Repository analysis is evidence-first and read-only. It recognizes durable declarations and explicitly referenced evidence; it does not pretend to semantically parse arbitrary source code. For existing systems, `specgen brownfield plan` adds a targeted research layer. Agents should prefer the upstream `DeusData/codebase-memory-mcp` MCP tools when the host exposes them; the modified `codebase-memory-cli` fork is the CLI-only alternative for environments that prohibit third-party MCP servers. Semantic agent findings remain a separate `specgen/brownfield-analysis/v1alpha1` artifact rather than contaminating deterministic repository evidence.
 
 ## CLI surface
 
@@ -144,5 +144,5 @@ authoritative Markdown links below.
 
 ## Credits & influences
 
-SpecGen openly credits the work that informed its architecture and integrations: Agent-Workflow, Codebase Memory CLI, specBuilder, GitHub Spec Kit, OpenSpec, BMAD/bmad-spec, Cavekit, JSON Schema, ADR practice, semantic-versioning concepts, and cryptographic provenance patterns. Substantial adaptations are classified as retain/adapt/reject/defer in the research notes; architectural inspiration is kept distinct from direct code reuse and license obligations.
+SpecGen openly credits the work that informed its architecture and integrations: Agent-Workflow, the upstream DeusData/codebase-memory-mcp project, the restricted-environment codebase-memory-cli fork, specBuilder, GitHub Spec Kit, OpenSpec, BMAD/bmad-spec, Cavekit, JSON Schema, ADR practice, semantic-versioning concepts, and cryptographic provenance patterns. Substantial adaptations are classified as retain/adapt/reject/defer in the research notes; architectural inspiration is kept distinct from direct code reuse and license obligations.
 
