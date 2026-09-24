@@ -17,8 +17,9 @@ SpecGen adds a separate optional brownfield research layer.
 - `specgen/repository-analysis/v1alpha1` remains unchanged and deterministic.
 - `specgen/brownfield-plan/v1alpha1` describes user decision questions, research focus, tool preferences, efficiency guardrails, and stop conditions.
 - `specgen/brownfield-analysis/v1alpha1` records agent-assisted semantic findings with evidence locators and explicit confidence.
-- SpecGen may detect whether a `codebase-memory-mcp` executable is available and shape the plan accordingly, but it does not require the package and does not assume MCP registration.
-- The agent/runtime chooses direct MCP tools when exposed and may use the tool's CLI fallback when available and permitted.
+- The agent/runtime prefers upstream `codebase-memory-mcp` MCP tools when they are exposed by the host.
+- SpecGen may inspect local executable fallbacks without requiring either package: it prefers the upstream `codebase-memory-mcp` executable, then the modified `codebase-memory-cli` fork when policy requires a CLI-only boundary.
+- `codebase-memory-cli` is not the general replacement for upstream Codebase Memory; it exists for environments where third-party MCP servers are prohibited or otherwise unavailable by policy.
 - Semantic findings may inform canonical provenance, requirements, preservation claims, risks, acceptance, and implementation structure, but only the canonical snapshot owns specification meaning.
 - User decisions remain distinguishable from tool output and inference.
 
