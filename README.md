@@ -16,7 +16,7 @@
 **Portfolio case study:** https://ngallodev-software.uk/projects/specgen-aw  
 **Shared contracts:** https://github.com/ngallodev-software/agent-workflow-spec-contracts
 
-## Quick summary
+## Summary
 
 - **What it is:** a specification authoring/compiler system that turns engineering intent into a versioned, reviewable artifact and can compile it into Agent-Workflow execution resources.
 - **Why it matters:** requirements, decisions, acceptance criteria, evidence, and unresolved questions stay explicit instead of living only in chat context.
