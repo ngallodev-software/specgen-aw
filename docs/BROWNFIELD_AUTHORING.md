@@ -1,6 +1,6 @@
 # Brownfield Specification Authoring
 
-> Document version: 0.2.1 · Applies to SpecGen 0.2.1 plus post-release development additions described here
+> Document version: 0.2.9 · Applies to SpecGen 0.2.9
 
 Brownfield authoring has two distinct evidence layers:
 
@@ -34,9 +34,30 @@ Investigate only enough of the codebase to establish:
 
 Connectivity is evidence, not scope authorization. A highly connected symbol may identify risk without making every consumer part of the requested change.
 
-## Efficient `codebase-memory-cli` use
+## Efficient Codebase Memory use
 
-When `codebase-memory-cli` is available, prefer targeted graph-backed queries over broad file enumeration. The supported product surface is the local CLI; it does not require or expose a third-party MCP server. Current capabilities include indexing/status, graph-backed search, call tracing, impact analysis, source snippets, coverage checks, and architecture-oriented queries. Discover exact symbols before tracing them, and verify material graph claims against source and index coverage. See <https://github.com/ngallodev/codebase-memory-cli> for the current CLI surface.
+For ordinary environments, prefer the upstream
+[`DeusData/codebase-memory-mcp`](https://github.com/DeusData/codebase-memory-mcp)
+MCP tools when the agent host exposes them. They are the primary Codebase Memory
+integration for brownfield research and provide indexing/status, graph-backed
+search, call tracing, impact analysis, source snippets, coverage checks,
+architecture-oriented queries, and related structural evidence.
+
+Use the modified
+[`ngallodev/codebase-memory-cli`](https://github.com/ngallodev/codebase-memory-cli)
+fork only when the environment does not permit the third-party MCP server or
+otherwise requires a CLI-only integration boundary. The CLI fork preserves the
+upstream Codebase Memory engine and exposes the relevant capabilities through a
+local command-line surface; it is not a replacement that SpecGen should prefer
+over the upstream project in unrestricted environments.
+
+`specgen brownfield capabilities` can inspect local executable fallbacks but
+cannot inspect MCP tools registered in the invoking agent host. Agents should
+therefore inspect their available tools first: use exposed
+`codebase-memory-mcp` tools directly; otherwise use the upstream executable
+fallback when available; use `codebase-memory-cli` when policy requires the
+CLI-only fork; and fall back to ordinary targeted repository search/read tools
+when none of those surfaces are available.
 
 Use this progression:
 
