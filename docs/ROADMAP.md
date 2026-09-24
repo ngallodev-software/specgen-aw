@@ -100,7 +100,7 @@ In development after the initial public release:
 - application usage guide covering the canonical authoring lifecycle;
 - `specgen/brownfield-plan/v1alpha1` for separating user decision questions from codebase research tasks;
 - `specgen/brownfield-analysis/v1alpha1` for evidence-located agent semantic findings with explicit confidence;
-- optional `codebase-memory-mcp` capability detection and graph-assisted research strategy, with no runtime dependency;
+- optional Codebase Memory graph-assisted research strategy: prefer upstream `codebase-memory-mcp` tools/executable in ordinary environments, with `codebase-memory-cli` as the CLI-only fallback for environments that prohibit third-party MCP servers; no runtime dependency;
 - dedicated brownfield agent skill that narrows architecture/search/trace/snippet work and stops when remaining uncertainty is a user decision;
 - deterministic `repository-analysis/v1alpha1` remains unchanged and authoritative only for its evidence-first scope.
 
