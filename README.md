@@ -13,6 +13,9 @@
 
 </div>
 
+**Portfolio case study:** https://ngallodev-software.uk/projects/specgen-aw  
+**Shared contracts:** https://github.com/ngallodev-software/agent-workflow-spec-contracts
+
 SpecGen is a machine-first specification authoring and compilation project. It
 keeps user decisions, source evidence, requirements, acceptance criteria,
 evaluation intent, implementation structure, provenance, and unresolved questions
