@@ -12,14 +12,22 @@ from .validate import validate
 
 
 def codebase_memory_capability() -> dict[str, Any]:
-    """Describe optional Codebase Memory CLI availability without requiring it.
+    """Describe optional local Codebase Memory executable fallback availability.
 
-    The v1alpha1 brownfield-plan contract retains legacy `mcp_registration` and
-    `cli_fallback` field names for schema stability. They do not imply that an
-    MCP server is present or supported.
+    Brownfield agents should prefer upstream `codebase-memory-mcp` MCP tools
+    when the host exposes them. This process-local capability check cannot inspect
+    an agent host's MCP registration, so it checks executable fallbacks only:
+    first the upstream `codebase-memory-mcp` executable, then the modified
+    `codebase-memory-cli` fork used where policy prohibits third-party MCP
+    servers.
+
+    The v1alpha1 brownfield-plan contract retains `mcp_registration` and
+    `cli_fallback` field names for schema stability.
     """
 
-    executable = shutil.which("codebase-memory-cli")
+    executable = shutil.which("codebase-memory-mcp")
+    if executable is None:
+        executable = shutil.which("codebase-memory-cli")
     if executable is None:
         return {
             "available": False,
