@@ -16,6 +16,13 @@
 **Portfolio case study:** https://ngallodev-software.uk/projects/specgen-aw  
 **Shared contracts:** https://github.com/ngallodev-software/agent-workflow-spec-contracts
 
+## Quick summary
+
+- **What it is:** a specification authoring/compiler system that turns engineering intent into a versioned, reviewable artifact and can compile it into Agent-Workflow execution resources.
+- **Why it matters:** requirements, decisions, acceptance criteria, evidence, and unresolved questions stay explicit instead of living only in chat context.
+- **Brownfield path:** use upstream `DeusData/codebase-memory-mcp` when its MCP tools are available; use the modified `codebase-memory-cli` fork when corporate/security policy requires a CLI-only boundary.
+- **Key boundary:** SpecGen owns specification meaning; execution targets own execution meaning.
+
 SpecGen is a machine-first specification authoring and compilation project. It
 keeps user decisions, source evidence, requirements, acceptance criteria,
 evaluation intent, implementation structure, provenance, and unresolved questions
