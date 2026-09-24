@@ -1,6 +1,6 @@
 # Using SpecGen
 
-> Document version: 0.2.1 · Applies to SpecGen 0.2.1 plus post-release development additions described here
+> Document version: 0.2.9 · Applies to SpecGen 0.2.9
 
 SpecGen turns engineering intent into a canonical JSON specification that can be validated, reviewed as Markdown, compared across snapshots, grounded in repository evidence, and compiled for supported execution targets.
 
@@ -88,11 +88,23 @@ specgen brownfield plan /path/to/repo --spec candidate.json --mode guided \
 - focus areas derived from the specification and deterministic repository evidence;
 - stop conditions that prevent unnecessary codebase exploration.
 
-### Optional `codebase-memory-mcp` enhancement
+### Optional Codebase Memory enhancement
 
-If the `codebase-memory-mcp` executable is on `PATH`, `brownfield plan` selects the `codebase-memory-assisted` strategy and emits research tasks optimized for graph-based code intelligence. SpecGen does not require the dependency and does not assume that the MCP server is registered with the current agent; `specgen brownfield capabilities` reports binary availability while MCP registration remains an agent/runtime concern.
+When the agent host exposes upstream
+[`DeusData/codebase-memory-mcp`](https://github.com/DeusData/codebase-memory-mcp)
+tools, use them directly. This is the preferred graph-assisted path for ordinary
+brownfield work.
 
-The dedicated skill at `skills/specgen-brownfield/SKILL.md` tells an agent how to use the available MCP tools efficiently. Its preferred sequence is:
+`specgen brownfield capabilities` is intentionally narrower: it can inspect
+local executables but cannot see an agent host's MCP registration. Its fallback
+detection prefers the upstream `codebase-memory-mcp` executable and then checks
+for the modified
+[`codebase-memory-cli`](https://github.com/ngallodev/codebase-memory-cli)
+fork. Use that CLI fork when corporate/security policy prohibits third-party MCP
+servers or otherwise requires a CLI-only boundary.
+
+The dedicated skill at `skills/specgen-brownfield/SKILL.md` tells an agent how
+to use either Codebase Memory surface efficiently. Its preferred sequence is:
 
 ```text
 index/status -> graph schema -> one architecture overview -> narrow structural search
@@ -102,7 +114,7 @@ index/status -> graph schema -> one architecture overview -> narrow structural s
 
 The agent records semantic findings separately as `specgen/brownfield-analysis/v1alpha1`, binding the exact deterministic repository-analysis digest and distinguishing observed facts from strong or tentative inference. That artifact can then be cited from canonical provenance as `tool_output`/`inference`; it never replaces the deterministic `repository-analysis/v1alpha1` report.
 
-If `codebase-memory-mcp` is unavailable, the plan falls back to the evidence-first repository workflow and targeted file/search tools.
+If upstream MCP tools, the upstream executable, and the restricted-environment CLI fork are all unavailable, the plan falls back to the evidence-first repository workflow and targeted file/search tools.
 
 ## 5. Update the canonical specification
 
