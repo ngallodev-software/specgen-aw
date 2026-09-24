@@ -38,11 +38,23 @@ Material drift requires re-checking affected semantic findings.
 
 ## Detect the enhanced path
 
-First inspect the tools actually available to the agent. If `codebase-memory-mcp` MCP tools are exposed, use them directly.
+First inspect the tools actually available to the agent. If upstream
+`codebase-memory-mcp` MCP tools are exposed, use them directly. This is the
+normal/preferred Codebase Memory path for brownfield research.
 
-If MCP tools are not exposed but the executable is available, `specgen brownfield capabilities` may report a CLI fallback. When shell execution is permitted, every upstream MCP operation can also be invoked through `codebase-memory-mcp cli ...`.
+If MCP tools are not exposed but the upstream executable is available,
+`specgen brownfield capabilities` may report a local executable fallback. When
+shell execution is permitted, upstream operations can be invoked through
+`codebase-memory-mcp cli ...`.
 
-If neither is available, follow the same narrowing policy with ordinary repository search/read tools. Do not block brownfield authoring merely because codebase-memory-mcp is absent.
+Use the modified `codebase-memory-cli` fork only when environment policy
+prohibits the third-party MCP server or a CLI-only product boundary is otherwise
+required. It is a restricted-environment fallback built from the upstream
+project, not the preferred general Codebase Memory implementation.
+
+If none of these surfaces is available, follow the same narrowing policy with
+ordinary repository search/read tools. Do not block brownfield authoring merely
+because Codebase Memory is absent.
 
 ## Efficient codebase-memory-mcp sequence
 
