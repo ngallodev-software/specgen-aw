@@ -1,6 +1,6 @@
 # Prior-art deep review 01 — specification authority, history, and agent handoff
 
-> Document version: 0.2.9 · Applies to SpecGen 0.2.9
+> Document version: 0.2.10 · Applies to SpecGen 0.2.10
 
 Date: 2026-08-27
 Status: Initial source-level assessment

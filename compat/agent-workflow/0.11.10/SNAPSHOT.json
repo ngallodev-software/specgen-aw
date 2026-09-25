@@ -1,0 +1,35 @@
+{
+  "product": "agent-workflow",
+  "python": {
+    "projects": {
+      "agent-workflow": {
+        "dependencies": [
+          "jsonschema>=4.18,<5",
+          "PyYAML>=6.0.3,<7",
+          "specgen-agent-workflow-contracts @ https://github.com/ngallodev-software/agent-workflow-spec-contracts/releases/download/v0.2.1/specgen_agent_workflow_contracts-0.2.1-py3-none-any.whl#sha256=d254a0b13f2fd1de732dab2abd33da35db9ea365b50b3214e92308fea79d85c2"
+        ],
+        "requires_python": ">=3.11"
+      },
+      "specgen": {
+        "dependencies": [
+          "jsonschema>=4.23,<5",
+          "specgen-agent-workflow-contracts @ https://github.com/ngallodev-software/agent-workflow-spec-contracts/releases/download/v0.2.1/specgen_agent_workflow_contracts-0.2.1-py3-none-any.whl#sha256=d254a0b13f2fd1de732dab2abd33da35db9ea365b50b3214e92308fea79d85c2"
+        ],
+        "requires_python": ">=3.11"
+      }
+    }
+  },
+  "schema": "specgen/agent-workflow-compatibility-snapshot/v1",
+  "schemas": {
+    "schemas/pack.schema.json": "b005325c6ac14f04be201ab5f56462237195c8f4f4a9130500cbb5e7fbb73c29",
+    "schemas/evaluation-plan.schema.json": "571edfaadfb078bbeb11fae00422d89366887036bec23460884fc23e84a0ddee",
+    "schemas/source-baseline.schema.json": "da835fd07fae196f8d9dac396413e1c435725d0e1db0cb378ebab195b6609134",
+    "schemas/agent-role-v1.schema.json": "93aa44ceb71597e1a99a89e66135449a436673248749799d7ef25b6659c22de4",
+    "schemas/task-result.schema.json": "f7ae2d01e8638c1d057e772befebc465e1501d1ddc49f0c03a54bf1b09b59810"
+  },
+  "source": {
+    "dirty": false,
+    "git_commit": "811686d21b5fb4baca8c2790415a8a8eee84068a"
+  },
+  "version": "0.11.10"
+}
