@@ -21,7 +21,7 @@
 - **What it is:** a specification authoring/compiler system that turns engineering intent into a versioned, reviewable artifact and can compile it into Agent-Workflow execution resources.
 - **Why it matters:** requirements, decisions, acceptance criteria, evidence, and unresolved questions stay explicit instead of living only in chat context.
 - **Brownfield path:** use upstream `DeusData/codebase-memory-mcp` when its MCP tools are available; use the modified `codebase-memory-cli` fork when corporate/security policy requires a CLI-only boundary.
-- **Key boundary:** SpecGen owns specification meaning; execution targets own execution meaning.
+- **Implemented boundary:** SpecGen owns specification meaning; execution targets own execution meaning.
 
 SpecGen is a machine-first specification authoring and compilation project. It
 keeps user decisions, source evidence, requirements, acceptance criteria,
@@ -29,6 +29,23 @@ evaluation intent, implementation structure, provenance, and unresolved question
 explicit enough to validate, review, and hand off without relying on chat memory.
 
 > **SpecGen owns specification meaning. Execution targets own execution meaning.**
+
+## Current direction — 2026-09-27
+
+Re-evaluating the maintained OpenSpec project exposed an upstream standardization
+boundary on the planning side. The target direction is to qualify OpenSpec as the
+preferred specification/planning authority while preserving Agent-Workflow's
+source-agnostic execution, evidence, evaluation, review, and acceptance contracts.
+
+This is a **direction and migration boundary, not a completed migration**.
+SpecGen remains active at the implemented contract described below; Agent-Workflow
+does not yet have native OpenSpec import; prompt-pack v3 does not yet exist; and
+the shared specification contracts have not been retired. The historical SpecGen
+architecture and the work that revealed this boundary remain part of the project
+record rather than being rewritten as though OpenSpec had always been the plan.
+
+See the contemporaneous decision record in the Agent-Workflow lab notebook:
+`events/2026-09-27-openspec-replaces-specgen-authority.md`.
 
 Agent-Workflow is the first-class compilation target, not a runtime dependency.
 SpecGen can therefore be used to author and validate specifications independently,
