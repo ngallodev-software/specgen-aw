@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "specgen"
-version = "0.2.11"
+version = "0.2.12"
 description = "Versioned specification authoring and compilation core"
 readme = "README.md"
 authors = [{name = "ngallodev-software"}]
@@ -55,5 +55,6 @@ where = ["src"]
 "share/specgen/compat/agent-workflow/0.11.9/schemas" = ["compat/agent-workflow/0.11.9/schemas/*.json"]
 "share/specgen/compat/agent-workflow/0.11.10/schemas" = ["compat/agent-workflow/0.11.10/schemas/*.json"]
 "share/specgen/compat/agent-workflow/0.11.11/schemas" = ["compat/agent-workflow/0.11.11/schemas/*.json"]
+"share/specgen/compat/agent-workflow/0.11.12/schemas" = ["compat/agent-workflow/0.11.12/schemas/*.json"]
 "share/specgen/skills/specgen" = ["skills/specgen/SKILL.md"]
 "share/specgen/skills/specgen-brownfield" = ["skills/specgen-brownfield/SKILL.md"]
