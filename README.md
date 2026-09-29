@@ -44,8 +44,8 @@ the shared specification contracts have not been retired. The historical SpecGen
 architecture and the work that revealed this boundary remain part of the project
 record rather than being rewritten as though OpenSpec had always been the plan.
 
-See the contemporaneous decision record in the Agent-Workflow lab notebook:
-`events/2026-09-27-openspec-replaces-specgen-authority.md`.
+This direction was recorded contemporaneously on 2026-09-27. Public
+migration and qualification artifacts will be linked here as that work proceeds.
 
 Agent-Workflow is the first-class compilation target, not a runtime dependency.
 SpecGen can therefore be used to author and validate specifications independently,
