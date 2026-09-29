@@ -4,12 +4,12 @@
   "target": {
     "name": "agent-workflow",
     "product_version": "0.11.12",
-    "source_snapshot": "35be5dc5c168ee76bb880a9616a36147dc99e5c5",
+    "source_snapshot": "1b4bd0253500afbe2a6111a6805fd7b3fefe4cf7",
     "compatible_releases": [
       {
         "application": "agent-workflow",
         "application_version": "0.11.12",
-        "source_snapshot": "35be5dc5c168ee76bb880a9616a36147dc99e5c5",
+        "source_snapshot": "1b4bd0253500afbe2a6111a6805fd7b3fefe4cf7",
         "status": "verified",
         "contracts": [
           {
