@@ -37,20 +37,29 @@ boundary on the planning side. The target direction is to qualify OpenSpec as th
 preferred specification/planning authority while preserving Agent-Workflow's
 source-agnostic execution, evidence, evaluation, review, and acceptance contracts.
 
-This is a **direction and migration boundary, not a completed migration**.
-SpecGen remains active at the implemented contract described below; Agent-Workflow
-does not yet have native OpenSpec import; prompt-pack v3 does not yet exist; and
-the shared specification contracts have not been retired. The historical SpecGen
-architecture and the work that revealed this boundary remain part of the project
-record rather than being rewritten as though OpenSpec had always been the plan.
+This migration direction has now reached its first qualified execution boundary.
+Agent-Workflow imports the pinned OpenSpec 1.13.2 `spec-driven` surface into its
+own `native-job/v2` contract, and the real upstream Phase-0 compatibility gate
+has executed an imported job through completion, sealing, host review, and
+acceptance without consulting OpenSpec after import and without
+`specgen_contracts` installed.
 
-This direction was recorded contemporaneously on 2026-09-27. Public
-migration and qualification artifacts will be linked here as that work proceeds.
+SpecGen remains an active **legacy authoring compatibility surface** for its
+published contracts and historical `native-job/v1` consumers. It is no longer
+the preferred source for new Agent-Workflow planning work. The next migration
+step is to inventory and migrate or explicitly freeze remaining SpecGen
+authoring consumers, then separately qualify removal of the mandatory shared
+contract dependency while preserving historical v1 evidence.
 
-Agent-Workflow is the first-class compilation target, not a runtime dependency.
-SpecGen can therefore be used to author and validate specifications independently,
-then compile a validated snapshot into Agent-Workflow-native prompt-pack resources
-when execution is required.
+The historical SpecGen architecture and the work that revealed the OpenSpec
+boundary remain part of the project record rather than being rewritten as
+though OpenSpec had always been the plan.
+
+Agent-Workflow remains the legacy compilation target for existing SpecGen
+consumers, not a SpecGen runtime dependency. Existing validated SpecGen snapshots
+can still compile into the frozen v1 handoff path. New Agent-Workflow planning
+work should prefer the qualified OpenSpec import path instead of creating new
+SpecGen authoring state.
 
 ## Current contracts
 
