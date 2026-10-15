@@ -63,7 +63,7 @@ The corresponding implementation intent is kept with the Agent-Workflow
 working artifacts under:
 
 ```text
-/lump/apps/agent-workflow/implementation-output/workflow-lifetime-watch-20260829/
+<workspace>/agent-workflow/implementation-output/workflow-lifetime-watch-20260829/
 ```
 
 The intended small implementation has two parts: introduce the host-owned

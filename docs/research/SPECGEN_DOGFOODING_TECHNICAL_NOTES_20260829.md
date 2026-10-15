@@ -12,7 +12,7 @@ implementation work.
 The canonical and derived artifacts are located at:
 
 ```text
-/lump/apps/agent-workflow/implementation-output/workflow-lifetime-watch-20260829/
+<workspace>/agent-workflow/implementation-output/workflow-lifetime-watch-20260829/
 ```
 
 They include the canonical `spec.json`, repository analysis, brownfield plan,
@@ -121,7 +121,7 @@ that evidence as missing.
 The enhanced generated pack is therefore kept outside the target repository:
 
 ```text
-/lump/apps/specgen-aw/implementation-output/workflow-lifetime-watch-20260829/prompt-pack/
+<workspace>/specgen-aw/implementation-output/workflow-lifetime-watch-20260829/prompt-pack/
 ```
 
 The canonical specification and repository evidence remain in the
